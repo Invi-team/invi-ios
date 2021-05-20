@@ -15,6 +15,9 @@
 		9293A4972656F9E20056F02B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9293A4952656F9E20056F02B /* LaunchScreen.storyboard */; };
 		9293A4A22656F9E20056F02B /* InviTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4A12656F9E20056F02B /* InviTests.swift */; };
 		9293A4AD2656F9E20056F02B /* InviUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4AC2656F9E20056F02B /* InviUITests.swift */; };
+		9293A4BB265703BC0056F02B /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4BA265703BC0056F02B /* Dependencies.swift */; };
+		9293A4BD265703FB0056F02B /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4BC265703FB0056F02B /* WebService.swift */; };
+		9293A4BF265705470056F02B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4BE265705470056F02B /* main.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,9 @@
 		9293A4A82656F9E20056F02B /* InviUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InviUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9293A4AC2656F9E20056F02B /* InviUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviUITests.swift; sourceTree = "<group>"; };
 		9293A4AE2656F9E20056F02B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9293A4BA265703BC0056F02B /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
+		9293A4BC265703FB0056F02B /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
+		9293A4BE265705470056F02B /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +112,9 @@
 				9293A4952656F9E20056F02B /* LaunchScreen.storyboard */,
 				9293A4982656F9E20056F02B /* Info.plist */,
 				9293A4922656F9E20056F02B /* Preview Content */,
+				9293A4BA265703BC0056F02B /* Dependencies.swift */,
+				9293A4BC265703FB0056F02B /* WebService.swift */,
+				9293A4BE265705470056F02B /* main.swift */,
 			);
 			path = Invi;
 			sourceTree = "<group>";
@@ -266,8 +275,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9293A4BB265703BC0056F02B /* Dependencies.swift in Sources */,
 				9293A48B2656F9E00056F02B /* AppDelegate.swift in Sources */,
+				9293A4BF265705470056F02B /* main.swift in Sources */,
 				9293A48D2656F9E00056F02B /* SceneDelegate.swift in Sources */,
+				9293A4BD265703FB0056F02B /* WebService.swift in Sources */,
 				9293A48F2656F9E00056F02B /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
