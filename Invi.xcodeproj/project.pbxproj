@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9293A48B2656F9E00056F02B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A48A2656F9E00056F02B /* AppDelegate.swift */; };
-		9293A48D2656F9E00056F02B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A48C2656F9E00056F02B /* SceneDelegate.swift */; };
+		9293A48D2656F9E00056F02B /* InviApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A48C2656F9E00056F02B /* InviApp.swift */; };
 		9293A48F2656F9E00056F02B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A48E2656F9E00056F02B /* ContentView.swift */; };
 		9293A4912656F9E20056F02B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9293A4902656F9E20056F02B /* Assets.xcassets */; };
 		9293A4942656F9E20056F02B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9293A4932656F9E20056F02B /* Preview Assets.xcassets */; };
@@ -17,7 +16,6 @@
 		9293A4AD2656F9E20056F02B /* InviUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4AC2656F9E20056F02B /* InviUITests.swift */; };
 		9293A4BB265703BC0056F02B /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4BA265703BC0056F02B /* Dependencies.swift */; };
 		9293A4BD265703FB0056F02B /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4BC265703FB0056F02B /* WebService.swift */; };
-		9293A4BF265705470056F02B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4BE265705470056F02B /* main.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,8 +37,7 @@
 
 /* Begin PBXFileReference section */
 		9293A4872656F9E00056F02B /* Invi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Invi.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		9293A48A2656F9E00056F02B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9293A48C2656F9E00056F02B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		9293A48C2656F9E00056F02B /* InviApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviApp.swift; sourceTree = "<group>"; };
 		9293A48E2656F9E00056F02B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9293A4902656F9E20056F02B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9293A4932656F9E20056F02B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -54,7 +51,6 @@
 		9293A4AE2656F9E20056F02B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9293A4BA265703BC0056F02B /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
 		9293A4BC265703FB0056F02B /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
-		9293A4BE265705470056F02B /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,8 +101,7 @@
 		9293A4892656F9E00056F02B /* Invi */ = {
 			isa = PBXGroup;
 			children = (
-				9293A48A2656F9E00056F02B /* AppDelegate.swift */,
-				9293A48C2656F9E00056F02B /* SceneDelegate.swift */,
+				9293A48C2656F9E00056F02B /* InviApp.swift */,
 				9293A48E2656F9E00056F02B /* ContentView.swift */,
 				9293A4902656F9E20056F02B /* Assets.xcassets */,
 				9293A4952656F9E20056F02B /* LaunchScreen.storyboard */,
@@ -114,7 +109,6 @@
 				9293A4922656F9E20056F02B /* Preview Content */,
 				9293A4BA265703BC0056F02B /* Dependencies.swift */,
 				9293A4BC265703FB0056F02B /* WebService.swift */,
-				9293A4BE265705470056F02B /* main.swift */,
 			);
 			path = Invi;
 			sourceTree = "<group>";
@@ -276,9 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9293A4BB265703BC0056F02B /* Dependencies.swift in Sources */,
-				9293A48B2656F9E00056F02B /* AppDelegate.swift in Sources */,
-				9293A4BF265705470056F02B /* main.swift in Sources */,
-				9293A48D2656F9E00056F02B /* SceneDelegate.swift in Sources */,
+				9293A48D2656F9E00056F02B /* InviApp.swift in Sources */,
 				9293A4BD265703FB0056F02B /* WebService.swift in Sources */,
 				9293A48F2656F9E00056F02B /* ContentView.swift in Sources */,
 			);
