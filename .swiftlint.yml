@@ -1,0 +1,22 @@
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+ - Pods
+ - InviTests
+ - InviUITests
+disabled_rules: # rule identifiers to exclude from running
+ - trailing_whitespace
+ - line_length
+ - identifier_name
+ - todo
+ - file_length
+ - nesting
+ - legacy_hashing
+ - inclusive_language
+opt_in_rules:
+ - discouraged_assert
+ - unused_import
+ - empty_count
+ - first_where
+ - empty_string
+ - toggle_bool
+ - convenience_type
+ - overridden_super_call
