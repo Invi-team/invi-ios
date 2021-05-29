@@ -186,8 +186,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9293A4B12656F9E20056F02B /* Build configuration list for PBXNativeTarget "Invi" */;
 			buildPhases = (
-				92CB58202662661C0021DAAA /* ShellScript */,
 				6FBF8813743C5F7CB8C45393 /* [CP] Check Pods Manifest.lock */,
+				92CB58202662661C0021DAAA /* ShellScript */,
 				9293A4832656F9E00056F02B /* Sources */,
 				9293A4842656F9E00056F02B /* Frameworks */,
 				9293A4852656F9E00056F02B /* Resources */,
