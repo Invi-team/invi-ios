@@ -18,7 +18,11 @@ struct InviApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if inviDependencies.authenticator.isLoggedIn {
+                ContentView()
+            } else {
+                SignInView()
+            }
         }
     }
 }
