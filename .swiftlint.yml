@@ -1,0 +1,27 @@
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+ - Pods
+disabled_rules: # rule identifiers to exclude from running
+ - trailing_whitespace
+ - line_length
+ - identifier_name
+ - todo
+ - file_length
+ - nesting
+ - legacy_hashing
+ - inclusive_language
+opt_in_rules:
+ - discouraged_assert
+ - unused_import
+ - empty_count
+ - first_where
+ - empty_string
+ - toggle_bool
+ - convenience_type
+ - overridden_super_call
+ - yoda_condition
+ - lower_acl_than_parent
+custom_rules:
+ switch_space_after_colon:
+  regex: "(case[\\S ]+|default):(?! )(?!\\n)"
+  message: "There should be space after colon in one line case or default statements"
+
