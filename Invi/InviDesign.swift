@@ -10,8 +10,11 @@ import SwiftUI
 
 enum InviDesign {
     enum Colors {
+        enum Brand {
+            static let dark = Color(fromHexString: "#8578D4")!
+            static let light = Color(fromHexString: "#C2BCEA")!
+        }
         enum Background {
-            static let purple = Color(fromHexString: "#C2BCEA")!
             static let grey = Color(fromHexString: "#333333")!
         }
     }

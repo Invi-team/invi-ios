@@ -12,5 +12,5 @@ protocol AuthenticatorType {
 }
 
 final class Authenticator: AuthenticatorType {
-    var isLoggedIn: Bool { .random() }
+    var isLoggedIn: Bool { false }
 }
