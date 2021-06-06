@@ -19,5 +19,5 @@ protocol HasAuthenticator {
 
 final class Dependencies: InviDependencies {
     let webService: WebServiceType = WebService()
-    let authenticator: AuthenticatorType = Authenticator()
+    lazy var authenticator: AuthenticatorType = Authenticator(dependencies: self)
 }

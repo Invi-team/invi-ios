@@ -7,21 +7,29 @@
 
 import UIKit
 import SwiftUI
+import Combine
 
 @main
-struct InviApp: App {
+class InviApp: App {
     private let inviDependencies: InviDependencies
+    @State var state: Authenticator.State = .none
 
-    init() {
+    private var cancellable: AnyCancellable?
+
+    required init() {
         inviDependencies = Dependencies()
+        cancellable = inviDependencies.authenticator.state.sink { state in
+            self.state = state
+        }
     }
 
     var body: some Scene {
         WindowGroup {
-            if inviDependencies.authenticator.isLoggedIn {
+            switch state {
+            case .none, .loggedOut, .evaluating:
+                LoginOnboardingView(dependencies: inviDependencies)
+            case .loggedIn:
                 ContentView()
-            } else {
-                SignInView()
             }
         }
     }

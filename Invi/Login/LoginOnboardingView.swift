@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct SheetView: View {
+struct SignInView: View {
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         ZStack {
-            Color.red.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+            Color.yellow.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             Button("Press to dismiss") {
                 presentationMode.wrappedValue.dismiss()
             }
@@ -23,9 +23,13 @@ struct SheetView: View {
     }
 }
 
-struct SignInView: View {
+struct LoginOnboardingView: View {
+    typealias Dependencies = SignUpViewModel.Dependencies
 
-    @State private var showingSheet = false
+    @State private var showingSignInSheet = false
+    @State private var showingSignUpSheet = false
+
+    let dependencies: Dependencies
 
     var body: some View {
         NavigationView {
@@ -37,21 +41,26 @@ struct SignInView: View {
                     Image("invi-envelope")
                     Spacer()
                     NavigationLink(destination: ContentView()) {
-                        Button("Sign in with e-mail") {}
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: InviDesign.Layout.Button.cornerRadius)
-                                    .fill(InviDesign.Colors.Background.grey)
-                                    .frame(minWidth: 280)
-                            )
-                            .foregroundColor(.white)
+                        Button("Sign in with e-mail") {
+                            showingSignInSheet.toggle()
+                        }
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: InviDesign.Layout.Button.cornerRadius)
+                                .fill(InviDesign.Colors.Background.grey)
+                                .frame(minWidth: 280)
+                        )
+                        .foregroundColor(.white)
+                        .sheet(isPresented: $showingSignInSheet) {
+                            SignInView()
+                        }
                     }
                     Spacer()
                     signUpButton.onTapGesture {
-                        showingSheet.toggle()
+                        showingSignUpSheet.toggle()
                     }
-                    .sheet(isPresented: $showingSheet) {
-                        SheetView()
+                    .sheet(isPresented: $showingSignUpSheet) {
+                        SignUpView(viewModel: SignUpViewModel(dependencies: dependencies))
                     }
                 }
                 .padding(.bottom)
