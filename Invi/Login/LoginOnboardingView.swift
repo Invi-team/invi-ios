@@ -7,24 +7,8 @@
 
 import SwiftUI
 
-struct SignInView: View {
-    @Environment(\.presentationMode) var presentationMode
-
-    var body: some View {
-        ZStack {
-            Color.yellow.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-            Button("Press to dismiss") {
-                presentationMode.wrappedValue.dismiss()
-            }
-            .font(.title)
-            .padding()
-            .background(Color.black)
-        }
-    }
-}
-
 struct LoginOnboardingView: View {
-    typealias Dependencies = SignUpViewModel.Dependencies
+    typealias Dependencies = RegisterViewModel.Dependencies & LoginViewModel.Dependencies
 
     @State private var showingSignInSheet = false
     @State private var showingSignUpSheet = false
@@ -40,27 +24,25 @@ struct LoginOnboardingView: View {
                     Spacer()
                     Image("invi-envelope")
                     Spacer()
-                    NavigationLink(destination: ContentView()) {
-                        Button("Sign in with e-mail") {
-                            showingSignInSheet.toggle()
-                        }
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: InviDesign.Layout.Button.cornerRadius)
-                                .fill(InviDesign.Colors.Background.grey)
-                                .frame(minWidth: 280)
-                        )
-                        .foregroundColor(.white)
-                        .sheet(isPresented: $showingSignInSheet) {
-                            SignInView()
-                        }
+                    Button("Sign in with e-mail") {
+                        showingSignInSheet.toggle()
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: InviDesign.Layout.Button.cornerRadius)
+                            .fill(InviDesign.Colors.Background.grey)
+                            .frame(minWidth: 280)
+                    )
+                    .foregroundColor(.white)
+                    .sheet(isPresented: $showingSignInSheet) {
+                        LoginView(viewModel: LoginViewModel(dependencies: dependencies))
                     }
                     Spacer()
                     signUpButton.onTapGesture {
                         showingSignUpSheet.toggle()
                     }
                     .sheet(isPresented: $showingSignUpSheet) {
-                        SignUpView(viewModel: SignUpViewModel(dependencies: dependencies))
+                        RegisterView(viewModel: RegisterViewModel(dependencies: dependencies))
                     }
                 }
                 .padding(.bottom)
@@ -76,11 +58,5 @@ struct LoginOnboardingView: View {
             +
             Text(" Sign up")
             .foregroundColor(InviDesign.Colors.Brand.dark)
-    }
-}
-
-struct SignInView_Previews: PreviewProvider {
-    static var previews: some View {
-        SignInView()
     }
 }

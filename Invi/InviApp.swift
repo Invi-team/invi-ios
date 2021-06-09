@@ -10,28 +10,47 @@ import SwiftUI
 import Combine
 
 @main
-class InviApp: App {
-    private let inviDependencies: InviDependencies
-    @State var state: Authenticator.State = .none
+struct InviApp: App {
+    let inviDependencies: InviDependencies
 
-    private var cancellable: AnyCancellable?
-
-    required init() {
+    init() {
         inviDependencies = Dependencies()
-        cancellable = inviDependencies.authenticator.state.sink { state in
-            self.state = state
-        }
     }
 
     var body: some Scene {
         WindowGroup {
-            switch state {
-            case .none, .loggedOut, .evaluating:
-                LoginOnboardingView(dependencies: inviDependencies)
-            case .loggedIn:
-                ContentView()
-            }
+            RootView(dependencies: inviDependencies)
         }
+    }
+}
+
+struct RootView: View {
+    @ObservedObject var viewModel: RootViewModel
+
+    private let dependencies: InviDependencies
+
+    init(dependencies: InviDependencies) {
+        self.dependencies = dependencies
+        self.viewModel = RootViewModel(dependencies: dependencies)
+    }
+
+    var body: some View {
+        switch viewModel.state {
+        case .none, .loggedOut, .evaluating:
+            LoginOnboardingView(dependencies: dependencies)
+        case .loggedIn:
+            ContentView(viewModel: ContentViewModel(dependencies: dependencies))
+        }
+    }
+}
+
+final class RootViewModel: ObservableObject {
+    typealias Dependencies = HasAuthenticator
+
+    @Published var state: Authenticator.State = .none
+
+    init(dependencies: Dependencies) {
+        dependencies.authenticator.state.print().assign(to: &$state)
     }
 }
 

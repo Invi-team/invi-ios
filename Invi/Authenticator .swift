@@ -11,6 +11,8 @@ import Combine
 protocol AuthenticatorType {
     var state: CurrentValueSubject<Authenticator.State, Never> { get }
     func login(email: String, password: String)
+    func register(email: String, password: String) -> AnyPublisher<Void, Error>
+    func logout()
 }
 
 final class Authenticator: AuthenticatorType, ObservableObject {
@@ -27,6 +29,8 @@ final class Authenticator: AuthenticatorType, ObservableObject {
 
     private(set) var token: String? {
         didSet {
+            assert(Thread.isMainThread)
+            print("Changing token from \(String(describing: oldValue)) to \(String(describing: token))")
             guard token != oldValue else { return }
             if let token = token {
                 state.value = .loggedIn
@@ -39,6 +43,7 @@ final class Authenticator: AuthenticatorType, ObservableObject {
 
     private let dependencies: Dependencies
     private var loginCancellable: AnyCancellable?
+    private var registerCancellable: AnyCancellable?
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
@@ -49,7 +54,8 @@ final class Authenticator: AuthenticatorType, ObservableObject {
         guard state.value != .loggedIn else { fatalError() }
         state.value = .evaluating
         loginCancellable?.cancel()
-        loginCancellable = LoginWebService.login(with: email, password: password, webService: dependencies.webService)
+        loginCancellable = LoginEndpointService.login(with: email, password: password, webService: dependencies.webService)
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .failure(let error):
@@ -61,9 +67,17 @@ final class Authenticator: AuthenticatorType, ObservableObject {
                 self?.token = token
             })
     }
+
+    func logout() {
+        token = nil
+    }
+
+    func register(email: String, password: String) -> AnyPublisher<Void, Error> {
+        return RegisterEndpointService.register(with: email, password: password, webService: dependencies.webService)
+    }
 }
 
-private enum LoginWebService {
+private enum LoginEndpointService {
     static func login(with email: String, password: String, webService: WebServiceType) -> AnyPublisher<String, Error> {
         var request = URLRequest(url: URL(string: "https://backend.invi.click/api/v1/auth/login")!)
         let body = LoginRequestBody(email: email, password: password)
@@ -83,11 +97,43 @@ private enum LoginWebService {
             .eraseToAnyPublisher()
     }
 
-    struct LoginResponse: Decodable {
+    private struct LoginResponse: Decodable {
         let token: String
     }
 
-    struct LoginRequestBody: Encodable {
+    private struct LoginRequestBody: Encodable {
+        let email: String
+        let password: String
+    }
+}
+
+private enum RegisterEndpointService {
+    static func register(with email: String, password: String, webService: WebServiceType) -> AnyPublisher<Void, Error> {
+        var request = URLRequest(url: URL(string: "https://backend.invi.click/api/v1/register")!)
+        let body = RegisterRequestBody(deviceId: "iOS-test", email: email, password: password) // TODO: Device id
+        let data: Data
+        do {
+            data = try JSONEncoder().encode(body)
+        } catch {
+            return Fail(error: error).eraseToAnyPublisher()
+        }
+        request.httpBody = data
+        request.httpMethod = "POST"
+        let resource = WebResource<RegisterResponse>(request: request)
+        return webService.load(resource: resource)
+            .map { response in
+                 print("User registered with id: \(response.userId)")
+                 return ()
+            }
+            .eraseToAnyPublisher()
+    }
+
+    private struct RegisterResponse: Decodable {
+        let userId: String
+    }
+
+    private struct RegisterRequestBody: Encodable {
+        let deviceId: String
         let email: String
         let password: String
     }
