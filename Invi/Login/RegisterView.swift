@@ -99,40 +99,72 @@ struct RegisterView: View {
     @ObservedObject var viewModel: RegisterViewModel
 
     var body: some View {
-        NavigationView {
-            VStack {
+        VStack {
+            VStack(alignment: .leading) {
+                headerText
+                    .padding(.bottom, 24)
                 VStack(alignment: .leading) {
                     Text("E-mail")
+                        .foregroundColor(InviDesign.Colors.Brand.grey)
+                        .font(Font.system(size: 12))
                     TextField("", text: $viewModel.email)
                         .textContentType(.emailAddress)
                         .autocapitalization(.none)
                         .disableAutocorrection(true)
-                        .border(Color.black, width: 1)
+                    Divider()
+                        .background(InviDesign.Colors.Background.grey)
+                        .frame(height: 2)
+                        .padding(.bottom, 16)
                 }
                 VStack(alignment: .leading) {
                     Text("Password")
+                        .foregroundColor(InviDesign.Colors.Brand.grey)
+                        .font(Font.system(size: 12))
                     SecureField("", text: $viewModel.password)
-                        .border(Color.black, width: 1)
+                    Divider()
+                        .background(InviDesign.Colors.Background.grey)
+                        .frame(height: 2)
+                        .padding(.bottom, 16)
                 }
                 VStack(alignment: .leading) {
                     Text("Repeat Password")
+                        .foregroundColor(InviDesign.Colors.Brand.grey)
+                        .font(Font.system(size: 12))
                     SecureField("", text: $viewModel.repeatedPassword)
-                        .border(Color.black, width: 1)
+                    Divider()
+                        .background(InviDesign.Colors.Background.grey)
+                        .frame(height: 2)
+                        .padding(.bottom, 24)
                 }
                 Button("Sign up with e-mail") {
                     viewModel.handleRegister()
                 }
+                .buttonStyle(LoginRegisterButtonStyle())
                 Spacer()
                 
             }
             .padding()
         }
-        .navigationTitle("Sign in")
+        .navigationBarTitle("Sign up", displayMode: .inline)
+        .navigationBarItems(trailing: Button("Cancel", action: {
+            presentationMode.wrappedValue.dismiss()
+        }).foregroundColor(InviDesign.Colors.Brand.dark)
+        )
         .onReceive(viewModel.$shouldDismiss) { shouldDismiss in
             if shouldDismiss {
                 presentationMode.wrappedValue.dismiss()
             }
         }
+    }
+
+    @ViewBuilder var headerText: Text {
+        Text("Already have account? ")
+            .font(Font.system(size: 14))
+            .foregroundColor(InviDesign.Colors.Brand.grey)
+        +
+        Text("Sign in")
+            .font(Font.system(size: 14).weight(.semibold))
+            .foregroundColor(InviDesign.Colors.Brand.dark)
     }
 }
 

@@ -35,14 +35,18 @@ struct LoginOnboardingView: View {
                     )
                     .foregroundColor(.white)
                     .sheet(isPresented: $showingSignInSheet) {
-                        LoginView(viewModel: LoginViewModel(dependencies: dependencies))
+                        NavigationView {
+                            LoginView(viewModel: LoginViewModel(dependencies: dependencies))
+                        }
                     }
                     Spacer()
                     signUpButton.onTapGesture {
                         showingSignUpSheet.toggle()
                     }
                     .sheet(isPresented: $showingSignUpSheet) {
-                        RegisterView(viewModel: RegisterViewModel(dependencies: dependencies))
+                        NavigationView {
+                            RegisterView(viewModel: RegisterViewModel(dependencies: dependencies))
+                        }
                     }
                 }
                 .padding(.bottom)
