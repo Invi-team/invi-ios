@@ -13,30 +13,59 @@ class LoginViewModel: ObservableObject {
 
     @Published var email: String = ""
     @Published var password: String = ""
-    @Published var shouldDismiss: Bool = false
+    @Published var state: State = .idle
+
+    enum State: Equatable {
+        case idle
+        case evaluating
+        case error(ValidationError)
+        case loggedIn
+
+        var isEvaluating: Bool {
+            guard case .evaluating = self else { return false }
+            return true
+        }
+    }
 
     enum ValidationError: Error {
         case invalidCredentials
+        case serverFailure
     }
 
     private let dependencies: Dependencies
     private var cancellables: Set<AnyCancellable> = []
+    private var loginCancellable: AnyCancellable?
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
-
-        dependencies.authenticator.state.sink { [weak self] state in
-            if state == .loggedIn {
-                self?.shouldDismiss = true
-            }
-        }.store(in: &cancellables)
-
         email = "postman.existing@maildrop.cc"
         password = "apitest1234"
     }
 
     func handleLogin() {
-        dependencies.authenticator.login(email: email, password: password)
+        state = .evaluating
+        loginCancellable = dependencies.authenticator.login(email: email, password: password)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    switch error {
+                    case .invalidCredentials:
+                        self.state = .error(.invalidCredentials)
+                    case .other(let error):
+                        debugPrint("Login failed with error: \(error)")
+                        self.state = .error(.serverFailure)
+                    case .notLoggedOut:
+                        assertionFailure()
+                    }
+                }
+            }, receiveValue: { _ in
+                self.state = .loggedIn
+            })
+
     }
 }
 
@@ -46,62 +75,92 @@ struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
 
     var body: some View {
-        VStack {
-            VStack(alignment: .leading) {
-                headerText
-                    .padding(.bottom, 24)
+        ZStack {
+            loadingView
+            VStack {
                 VStack(alignment: .leading) {
-                    Text("E-mail")
-                        .foregroundColor(InviDesign.Colors.Brand.grey)
-                        .font(Font.system(size: 12))
-                    TextField("", text: $viewModel.email)
-                        .textContentType(.emailAddress)
-                        .autocapitalization(.none)
-                        .disableAutocorrection(true)
-                    Divider()
-                        .background(InviDesign.Colors.Background.grey)
-                        .frame(height: 2)
-                        .padding(.bottom, 16)
-                }
-                VStack(alignment: .leading) {
-                    Text("Password")
-                        .foregroundColor(InviDesign.Colors.Brand.grey)
-                        .font(Font.system(size: 12))
-                    SecureField("", text: $viewModel.password)
-                    Divider()
-                        .background(InviDesign.Colors.Background.grey)
-                        .frame(height: 2)
+                    headerText
                         .padding(.bottom, 24)
-                }
-                Button("Sign in") {
-                    viewModel.handleLogin()
-                }
-                .buttonStyle(LoginRegisterButtonStyle())
-                Spacer()
+                    VStack(alignment: .leading) {
+                        Text("E-mail")
+                            .foregroundColor(InviDesign.Colors.Brand.grey)
+                            .font(Font.system(size: 12))
+                        TextField("", text: $viewModel.email)
+                            .textContentType(.emailAddress)
+                            .autocapitalization(.none)
+                            .disableAutocorrection(true)
+                        Divider()
+                            .background(InviDesign.Colors.Background.grey)
+                            .frame(height: 2)
+                            .padding(.bottom, 16)
+                    }
+                    VStack(alignment: .leading) {
+                        Text("Password")
+                            .foregroundColor(InviDesign.Colors.Brand.grey)
+                            .font(Font.system(size: 12))
+                        SecureField("", text: $viewModel.password)
+                        Divider()
+                            .background(InviDesign.Colors.Background.grey)
+                            .frame(height: 2)
+                            .padding(.bottom, 24)
+                    }
+                    errorText
+                    Button("Sign in") {
+                        viewModel.handleLogin()
+                    }
+                    .buttonStyle(LoginRegisterButtonStyle())
+                    Spacer()
 
+                }
+                .padding()
             }
-            .padding()
         }
         .navigationBarTitle("Sign In", displayMode: .inline)
         .navigationBarItems(trailing: Button("Cancel", action: {
             presentationMode.wrappedValue.dismiss()
         }).foregroundColor(InviDesign.Colors.Brand.dark)
         )
-        .onReceive(viewModel.$shouldDismiss) { shouldDismiss in
-            if shouldDismiss {
+        .onReceive(viewModel.$state) { state in
+            if state == .loggedIn {
                 presentationMode.wrappedValue.dismiss()
             }
         }
+        .disabled(viewModel.state == .evaluating)
     }
 
-    @ViewBuilder var headerText: Text {
-        Text("Using Invi for the first time? ")
-            .font(Font.system(size: 14))
-            .foregroundColor(InviDesign.Colors.Brand.grey)
-        +
-        Text("Create Account")
+    @ViewBuilder var headerText: some View {
+        HStack {
+            Text("Using Invi for the first time? ")
+                .font(Font.system(size: 14))
+                .foregroundColor(InviDesign.Colors.Brand.grey)
+            Button("Create Account") {
+                presentationMode.wrappedValue.dismiss()
+            }
             .font(Font.system(size: 14).weight(.semibold))
             .foregroundColor(InviDesign.Colors.Brand.dark)
+        }
+    }
+
+    @ViewBuilder var errorText: some View {
+        viewModel.state.errorMessage.flatMap { text in
+            Text(text)
+                .font(.footnote)
+                .foregroundColor(.red)
+        }
+    }
+
+    @ViewBuilder var loadingView: some View {
+        if viewModel.state == .evaluating {
+            ZStack {
+                Rectangle()
+                    .foregroundColor(Color.white)
+                    .cornerRadius(8)
+                    .frame(width: 100, height: 100, alignment: .center)
+                    .shadow(color: .black.opacity(0.16), radius: 12, x: 0, y: 5)
+                ActivityIndicator(style: .large)
+            }
+            .zIndex(1)
+        }
     }
 }
 
@@ -114,6 +173,19 @@ struct LoginRegisterButtonStyle: ButtonStyle {
             .background(InviDesign.Colors.Brand.dark)
             .foregroundColor(.white)
             .cornerRadius(8)
+    }
+}
+
+private extension LoginViewModel.State {
+    var errorMessage: String? {
+        switch self {
+        case .error(.invalidCredentials):
+            return "Email or password is incorrect. Try again."
+        case .error(.serverFailure):
+            return "Something went wrong. Try again."
+        default:
+            return nil
+        }
     }
 }
 

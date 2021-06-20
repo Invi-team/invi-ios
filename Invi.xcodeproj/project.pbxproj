@@ -21,6 +21,7 @@
 		9293A4BD265703FB0056F02B /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4BC265703FB0056F02B /* WebService.swift */; };
 		92960B4126715C620021EA47 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92960B4026715C620021EA47 /* LoginView.swift */; };
 		92CB5822266D492F0021DAAA /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CB5821266D492F0021DAAA /* RegisterView.swift */; };
+		92D01775267E613D00C36495 /* ActivityIndiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D01774267E613D00C36495 /* ActivityIndiator.swift */; };
 		D3A93D432664030400A481BB /* Authenticator .swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A93D422664030400A481BB /* Authenticator .swift */; };
 		D3A93D492664040600A481BB /* LoginOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A93D482664040600A481BB /* LoginOnboardingView.swift */; };
 		D3A93D51266404B700A481BB /* InviDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A93D50266404B700A481BB /* InviDesign.swift */; };
@@ -66,6 +67,7 @@
 		9293A4BC265703FB0056F02B /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		92960B4026715C620021EA47 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		92CB5821266D492F0021DAAA /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		92D01774267E613D00C36495 /* ActivityIndiator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndiator.swift; sourceTree = "<group>"; };
 		B49D5D5066CC12372E865487 /* Pods-InviTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InviTests.release.xcconfig"; path = "Target Support Files/Pods-InviTests/Pods-InviTests.release.xcconfig"; sourceTree = "<group>"; };
 		B88AB3D3CA7B498B4CB0E481 /* Pods_Invi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Invi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3A93D422664030400A481BB /* Authenticator .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Authenticator .swift"; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				9293A4BC265703FB0056F02B /* WebService.swift */,
 				D3A93D422664030400A481BB /* Authenticator .swift */,
 				D3A93D50266404B700A481BB /* InviDesign.swift */,
+				92D01774267E613D00C36495 /* ActivityIndiator.swift */,
 			);
 			path = Invi;
 			sourceTree = "<group>";
@@ -426,6 +429,7 @@
 				D3A93D492664040600A481BB /* LoginOnboardingView.swift in Sources */,
 				9293A4BB265703BC0056F02B /* Dependencies.swift in Sources */,
 				9293A48D2656F9E00056F02B /* InviApp.swift in Sources */,
+				92D01775267E613D00C36495 /* ActivityIndiator.swift in Sources */,
 				9293A4BD265703FB0056F02B /* WebService.swift in Sources */,
 				92CB5822266D492F0021DAAA /* RegisterView.swift in Sources */,
 				9293A48F2656F9E00056F02B /* ContentView.swift in Sources */,

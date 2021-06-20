@@ -157,14 +157,17 @@ struct RegisterView: View {
         }
     }
 
-    @ViewBuilder var headerText: Text {
-        Text("Already have account? ")
-            .font(Font.system(size: 14))
-            .foregroundColor(InviDesign.Colors.Brand.grey)
-        +
-        Text("Sign in")
+    @ViewBuilder var headerText: some View {
+        HStack {
+            Text("Already have account? ")
+                .font(Font.system(size: 14))
+                .foregroundColor(InviDesign.Colors.Brand.grey)
+            Button("Sign in") {
+                presentationMode.wrappedValue.dismiss()
+            }
             .font(Font.system(size: 14).weight(.semibold))
             .foregroundColor(InviDesign.Colors.Brand.dark)
+        }
     }
 }
 

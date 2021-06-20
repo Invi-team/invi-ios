@@ -36,7 +36,7 @@ struct RootView: View {
 
     var body: some View {
         switch viewModel.state {
-        case .none, .loggedOut, .evaluating:
+        case .loggedOut:
             LoginOnboardingView(dependencies: dependencies)
         case .loggedIn:
             ContentView(viewModel: ContentViewModel(dependencies: dependencies))
@@ -47,9 +47,10 @@ struct RootView: View {
 final class RootViewModel: ObservableObject {
     typealias Dependencies = HasAuthenticator
 
-    @Published var state: Authenticator.State = .none
+    @Published var state: Authenticator.State
 
     init(dependencies: Dependencies) {
+        state = dependencies.authenticator.state.value
         dependencies.authenticator.state.print().assign(to: &$state)
     }
 }

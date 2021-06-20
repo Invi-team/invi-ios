@@ -57,7 +57,7 @@ struct LoginOnboardingView: View {
     }
 
     @ViewBuilder var signUpButton: some View {
-        Text("You don't have an account.")
+        Text("You don't have an account?")
             .foregroundColor(Color(.white))
             +
             Text(" Sign up")

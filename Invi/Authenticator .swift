@@ -10,7 +10,7 @@ import Combine
 
 protocol AuthenticatorType {
     var state: CurrentValueSubject<Authenticator.State, Never> { get }
-    func login(email: String, password: String)
+    func login(email: String, password: String) -> AnyPublisher<Void, Authenticator.LoginError>
     func register(email: String, password: String) -> AnyPublisher<Void, Error>
     func logout()
 }
@@ -19,10 +19,8 @@ final class Authenticator: AuthenticatorType, ObservableObject {
     typealias Dependencies = HasWebService
 
     enum State {
-        case none // TOOD: Avoid this state by reading from keychain
         case loggedIn
         case loggedOut
-        case evaluating
     }
 
     var state: CurrentValueSubject<Authenticator.State, Never>
@@ -32,7 +30,7 @@ final class Authenticator: AuthenticatorType, ObservableObject {
             assert(Thread.isMainThread)
             print("Changing token from \(String(describing: oldValue)) to \(String(describing: token))")
             guard token != oldValue else { return }
-            if let token = token {
+            if token != nil {
                 state.value = .loggedIn
                 // TODO: Save to keychain
             } else {
@@ -47,25 +45,34 @@ final class Authenticator: AuthenticatorType, ObservableObject {
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
-        state = CurrentValueSubject(.none)
+        state = CurrentValueSubject(.loggedOut)
     }
 
-    func login(email: String, password: String) {
-        guard state.value != .loggedIn else { fatalError() }
-        state.value = .evaluating
-        loginCancellable?.cancel()
-        loginCancellable = LoginEndpointService.login(with: email, password: password, webService: dependencies.webService)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .failure(let error):
-                    print("Login failed with: \(error)")
-                case .finished:
-                    break
+    enum LoginError: Swift.Error {
+        case invalidCredentials
+        case notLoggedOut
+        case other(Error)
+    }
+
+    func login(email: String, password: String) -> AnyPublisher<Void, LoginError> {
+        guard state.value == .loggedOut else {
+            assertionFailure("Trying to login when already logged in or evaluating.")
+            return Fail(error: LoginError.notLoggedOut).eraseToAnyPublisher()
+        }
+        return LoginEndpointService.login(with: email, password: password, webService: dependencies.webService)
+            .mapError { error in
+                if let error = error as? WebService.Error, case let .httpError(statusCode) = error, statusCode == 400 {
+                    return LoginError.invalidCredentials
+                } else {
+                    return LoginError.other(error)
                 }
-            }, receiveValue: { [weak self] token in
+            }
+            .receive(on: DispatchQueue.main)
+            .handleEvents(receiveOutput: { [weak self] token in
                 self?.token = token
             })
+            .map { _ in () }
+            .eraseToAnyPublisher()
     }
 
     func logout() {
@@ -79,7 +86,7 @@ final class Authenticator: AuthenticatorType, ObservableObject {
 
 private enum LoginEndpointService {
     static func login(with email: String, password: String, webService: WebServiceType) -> AnyPublisher<String, Error> {
-        var request = URLRequest(url: URL(string: "https://backend.invi.click/api/v1/auth/login")!)
+        var request = URLRequest(url: URL(string: "https://dev.invi.click/api/v1/auth/login")!)
         let body = LoginRequestBody(email: email, password: password)
         let data: Data
         do {
@@ -109,7 +116,7 @@ private enum LoginEndpointService {
 
 private enum RegisterEndpointService {
     static func register(with email: String, password: String, webService: WebServiceType) -> AnyPublisher<Void, Error> {
-        var request = URLRequest(url: URL(string: "https://backend.invi.click/api/v1/register")!)
+        var request = URLRequest(url: URL(string: "https://dev.invi.click/api/v1/register")!)
         let body = RegisterRequestBody(deviceId: "iOS-test", email: email, password: password) // TODO: Device id
         let data: Data
         do {
