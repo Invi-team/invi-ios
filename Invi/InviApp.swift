@@ -7,10 +7,11 @@
 
 import UIKit
 import SwiftUI
+import Combine
 
 @main
 struct InviApp: App {
-    private let inviDependencies: InviDependencies
+    let inviDependencies: InviDependencies
 
     init() {
         inviDependencies = Dependencies()
@@ -18,8 +19,39 @@ struct InviApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView(dependencies: inviDependencies)
         }
+    }
+}
+
+struct RootView: View {
+    @ObservedObject var viewModel: RootViewModel
+
+    private let dependencies: InviDependencies
+
+    init(dependencies: InviDependencies) {
+        self.dependencies = dependencies
+        self.viewModel = RootViewModel(dependencies: dependencies)
+    }
+
+    var body: some View {
+        switch viewModel.state {
+        case .loggedOut:
+            LoginOnboardingView(dependencies: dependencies)
+        case .loggedIn:
+            ContentView(viewModel: ContentViewModel(dependencies: dependencies))
+        }
+    }
+}
+
+final class RootViewModel: ObservableObject {
+    typealias Dependencies = HasAuthenticator
+
+    @Published var state: Authenticator.State
+
+    init(dependencies: Dependencies) {
+        state = dependencies.authenticator.state.value
+        dependencies.authenticator.state.print().assign(to: &$state)
     }
 }
 

@@ -19,6 +19,12 @@
 		9293A4AD2656F9E20056F02B /* InviUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4AC2656F9E20056F02B /* InviUITests.swift */; };
 		9293A4BB265703BC0056F02B /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4BA265703BC0056F02B /* Dependencies.swift */; };
 		9293A4BD265703FB0056F02B /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4BC265703FB0056F02B /* WebService.swift */; };
+		92960B4126715C620021EA47 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92960B4026715C620021EA47 /* LoginView.swift */; };
+		92CB5822266D492F0021DAAA /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CB5821266D492F0021DAAA /* RegisterView.swift */; };
+		92D01775267E613D00C36495 /* ActivityIndiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D01774267E613D00C36495 /* ActivityIndiator.swift */; };
+		D3A93D432664030400A481BB /* Authenticator .swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A93D422664030400A481BB /* Authenticator .swift */; };
+		D3A93D492664040600A481BB /* LoginOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A93D482664040600A481BB /* LoginOnboardingView.swift */; };
+		D3A93D51266404B700A481BB /* InviDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A93D50266404B700A481BB /* InviDesign.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,8 +65,14 @@
 		9293A4AE2656F9E20056F02B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9293A4BA265703BC0056F02B /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
 		9293A4BC265703FB0056F02B /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
+		92960B4026715C620021EA47 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		92CB5821266D492F0021DAAA /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		92D01774267E613D00C36495 /* ActivityIndiator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndiator.swift; sourceTree = "<group>"; };
 		B49D5D5066CC12372E865487 /* Pods-InviTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InviTests.release.xcconfig"; path = "Target Support Files/Pods-InviTests/Pods-InviTests.release.xcconfig"; sourceTree = "<group>"; };
 		B88AB3D3CA7B498B4CB0E481 /* Pods_Invi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Invi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3A93D422664030400A481BB /* Authenticator .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Authenticator .swift"; sourceTree = "<group>"; };
+		D3A93D482664040600A481BB /* LoginOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOnboardingView.swift; sourceTree = "<group>"; };
+		D3A93D50266404B700A481BB /* InviDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviDesign.swift; sourceTree = "<group>"; };
 		E3FCCA8D500CE7F6CA4661E0 /* Pods-Invi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Invi.debug.xcconfig"; path = "Target Support Files/Pods-Invi/Pods-Invi.debug.xcconfig"; sourceTree = "<group>"; };
 		FD4453220B0D55D0BE271104 /* Pods-Invi-InviUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Invi-InviUITests.release.xcconfig"; path = "Target Support Files/Pods-Invi-InviUITests/Pods-Invi-InviUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -141,6 +153,7 @@
 		9293A4892656F9E00056F02B /* Invi */ = {
 			isa = PBXGroup;
 			children = (
+				D3A93D47266403DA00A481BB /* Login */,
 				9293A48C2656F9E00056F02B /* InviApp.swift */,
 				9293A48E2656F9E00056F02B /* ContentView.swift */,
 				9293A4902656F9E20056F02B /* Assets.xcassets */,
@@ -149,6 +162,9 @@
 				9293A4922656F9E20056F02B /* Preview Content */,
 				9293A4BA265703BC0056F02B /* Dependencies.swift */,
 				9293A4BC265703FB0056F02B /* WebService.swift */,
+				D3A93D422664030400A481BB /* Authenticator .swift */,
+				D3A93D50266404B700A481BB /* InviDesign.swift */,
+				92D01774267E613D00C36495 /* ActivityIndiator.swift */,
 			);
 			path = Invi;
 			sourceTree = "<group>";
@@ -177,6 +193,16 @@
 				9293A4AE2656F9E20056F02B /* Info.plist */,
 			);
 			path = InviUITests;
+			sourceTree = "<group>";
+		};
+		D3A93D47266403DA00A481BB /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				D3A93D482664040600A481BB /* LoginOnboardingView.swift */,
+				92CB5821266D492F0021DAAA /* RegisterView.swift */,
+				92960B4026715C620021EA47 /* LoginView.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -399,10 +425,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92960B4126715C620021EA47 /* LoginView.swift in Sources */,
+				D3A93D492664040600A481BB /* LoginOnboardingView.swift in Sources */,
 				9293A4BB265703BC0056F02B /* Dependencies.swift in Sources */,
 				9293A48D2656F9E00056F02B /* InviApp.swift in Sources */,
+				92D01775267E613D00C36495 /* ActivityIndiator.swift in Sources */,
 				9293A4BD265703FB0056F02B /* WebService.swift in Sources */,
+				92CB5822266D492F0021DAAA /* RegisterView.swift in Sources */,
 				9293A48F2656F9E00056F02B /* ContentView.swift in Sources */,
+				D3A93D51266404B700A481BB /* InviDesign.swift in Sources */,
+				D3A93D432664030400A481BB /* Authenticator .swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

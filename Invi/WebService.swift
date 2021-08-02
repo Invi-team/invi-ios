@@ -33,9 +33,8 @@ final class WebService: WebServiceType {
     }
 
     private func load(request: URLRequest) -> AnyPublisher<Data, Swift.Error> {
-        let finalRequest = request.withAppKey
-        debugPrint("Loading request with url: \(finalRequest.url!.absoluteString)")
-        return session.dataTaskPublisher(for: finalRequest)
+        debugPrint("Loading request with url: \(request.url!.absoluteString)") // TODO: Remove when logger in place
+        return session.dataTaskPublisher(for: request)
             .tryMap { data, response in
                 guard let httpResponse = response as? HTTPURLResponse else {
                     throw Error.invalidResponse
@@ -51,15 +50,4 @@ final class WebService: WebServiceType {
 
 struct WebResource<T: Decodable> {
     let request: URLRequest
-}
-
-private extension URLRequest {
-    var withAppKey: URLRequest {
-        var request = self
-        guard var url = request.url else { return self }
-        url.appendPathComponent("appkey")
-        url.appendPathComponent("xYkW72uGh2")
-        request.url = url
-        return request
-    }
 }
