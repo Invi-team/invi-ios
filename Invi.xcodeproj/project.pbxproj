@@ -11,7 +11,7 @@
 		5C0D957CA0178529DA2F68E0 /* Pods_InviTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F1D23CB0E681224F7A658A1 /* Pods_InviTests.framework */; };
 		89FDC1ADB6611A83996D764F /* Pods_Invi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B88AB3D3CA7B498B4CB0E481 /* Pods_Invi.framework */; };
 		9293A48D2656F9E00056F02B /* InviApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A48C2656F9E00056F02B /* InviApp.swift */; };
-		9293A48F2656F9E00056F02B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A48E2656F9E00056F02B /* ContentView.swift */; };
+		9293A48F2656F9E00056F02B /* InvitationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A48E2656F9E00056F02B /* InvitationsView.swift */; };
 		9293A4912656F9E20056F02B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9293A4902656F9E20056F02B /* Assets.xcassets */; };
 		9293A4942656F9E20056F02B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9293A4932656F9E20056F02B /* Preview Assets.xcassets */; };
 		9293A4972656F9E20056F02B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9293A4952656F9E20056F02B /* LaunchScreen.storyboard */; };
@@ -23,6 +23,8 @@
 		92CB5822266D492F0021DAAA /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CB5821266D492F0021DAAA /* RegisterView.swift */; };
 		92D01775267E613D00C36495 /* ActivityIndiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D01774267E613D00C36495 /* ActivityIndiator.swift */; };
 		92E0BC47270A2AA30043986E /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E0BC46270A2AA30043986E /* AppConfiguration.swift */; };
+		92E0BC49270A31BF0043986E /* InvitationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E0BC48270A31BF0043986E /* InvitationsViewModel.swift */; };
+		92E0BC4C270A321D0043986E /* Invitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E0BC4B270A321D0043986E /* Invitation.swift */; };
 		D3A93D432664030400A481BB /* Authenticator .swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A93D422664030400A481BB /* Authenticator .swift */; };
 		D3A93D492664040600A481BB /* LoginOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A93D482664040600A481BB /* LoginOnboardingView.swift */; };
 		D3A93D51266404B700A481BB /* InviDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A93D50266404B700A481BB /* InviDesign.swift */; };
@@ -53,7 +55,7 @@
 		727791CD72AD8360C8E48D90 /* Pods-Invi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Invi.release.xcconfig"; path = "Target Support Files/Pods-Invi/Pods-Invi.release.xcconfig"; sourceTree = "<group>"; };
 		9293A4872656F9E00056F02B /* Invi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Invi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9293A48C2656F9E00056F02B /* InviApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviApp.swift; sourceTree = "<group>"; };
-		9293A48E2656F9E00056F02B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9293A48E2656F9E00056F02B /* InvitationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationsView.swift; sourceTree = "<group>"; };
 		9293A4902656F9E20056F02B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9293A4932656F9E20056F02B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9293A4962656F9E20056F02B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -70,6 +72,8 @@
 		92CB5821266D492F0021DAAA /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		92D01774267E613D00C36495 /* ActivityIndiator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndiator.swift; sourceTree = "<group>"; };
 		92E0BC46270A2AA30043986E /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
+		92E0BC48270A31BF0043986E /* InvitationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationsViewModel.swift; sourceTree = "<group>"; };
+		92E0BC4B270A321D0043986E /* Invitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invitation.swift; sourceTree = "<group>"; };
 		B49D5D5066CC12372E865487 /* Pods-InviTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InviTests.release.xcconfig"; path = "Target Support Files/Pods-InviTests/Pods-InviTests.release.xcconfig"; sourceTree = "<group>"; };
 		B88AB3D3CA7B498B4CB0E481 /* Pods_Invi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Invi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3A93D422664030400A481BB /* Authenticator .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Authenticator .swift"; sourceTree = "<group>"; };
@@ -157,7 +161,7 @@
 			children = (
 				D3A93D47266403DA00A481BB /* Login */,
 				9293A48C2656F9E00056F02B /* InviApp.swift */,
-				9293A48E2656F9E00056F02B /* ContentView.swift */,
+				92E0BC4A270A31DD0043986E /* Invitations */,
 				9293A4902656F9E20056F02B /* Assets.xcassets */,
 				9293A4952656F9E20056F02B /* LaunchScreen.storyboard */,
 				9293A4982656F9E20056F02B /* Info.plist */,
@@ -168,6 +172,7 @@
 				D3A93D422664030400A481BB /* Authenticator .swift */,
 				D3A93D50266404B700A481BB /* InviDesign.swift */,
 				92D01774267E613D00C36495 /* ActivityIndiator.swift */,
+				92E0BC4D270A32220043986E /* Model */,
 			);
 			path = Invi;
 			sourceTree = "<group>";
@@ -196,6 +201,23 @@
 				9293A4AE2656F9E20056F02B /* Info.plist */,
 			);
 			path = InviUITests;
+			sourceTree = "<group>";
+		};
+		92E0BC4A270A31DD0043986E /* Invitations */ = {
+			isa = PBXGroup;
+			children = (
+				92E0BC48270A31BF0043986E /* InvitationsViewModel.swift */,
+				9293A48E2656F9E00056F02B /* InvitationsView.swift */,
+			);
+			path = Invitations;
+			sourceTree = "<group>";
+		};
+		92E0BC4D270A32220043986E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				92E0BC4B270A321D0043986E /* Invitation.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		D3A93D47266403DA00A481BB /* Login */ = {
@@ -429,6 +451,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				92960B4126715C620021EA47 /* LoginView.swift in Sources */,
+				92E0BC49270A31BF0043986E /* InvitationsViewModel.swift in Sources */,
+				92E0BC4C270A321D0043986E /* Invitation.swift in Sources */,
 				D3A93D492664040600A481BB /* LoginOnboardingView.swift in Sources */,
 				9293A4BB265703BC0056F02B /* Dependencies.swift in Sources */,
 				9293A48D2656F9E00056F02B /* InviApp.swift in Sources */,
@@ -436,7 +460,7 @@
 				92E0BC47270A2AA30043986E /* AppConfiguration.swift in Sources */,
 				9293A4BD265703FB0056F02B /* WebService.swift in Sources */,
 				92CB5822266D492F0021DAAA /* RegisterView.swift in Sources */,
-				9293A48F2656F9E00056F02B /* ContentView.swift in Sources */,
+				9293A48F2656F9E00056F02B /* InvitationsView.swift in Sources */,
 				D3A93D51266404B700A481BB /* InviDesign.swift in Sources */,
 				D3A93D432664030400A481BB /* Authenticator .swift in Sources */,
 			);

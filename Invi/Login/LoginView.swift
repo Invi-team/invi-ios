@@ -38,8 +38,8 @@ class LoginViewModel: ObservableObject {
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
-        email = "postman.existing@maildrop.cc"
-        password = "apitest1234"
+        email = "guest218@invi.click"
+        password = "123456"
     }
 
     func handleLogin() {

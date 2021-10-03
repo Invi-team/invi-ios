@@ -39,7 +39,7 @@ struct RootView: View {
         case .loggedOut:
             LoginOnboardingView(dependencies: dependencies)
         case .loggedIn:
-            ContentView(viewModel: ContentViewModel(dependencies: dependencies))
+            InvitationsView(viewModel: InvitationsViewModel(dependencies: dependencies))
         }
     }
 }

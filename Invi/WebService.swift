@@ -29,6 +29,12 @@ final class WebService: WebServiceType {
     func load<T: Decodable>(resource: WebResource<T>) -> AnyPublisher<T, Swift.Error> {
         return load(request: resource.request)
             .decode(type: T.self, decoder: JSONDecoder())
+            .handleEvents(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error): debugPrint(error)
+                case .finished: break
+                }
+            })
             .eraseToAnyPublisher()
     }
 
