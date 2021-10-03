@@ -51,7 +51,9 @@ final class RootViewModel: ObservableObject {
 
     init(dependencies: Dependencies) {
         state = dependencies.authenticator.state.value
-        dependencies.authenticator.state.print().assign(to: &$state)
+        dependencies.authenticator.state.print()
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$state)
     }
 }
 

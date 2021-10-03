@@ -33,6 +33,7 @@ final class Authenticator: AuthenticatorType, ObservableObject {
             if token != nil {
                 state.value = .loggedIn
                 // TODO: Save to keychain
+                UserDefaults.standard.set(token, forKey: "token")
             } else {
                 state.value = .loggedOut
             }
@@ -45,7 +46,12 @@ final class Authenticator: AuthenticatorType, ObservableObject {
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
-        state = CurrentValueSubject(.loggedOut)
+        if let storedToken = UserDefaults.standard.string(forKey: "token") {
+            token = storedToken
+            state = CurrentValueSubject(.loggedIn)
+        } else {
+            state = CurrentValueSubject(.loggedOut)
+        }
     }
 
     enum LoginError: Swift.Error {
