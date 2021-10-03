@@ -16,7 +16,7 @@ protocol AuthenticatorType {
 }
 
 final class Authenticator: AuthenticatorType, ObservableObject {
-    typealias Dependencies = HasWebService
+    typealias Dependencies = HasWebService & HasAppConfiguration
 
     enum State {
         case loggedIn
@@ -59,7 +59,7 @@ final class Authenticator: AuthenticatorType, ObservableObject {
             assertionFailure("Trying to login when already logged in or evaluating.")
             return Fail(error: LoginError.notLoggedOut).eraseToAnyPublisher()
         }
-        return LoginEndpointService.login(with: email, password: password, webService: dependencies.webService)
+        return LoginEndpointService.login(with: email, password: password, dependencies: dependencies)
             .mapError { error in
                 if let error = error as? WebService.Error, case let .httpError(statusCode) = error, statusCode == 400 {
                     return LoginError.invalidCredentials
@@ -80,13 +80,13 @@ final class Authenticator: AuthenticatorType, ObservableObject {
     }
 
     func register(email: String, password: String) -> AnyPublisher<Void, Error> {
-        return RegisterEndpointService.register(with: email, password: password, webService: dependencies.webService)
+        return RegisterEndpointService.register(with: email, password: password, dependencies: dependencies)
     }
 }
 
 private enum LoginEndpointService {
-    static func login(with email: String, password: String, webService: WebServiceType) -> AnyPublisher<String, Error> {
-        var request = URLRequest(url: URL(string: "https://dev.invi.click/api/v1/auth/login")!)
+    static func login(with email: String, password: String, dependencies: HasWebService & HasAppConfiguration) -> AnyPublisher<String, Error> {
+        var request = URLRequest(url: dependencies.configuration.apiEnviroment.baseURL.appendingPathComponent("auth/login"))
         let body = LoginRequestBody(email: email, password: password)
         let data: Data
         do {
@@ -97,7 +97,7 @@ private enum LoginEndpointService {
         request.httpBody = data
         request.httpMethod = "POST"
         let resource = WebResource<LoginResponse>(request: request)
-        return webService.load(resource: resource)
+        return dependencies.webService.load(resource: resource)
             .map { response in
                 return response.token
             }
@@ -115,8 +115,8 @@ private enum LoginEndpointService {
 }
 
 private enum RegisterEndpointService {
-    static func register(with email: String, password: String, webService: WebServiceType) -> AnyPublisher<Void, Error> {
-        var request = URLRequest(url: URL(string: "https://dev.invi.click/api/v1/register")!)
+    static func register(with email: String, password: String, dependencies: HasWebService & HasAppConfiguration) -> AnyPublisher<Void, Error> {
+        var request = URLRequest(url: dependencies.configuration.apiEnviroment.baseURL.appendingPathComponent("register"))
         let body = RegisterRequestBody(deviceId: "iOS-test", email: email, password: password) // TODO: Device id
         let data: Data
         do {
@@ -127,7 +127,7 @@ private enum RegisterEndpointService {
         request.httpBody = data
         request.httpMethod = "POST"
         let resource = WebResource<RegisterResponse>(request: request)
-        return webService.load(resource: resource)
+        return dependencies.webService.load(resource: resource)
             .map { response in
                  print("User registered with id: \(response.userId)")
                  return ()
