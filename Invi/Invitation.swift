@@ -7,18 +7,34 @@
 
 import Foundation
 
-struct Invitation: Decodable, Identifiable {
+struct Invitation: Identifiable {
     let id: String
     let invitationCode: String
     let eventId: String
     let description: Int?
     let eventDate: Date?
     let responseDateDeadline: Date?
-    let receivedAt: Date
+    let receivedAt: Date?
     let photoId: Int?
     let locations: [Location]
     let organisers: [Organiser]
     let guests: [Guest]
+}
+
+extension Invitation: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case id = "invitationId"
+        case invitationCode
+        case eventId
+        case description
+        case eventDate
+        case responseDateDeadline
+        case receivedAt
+        case photoId
+        case locations
+        case organisers
+        case guests
+    }
 }
 
 struct Location {
@@ -31,6 +47,16 @@ struct Location {
     let longitude: String
     let latitude: String
     let type: LocationType
+}
+
+extension Location: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case name
+        case address = "addr"
+        case longitude
+        case latitude
+        case type
+    }
 }
 
 struct Organiser: Decodable {
@@ -79,16 +105,6 @@ extension Guest: Decodable {
         case name
         case surname
         case status
-        case type
-    }
-}
-
-extension Location: Decodable {
-    enum CodingKeys: String, CodingKey {
-        case name
-        case address = "addr"
-        case longitude
-        case latitude
         case type
     }
 }

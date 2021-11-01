@@ -22,7 +22,7 @@ protocol HasAppConfiguration {
 }
 
 final class Dependencies: InviDependencies {
-    let webService: WebServiceType = WebService()
+    lazy var webService: WebServiceType = WebService(dependencies: self)
     lazy var authenticator: AuthenticatorType = Authenticator(dependencies: self)
     let configuration = AppConfiguration()
 }

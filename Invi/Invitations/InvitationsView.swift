@@ -12,23 +12,32 @@ struct InvitationsView: View {
     @ObservedObject var viewModel: InvitationsViewModel
 
     var body: some View {
-        VStack {
-            switch viewModel.state {
-            case .initial:
-                EmptyView()
-            case .loading:
-                ActivityIndicator(style: .large)
-            case .loaded(let invitations):
-                List {
-                    ForEach(invitations) { invitation in
-                        Text("Invitation: \(invitation.id)")
+        NavigationView {
+            VStack {
+                switch viewModel.state {
+                case .initial:
+                    EmptyView()
+                case .loading:
+                    ActivityIndicator(style: .large)
+                case .loaded(let invitations):
+                    List {
+                        ForEach(invitations) { invitation in
+                            Text("Invitation: \(invitation.id)")
+                        }
                     }
+                case .error:
+                    Text("Error occured")
+                    Button("Retry", action: { viewModel.load() })
                 }
-            case .error:
-                Text("Error occured")
-                Button("Retry", action: { viewModel.load() })
             }
-        }.onAppear(perform: viewModel.load)
+            .navigationTitle("Invitation")
+            .toolbar {
+                if viewModel.isLoggedIn {
+                    Button("Logout") { viewModel.logout() }
+                }
+            }
+            .onAppear(perform: viewModel.load)
+        }
     }
 }
 

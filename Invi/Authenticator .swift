@@ -10,6 +10,7 @@ import Combine
 
 protocol AuthenticatorType {
     var state: CurrentValueSubject<Authenticator.State, Never> { get }
+    var token: String? { get }
     func login(email: String, password: String) -> AnyPublisher<Void, Authenticator.LoginError>
     func register(email: String, password: String) -> AnyPublisher<Void, Error>
     func logout()
@@ -36,6 +37,7 @@ final class Authenticator: AuthenticatorType, ObservableObject {
                 UserDefaults.standard.set(token, forKey: "token")
             } else {
                 state.value = .loggedOut
+                UserDefaults.standard.removeObject(forKey: "token")
             }
         }
     }
@@ -149,5 +151,11 @@ private enum RegisterEndpointService {
         let deviceId: String
         let email: String
         let password: String
+    }
+}
+
+extension Authenticator.State {
+    var isLoggedIn: Bool {
+        return self == .loggedIn
     }
 }

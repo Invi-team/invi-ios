@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 final class InvitationsViewModel: ObservableObject {
-    typealias Dependencies = HasWebService & HasAppConfiguration
+    typealias Dependencies = HasWebService & HasAppConfiguration & HasAuthenticator
 
     enum State {
         case initial
@@ -19,17 +19,27 @@ final class InvitationsViewModel: ObservableObject {
     }
 
     @Published var state: State = .initial
+    @Published var isLoggedIn: Bool
 
     private let dependencies: Dependencies
-    private var cancellable: AnyCancellable?
+    private var cancellables: Set<AnyCancellable> = []
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
+        isLoggedIn = dependencies.authenticator.state.value.isLoggedIn
+        dependencies.authenticator.state.removeDuplicates().sink { [weak self] state in
+            self?.isLoggedIn = state.isLoggedIn
+        }
+        .store(in: &cancellables)
+    }
+
+    deinit {
+        print("DEINIT")
     }
 
     func load() {
         state = .loading
-        cancellable = InvitationsEndpointService.invitations(dependencies: dependencies)
+        InvitationsEndpointService.invitations(dependencies: dependencies)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
             switch completion {
@@ -41,12 +51,17 @@ final class InvitationsViewModel: ObservableObject {
         }, receiveValue: { [weak self] invitations in
             self?.state = .loaded(invitations)
         })
+        .store(in: &cancellables)
+    }
+
+    func logout() {
+        dependencies.authenticator.logout()
     }
 }
 
 private enum InvitationsEndpointService {
     static func invitations(dependencies: HasWebService & HasAppConfiguration) -> AnyPublisher<[Invitation], Error> {
-        let resource: WebResource<[Invitation]> = WebResource(request: URLRequest(url: dependencies.configuration.apiEnviroment.baseURL.appendingPathComponent("invitations")))
+        let resource: WebResource<[Invitation]> = WebResource(request: URLRequest(url: dependencies.configuration.apiEnviroment.baseURL.appendingPathComponent("invitations")), authenticated: true)
         return dependencies.webService.load(resource: resource)
     }
 }
