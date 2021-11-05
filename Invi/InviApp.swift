@@ -50,14 +50,18 @@ final class RootViewModel: ObservableObject {
         case open
     }
 
-    @Published var state: RootState
+    private(set) var state: RootState {
+        willSet {
+            guard state != newValue else { return }
+            objectWillChange.send()
+        }
+    }
 
     private var observation: AnyCancellable?
 
     init(dependencies: InviDependencies) {
         state = Self.state(for: dependencies.authenticator.state.value, dependencies: dependencies)
         observation = dependencies.authenticator.state
-            .dropFirst()
             .removeDuplicates()
             .print()
             .receive(on: DispatchQueue.main)

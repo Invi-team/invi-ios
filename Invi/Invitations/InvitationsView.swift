@@ -9,7 +9,7 @@ import Combine
 import SwiftUI
 
 struct InvitationsView: View {
-    @ObservedObject var viewModel: InvitationsViewModel
+    @StateObject var viewModel: InvitationsViewModel
 
     var body: some View {
         NavigationView {
