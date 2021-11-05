@@ -36,24 +36,43 @@ struct RootView: View {
 
     var body: some View {
         switch viewModel.state {
-        case .loggedOut:
+        case .loginWall:
             LoginOnboardingView(dependencies: dependencies)
-        case .loggedIn:
-            InvitationsView(viewModel: InvitationsViewModel(dependencies: dependencies))
+        case .open(let viewModel):
+            InvitationsView(viewModel: viewModel)
         }
     }
 }
 
 final class RootViewModel: ObservableObject {
-    typealias Dependencies = HasAuthenticator
+    enum RootState {
+        case loginWall
+        case open(InvitationsViewModel)
+    }
 
-    @Published var state: Authenticator.State
+    @Published var state: RootState
 
-    init(dependencies: Dependencies) {
-        state = dependencies.authenticator.state.value
-        dependencies.authenticator.state.print()
+    private var observation: AnyCancellable?
+
+    init(dependencies: InviDependencies) {
+        state = Self.state(for: dependencies.authenticator.state.value, dependencies: dependencies)
+        observation = dependencies.authenticator.state
+            .dropFirst()
+            .removeDuplicates()
+            .print()
             .receive(on: DispatchQueue.main)
-            .assign(to: &$state)
+            .sink { [weak self] state in
+                self?.state = Self.state(for: state, dependencies: dependencies)
+            }
+    }
+
+    private static func state(for authenticatorState: Authenticator.State, dependencies: InvitationsViewModel.Dependencies) -> RootState {
+        switch authenticatorState {
+        case .loggedOut:
+            return .loginWall
+        case .loggedIn:
+            return .open(InvitationsViewModel(dependencies: dependencies))
+        }
     }
 }
 

@@ -32,9 +32,7 @@ struct InvitationsView: View {
             }
             .navigationTitle("Invitation")
             .toolbar {
-                if viewModel.isLoggedIn {
-                    Button("Logout") { viewModel.logout() }
-                }
+                Button("Logout") { viewModel.logout() }
             }
             .onAppear(perform: viewModel.load)
         }

@@ -19,18 +19,13 @@ final class InvitationsViewModel: ObservableObject {
     }
 
     @Published var state: State = .initial
-    @Published var isLoggedIn: Bool
 
     private let dependencies: Dependencies
     private var cancellables: Set<AnyCancellable> = []
 
     init(dependencies: Dependencies) {
+        print("INIT")
         self.dependencies = dependencies
-        isLoggedIn = dependencies.authenticator.state.value.isLoggedIn
-        dependencies.authenticator.state.removeDuplicates().sink { [weak self] state in
-            self?.isLoggedIn = state.isLoggedIn
-        }
-        .store(in: &cancellables)
     }
 
     deinit {
