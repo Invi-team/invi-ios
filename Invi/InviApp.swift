@@ -38,8 +38,8 @@ struct RootView: View {
         switch viewModel.state {
         case .loginWall:
             LoginOnboardingView(dependencies: dependencies)
-        case .open(let viewModel):
-            InvitationsView(viewModel: viewModel)
+        case .open:
+            InvitationsView(viewModel: InvitationsViewModel(dependencies: dependencies))
         }
     }
 }
@@ -47,7 +47,7 @@ struct RootView: View {
 final class RootViewModel: ObservableObject {
     enum RootState {
         case loginWall
-        case open(InvitationsViewModel)
+        case open
     }
 
     @Published var state: RootState
@@ -71,7 +71,7 @@ final class RootViewModel: ObservableObject {
         case .loggedOut:
             return .loginWall
         case .loggedIn:
-            return .open(InvitationsViewModel(dependencies: dependencies))
+            return .open
         }
     }
 }
