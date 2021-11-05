@@ -35,6 +35,21 @@ extension Invitation: Decodable {
         case organisers
         case guests
     }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        invitationCode = try container.decode(String.self, forKey: .invitationCode)
+        eventId = try container.decode(String.self, forKey: .eventId)
+        description = try container.decodeIfPresent(Int.self, forKey: .description)
+        eventDate = try container.decodeIfPresent(Date.self, forKey: .eventDate)
+        responseDateDeadline = try container.decodeIfPresent(Date.self, forKey: .responseDateDeadline)
+        receivedAt = try? container.decode(Date.self, forKey: .receivedAt) // ignoring errors, manual decoding needed b/c server returns incorrect format for this date
+        photoId = try container.decodeIfPresent(Int.self, forKey: .photoId)
+        locations = try container.decode([Location].self, forKey: .locations)
+        organisers = try container.decode([Organiser].self, forKey: .organisers)
+        guests = try container.decode([Guest].self, forKey: .guests)
+    }
 }
 
 struct Location {

@@ -84,6 +84,7 @@ final class Authenticator: AuthenticatorType, ObservableObject {
     }
 
     func logout() {
+        assert(state.value.isLoggedIn)
         token = nil
     }
 
