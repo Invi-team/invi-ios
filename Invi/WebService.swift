@@ -13,10 +13,14 @@ protocol WebServiceType {
 }
 
 final class WebService: WebServiceType {
-    private let session: URLSession
+    typealias Dependencies = HasAuthenticator
 
-    init(session: URLSession = URLSession.shared) {
+    private let session: URLSession
+    private let dependencies: Dependencies
+
+    init(session: URLSession = URLSession.shared, dependencies: Dependencies) {
         self.session = session
+        self.dependencies = dependencies
     }
 
     enum Error: Swift.Error {
@@ -27,13 +31,25 @@ final class WebService: WebServiceType {
     }
 
     func load<T: Decodable>(resource: WebResource<T>) -> AnyPublisher<T, Swift.Error> {
-        return load(request: resource.request)
-            .decode(type: T.self, decoder: JSONDecoder())
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return load(request: resource.request, authenticated: resource.authenticated)
+            .decode(type: T.self, decoder: decoder)
+            .handleEvents(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error): debugPrint(error)
+                case .finished: break
+                }
+            })
             .eraseToAnyPublisher()
     }
 
-    private func load(request: URLRequest) -> AnyPublisher<Data, Swift.Error> {
+    private func load(request: URLRequest, authenticated: Bool) -> AnyPublisher<Data, Swift.Error> {
         debugPrint("Loading request with url: \(request.url!.absoluteString)") // TODO: Remove when logger in place
+        var request = request
+        if authenticated, let token = dependencies.authenticator.token {
+            request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
         return session.dataTaskPublisher(for: request)
             .tryMap { data, response in
                 guard let httpResponse = response as? HTTPURLResponse else {
@@ -50,4 +66,10 @@ final class WebService: WebServiceType {
 
 struct WebResource<T: Decodable> {
     let request: URLRequest
+    let authenticated: Bool
+
+    init(request: URLRequest, authenticated: Bool = false) {
+        self.request = request
+        self.authenticated = authenticated
+    }
 }
