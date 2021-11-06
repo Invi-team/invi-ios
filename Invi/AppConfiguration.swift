@@ -15,9 +15,7 @@ enum ApiEnvironment: String {
     case stage
     case prod
 
-    static let basePath = "https://{env}.invi.click/api/v1/"
-
     var baseURL: URL {
-        return URL(string: Self.basePath.replacingOccurrences(of: "{env}", with: rawValue))!
+        return URL(string: "https://\(rawValue).invi.click/api/v1/")!
     }
 }

@@ -56,7 +56,8 @@ final class InvitationsViewModel: ObservableObject {
 
 private enum InvitationsEndpointService {
     static func invitations(dependencies: HasWebService & HasAppConfiguration) -> AnyPublisher<[Invitation], Error> {
-        let resource: WebResource<[Invitation]> = WebResource(request: URLRequest(url: dependencies.configuration.apiEnviroment.baseURL.appendingPathComponent("invitations")), authenticated: true)
+        let request = URLRequest(url: dependencies.configuration.apiEnviroment.baseURL.appendingPathComponent("invitations"))
+        let resource: WebResource<[Invitation]> = WebResource(request: request, authenticated: true)
         return dependencies.webService.load(resource: resource)
     }
 }
