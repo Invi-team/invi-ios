@@ -37,7 +37,12 @@ class LoginWallViewModel: ObservableObject {
                 self?.registerTapped()
             }
         case .register(let registerViewModel):
-            break // TODO: Bind registering
+            registerViewModel.onDismiss = { [weak self] in
+                self?.cancelLoginTapped()
+            }
+            registerViewModel.onLogin = { [weak self] in
+                self?.loginTapped()
+            }
         }
     }
 
