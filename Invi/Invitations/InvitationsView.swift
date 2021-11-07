@@ -12,6 +12,11 @@ import CasePaths
 struct InvitationsView: View {
     @StateObject var viewModel: InvitationsViewModel
 
+    init(viewModel: InvitationsViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+        viewModel.load()
+    }
+
     var body: some View {
         NavigationView {
             VStack {
@@ -35,7 +40,6 @@ struct InvitationsView: View {
             .toolbar {
                 Button("Logout") { viewModel.logout() }
             }
-            .onAppear(perform: viewModel.load)
         }
     }
 }
