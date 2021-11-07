@@ -7,14 +7,24 @@
 
 import SwiftUI
 import Combine
+import CasePaths
 
-class RegisterViewModel: ObservableObject {
+class RegisterViewModel: Identifiable, ObservableObject {
     typealias Dependencies = HasAuthenticator
 
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var repeatedPassword: String = ""
-    @Published var shouldDismiss: Bool = false
+    @Published var isLoading: Bool = false
+
+    @Published var route: Route?
+
+    enum Route {
+        case registerSuccessful(RegisterSuccessfulViewModel)
+    }
+
+    var onLogin: () -> Void = { assertionFailure("Needs to be set") }
+    var onDismiss: () -> Void = { assertionFailure("Needs to be set") }
 
     var emailValidationResult: Result<Void, ValidationError> = .failure(.empty)
     var passwordValidationResult: Result<Void, ValidationError> = .failure(.empty)
@@ -63,43 +73,57 @@ class RegisterViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
-
-        dependencies.authenticator.state.sink { [weak self] state in
-            if state == .loggedIn {
-                self?.shouldDismiss = true
-            }
-        }.store(in: &cancellables)
     }
 
     func handleRegister() {
         switch (emailValidationResult, passwordValidationResult) {
         case (.success, .success):
             print("Email: \(email), password: \(password)")
+            isLoading = true
             registerCancellable = dependencies.authenticator.register(email: email, password: password)
                 .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { completion in
+                .sink(receiveCompletion: { [weak self] completion in
                     switch completion {
                     case .failure(let error):
                         print("Registration failed with error: \(error)")
+                        self?.isLoading = false
                     case .finished:
                         break
                     }
                 }, receiveValue: { [weak self] _ in
-                    self?.shouldDismiss = true
+                    self?.isLoading = false
+                    self?.setSuccessfulNavigation(isActive: true)
                 })
         default:
             print("Invalid format of email or passowrd")
         }
     }
+
+    func setSuccessfulNavigation(isActive: Bool) {
+        guard isActive else { return } // We don't allow going back b/c of the nature of the screen
+        let viewModel = RegisterSuccessfulViewModel()
+        viewModel.onConfirm = { [weak self] in
+            self?.onLogin()
+        }
+        viewModel.onDismiss = { [weak self] in
+            self?.onDismiss()
+        }
+        route = .registerSuccessful(viewModel)
+    }
 }
 
 struct RegisterView: View {
-    @Environment(\.presentationMode) var presentationMode
-
     @ObservedObject var viewModel: RegisterViewModel
 
     var body: some View {
         VStack {
+            NavigationLink(
+                unwrap: $viewModel.route,
+                case: /RegisterViewModel.Route.registerSuccessful,
+                onNavigate: viewModel.setSuccessfulNavigation(isActive:),
+                destination: { viewModel in RegisterSuccessfulView(viewModel: viewModel.wrappedValue) },
+                label: { EmptyView() }
+            )
             VStack(alignment: .leading) {
                 headerText
                     .padding(.bottom, 24)
@@ -139,22 +163,21 @@ struct RegisterView: View {
                 Button("Sign up with e-mail") {
                     viewModel.handleRegister()
                 }
-                .buttonStyle(LoginRegisterButtonStyle())
+                .buttonStyle(LoginRegisterButtonStyle(isLoading: viewModel.isLoading))
                 Spacer()
                 
             }
             .padding()
         }
-        .navigationBarTitle("Sign up", displayMode: .inline)
-        .navigationBarItems(trailing: Button("Cancel", action: {
-            presentationMode.wrappedValue.dismiss()
-        }).foregroundColor(InviDesign.Colors.Brand.dark)
-        )
-        .onReceive(viewModel.$shouldDismiss) { shouldDismiss in
-            if shouldDismiss {
-                presentationMode.wrappedValue.dismiss()
+        .navigationTitle("Sign up")
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button("Cancel") { viewModel.onDismiss() }
+                    .foregroundColor(InviDesign.Colors.Brand.dark)
+                    .disabled(viewModel.isLoading)
             }
         }
+        .interactiveDismissDisabled(viewModel.isLoading)
     }
 
     @ViewBuilder var headerText: some View {
@@ -163,7 +186,7 @@ struct RegisterView: View {
                 .font(Font.system(size: 14))
                 .foregroundColor(InviDesign.Colors.Brand.grey)
             Button("Sign in") {
-                presentationMode.wrappedValue.dismiss()
+                viewModel.onLogin()
             }
             .font(Font.system(size: 14).weight(.semibold))
             .foregroundColor(InviDesign.Colors.Brand.dark)

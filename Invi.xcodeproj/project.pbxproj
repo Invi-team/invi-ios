@@ -3,13 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		42F2E5B65D52C6B403A87C97 /* Pods_Invi_InviUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 267959D0E72E09B03213F389 /* Pods_Invi_InviUITests.framework */; };
 		5C0D957CA0178529DA2F68E0 /* Pods_InviTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F1D23CB0E681224F7A658A1 /* Pods_InviTests.framework */; };
 		89FDC1ADB6611A83996D764F /* Pods_Invi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B88AB3D3CA7B498B4CB0E481 /* Pods_Invi.framework */; };
+		929049E92736FFD700276C41 /* NavigationHelpers.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929049E82736FFD700276C41 /* NavigationHelpers.swift.swift */; };
+		929049EC2737008F00276C41 /* CasePaths in Frameworks */ = {isa = PBXBuildFile; productRef = 929049EB2737008F00276C41 /* CasePaths */; };
+		929049EE2737E3DF00276C41 /* RegisterSuccessfulView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929049ED2737E3DE00276C41 /* RegisterSuccessfulView.swift */; };
 		9293A48D2656F9E00056F02B /* InviApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A48C2656F9E00056F02B /* InviApp.swift */; };
 		9293A48F2656F9E00056F02B /* InvitationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A48E2656F9E00056F02B /* InvitationsView.swift */; };
 		9293A4912656F9E20056F02B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9293A4902656F9E20056F02B /* Assets.xcassets */; };
@@ -26,7 +29,7 @@
 		92E0BC49270A31BF0043986E /* InvitationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E0BC48270A31BF0043986E /* InvitationsViewModel.swift */; };
 		92E0BC4C270A321D0043986E /* Invitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E0BC4B270A321D0043986E /* Invitation.swift */; };
 		D3A93D432664030400A481BB /* Authenticator .swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A93D422664030400A481BB /* Authenticator .swift */; };
-		D3A93D492664040600A481BB /* LoginOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A93D482664040600A481BB /* LoginOnboardingView.swift */; };
+		D3A93D492664040600A481BB /* LoginWallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A93D482664040600A481BB /* LoginWallView.swift */; };
 		D3A93D51266404B700A481BB /* InviDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A93D50266404B700A481BB /* InviDesign.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +56,8 @@
 		267959D0E72E09B03213F389 /* Pods_Invi_InviUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Invi_InviUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F36D0B9698DD475121F6A19 /* Pods-InviTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InviTests.debug.xcconfig"; path = "Target Support Files/Pods-InviTests/Pods-InviTests.debug.xcconfig"; sourceTree = "<group>"; };
 		727791CD72AD8360C8E48D90 /* Pods-Invi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Invi.release.xcconfig"; path = "Target Support Files/Pods-Invi/Pods-Invi.release.xcconfig"; sourceTree = "<group>"; };
+		929049E82736FFD700276C41 /* NavigationHelpers.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationHelpers.swift.swift; sourceTree = "<group>"; };
+		929049ED2737E3DE00276C41 /* RegisterSuccessfulView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessfulView.swift; sourceTree = "<group>"; };
 		9293A4872656F9E00056F02B /* Invi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Invi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9293A48C2656F9E00056F02B /* InviApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviApp.swift; sourceTree = "<group>"; };
 		9293A48E2656F9E00056F02B /* InvitationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationsView.swift; sourceTree = "<group>"; };
@@ -77,7 +82,7 @@
 		B49D5D5066CC12372E865487 /* Pods-InviTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InviTests.release.xcconfig"; path = "Target Support Files/Pods-InviTests/Pods-InviTests.release.xcconfig"; sourceTree = "<group>"; };
 		B88AB3D3CA7B498B4CB0E481 /* Pods_Invi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Invi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3A93D422664030400A481BB /* Authenticator .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Authenticator .swift"; sourceTree = "<group>"; };
-		D3A93D482664040600A481BB /* LoginOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOnboardingView.swift; sourceTree = "<group>"; };
+		D3A93D482664040600A481BB /* LoginWallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWallView.swift; sourceTree = "<group>"; };
 		D3A93D50266404B700A481BB /* InviDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviDesign.swift; sourceTree = "<group>"; };
 		E3FCCA8D500CE7F6CA4661E0 /* Pods-Invi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Invi.debug.xcconfig"; path = "Target Support Files/Pods-Invi/Pods-Invi.debug.xcconfig"; sourceTree = "<group>"; };
 		FD4453220B0D55D0BE271104 /* Pods-Invi-InviUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Invi-InviUITests.release.xcconfig"; path = "Target Support Files/Pods-Invi-InviUITests/Pods-Invi-InviUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -89,6 +94,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				89FDC1ADB6611A83996D764F /* Pods_Invi.framework in Frameworks */,
+				929049EC2737008F00276C41 /* CasePaths in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,6 +140,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		929049E72736FFC000276C41 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				929049E82736FFD700276C41 /* NavigationHelpers.swift.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		9293A47E2656F9E00056F02B = {
 			isa = PBXGroup;
 			children = (
@@ -159,7 +173,7 @@
 		9293A4892656F9E00056F02B /* Invi */ = {
 			isa = PBXGroup;
 			children = (
-				D3A93D47266403DA00A481BB /* Login */,
+				D3A93D47266403DA00A481BB /* Login Wall Flow */,
 				9293A48C2656F9E00056F02B /* InviApp.swift */,
 				92E0BC4A270A31DD0043986E /* Invitations */,
 				9293A4902656F9E20056F02B /* Assets.xcassets */,
@@ -173,6 +187,7 @@
 				D3A93D50266404B700A481BB /* InviDesign.swift */,
 				92D01774267E613D00C36495 /* ActivityIndiator.swift */,
 				92E0BC4D270A32220043986E /* Model */,
+				929049E72736FFC000276C41 /* Helpers */,
 			);
 			path = Invi;
 			sourceTree = "<group>";
@@ -220,14 +235,15 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
-		D3A93D47266403DA00A481BB /* Login */ = {
+		D3A93D47266403DA00A481BB /* Login Wall Flow */ = {
 			isa = PBXGroup;
 			children = (
-				D3A93D482664040600A481BB /* LoginOnboardingView.swift */,
+				D3A93D482664040600A481BB /* LoginWallView.swift */,
 				92CB5821266D492F0021DAAA /* RegisterView.swift */,
 				92960B4026715C620021EA47 /* LoginView.swift */,
+				929049ED2737E3DE00276C41 /* RegisterSuccessfulView.swift */,
 			);
-			path = Login;
+			path = "Login Wall Flow";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -248,6 +264,9 @@
 			dependencies = (
 			);
 			name = Invi;
+			packageProductDependencies = (
+				929049EB2737008F00276C41 /* CasePaths */,
+			);
 			productName = Invi;
 			productReference = 9293A4872656F9E00056F02B /* Invi.app */;
 			productType = "com.apple.product-type.application";
@@ -321,6 +340,9 @@
 				Base,
 			);
 			mainGroup = 9293A47E2656F9E00056F02B;
+			packageReferences = (
+				929049EA2737008F00276C41 /* XCRemoteSwiftPackageReference "swift-case-paths" */,
+			);
 			productRefGroup = 9293A4882656F9E00056F02B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -450,16 +472,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				929049E92736FFD700276C41 /* NavigationHelpers.swift.swift in Sources */,
 				92960B4126715C620021EA47 /* LoginView.swift in Sources */,
 				92E0BC49270A31BF0043986E /* InvitationsViewModel.swift in Sources */,
 				92E0BC4C270A321D0043986E /* Invitation.swift in Sources */,
-				D3A93D492664040600A481BB /* LoginOnboardingView.swift in Sources */,
+				D3A93D492664040600A481BB /* LoginWallView.swift in Sources */,
 				9293A4BB265703BC0056F02B /* Dependencies.swift in Sources */,
 				9293A48D2656F9E00056F02B /* InviApp.swift in Sources */,
 				92D01775267E613D00C36495 /* ActivityIndiator.swift in Sources */,
 				92E0BC47270A2AA30043986E /* AppConfiguration.swift in Sources */,
 				9293A4BD265703FB0056F02B /* WebService.swift in Sources */,
 				92CB5822266D492F0021DAAA /* RegisterView.swift in Sources */,
+				929049EE2737E3DF00276C41 /* RegisterSuccessfulView.swift in Sources */,
 				9293A48F2656F9E00056F02B /* InvitationsView.swift in Sources */,
 				D3A93D51266404B700A481BB /* InviDesign.swift in Sources */,
 				D3A93D432664030400A481BB /* Authenticator .swift in Sources */,
@@ -560,7 +584,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -615,7 +639,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -635,6 +659,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Invi/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Invi/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -642,7 +667,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.invi.Invi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -656,6 +681,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Invi/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Invi/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -663,7 +689,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.invi.Invi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -675,7 +701,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = InviTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -697,7 +723,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = InviTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -791,6 +817,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		929049EA2737008F00276C41 /* XCRemoteSwiftPackageReference "swift-case-paths" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-case-paths";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.7.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		929049EB2737008F00276C41 /* CasePaths */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 929049EA2737008F00276C41 /* XCRemoteSwiftPackageReference "swift-case-paths" */;
+			productName = CasePaths;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9293A47F2656F9E00056F02B /* Project object */;
 }
