@@ -7,6 +7,7 @@
 
 import Combine
 import SwiftUI
+import CasePaths
 
 struct InvitationsView: View {
     @StateObject var viewModel: InvitationsViewModel
@@ -21,8 +22,8 @@ struct InvitationsView: View {
                     ActivityIndicator(style: .large)
                 case .loaded(let invitations):
                     List {
-                        ForEach(invitations) { invitation in
-                            Text("Invitation: \(invitation.id)")
+                        ForEach(invitations) { viewModel in
+                            InvitationRowView(viewModel: viewModel)
                         }
                     }
                 case .error:
