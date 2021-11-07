@@ -8,12 +8,15 @@
 import SwiftUI
 import Combine
 
-class LoginViewModel: ObservableObject {
+class LoginViewModel: Identifiable, ObservableObject {
     typealias Dependencies = HasAuthenticator
 
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var state: State = .idle
+
+    var onDismiss: () -> Void = { assertionFailure("Needs to be set") }
+    var onRegister: () -> Void = { assertionFailure("Needs to be set") }
 
     enum State: Equatable {
         case idle
@@ -42,7 +45,7 @@ class LoginViewModel: ObservableObject {
         password = "123456"
     }
 
-    func handleLogin() {
+    func loginTapped() {
         state = .evaluating
         loginCancellable = dependencies.authenticator.login(email: email, password: password)
             .receive(on: DispatchQueue.main)
@@ -62,21 +65,22 @@ class LoginViewModel: ObservableObject {
                         assertionFailure()
                     }
                 }
-            }, receiveValue: { _ in
-                self.state = .loggedIn
+            }, receiveValue: { [weak self] _ in
+                self?.onDismiss()
+                self?.state = .loggedIn
             })
+    }
 
+    func registerTapped() {
+        onRegister()
     }
 }
 
 struct LoginView: View {
-    @Environment(\.presentationMode) var presentationMode
-
     @ObservedObject var viewModel: LoginViewModel
 
     var body: some View {
         ZStack {
-            loadingView
             VStack {
                 VStack(alignment: .leading) {
                     headerText
@@ -106,26 +110,24 @@ struct LoginView: View {
                     }
                     errorText
                     Button("Sign in") {
-                        viewModel.handleLogin()
+                        viewModel.loginTapped()
                     }
-                    .buttonStyle(LoginRegisterButtonStyle())
+                    .buttonStyle(LoginRegisterButtonStyle(isLoading: viewModel.state.isEvaluating))
                     Spacer()
 
                 }
                 .padding()
             }
         }
-        .navigationBarTitle("Sign In", displayMode: .inline)
-        .navigationBarItems(trailing: Button("Cancel", action: {
-            presentationMode.wrappedValue.dismiss()
-        }).foregroundColor(InviDesign.Colors.Brand.dark)
-        )
-        .onReceive(viewModel.$state) { state in
-            if state == .loggedIn {
-                presentationMode.wrappedValue.dismiss()
+        .navigationTitle("Sign in")
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button("Cancel") { viewModel.onDismiss() }
+                    .foregroundColor(InviDesign.Colors.Brand.dark)
+                    .disabled(viewModel.state == .evaluating)
             }
         }
-        .disabled(viewModel.state == .evaluating)
+        .interactiveDismissDisabled(viewModel.state == .evaluating)
     }
 
     @ViewBuilder var headerText: some View {
@@ -134,7 +136,7 @@ struct LoginView: View {
                 .font(Font.system(size: 14))
                 .foregroundColor(InviDesign.Colors.Brand.grey)
             Button("Create Account") {
-                presentationMode.wrappedValue.dismiss()
+                viewModel.registerTapped()
             }
             .font(Font.system(size: 14).weight(.semibold))
             .foregroundColor(InviDesign.Colors.Brand.dark)
@@ -148,31 +150,24 @@ struct LoginView: View {
                 .foregroundColor(.red)
         }
     }
-
-    @ViewBuilder var loadingView: some View {
-        if viewModel.state == .evaluating {
-            ZStack {
-                Rectangle()
-                    .foregroundColor(Color.white)
-                    .cornerRadius(8)
-                    .frame(width: 100, height: 100, alignment: .center)
-                    .shadow(color: .black.opacity(0.16), radius: 12, x: 0, y: 5)
-                ActivityIndicator(style: .large)
-            }
-            .zIndex(1)
-        }
-    }
 }
 
 struct LoginRegisterButtonStyle: ButtonStyle {
+    var isLoading: Bool
+
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .frame(maxWidth: 350, maxHeight: 30)
-            .font(Font.system(size: 16).weight(.bold))
-            .padding()
-            .background(InviDesign.Colors.Brand.dark)
-            .foregroundColor(.white)
-            .cornerRadius(8)
+        HStack {
+            if isLoading {
+                ProgressView().padding(.trailing)
+            }
+            configuration.label
+        }
+        .frame(maxWidth: 350, maxHeight: 30)
+        .font(Font.system(size: 16).weight(.bold))
+        .padding()
+        .background(InviDesign.Colors.Brand.dark)
+        .foregroundColor(.white)
+        .cornerRadius(8)
     }
 }
 

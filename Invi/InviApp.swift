@@ -37,7 +37,7 @@ struct RootView: View {
     var body: some View {
         switch viewModel.state {
         case .loginWall:
-            LoginOnboardingView(dependencies: dependencies)
+            LoginWallView(viewModel: LoginWallViewModel(dependencies: dependencies))
         case .open:
             InvitationsView(viewModel: InvitationsViewModel(dependencies: dependencies))
         }
@@ -53,6 +53,7 @@ final class RootViewModel: ObservableObject {
     private(set) var state: RootState {
         willSet {
             guard state != newValue else { return }
+            UIApplication.shared.dismissToRootViewController()
             objectWillChange.send()
         }
     }
@@ -83,5 +84,12 @@ final class RootViewModel: ObservableObject {
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         return true
+    }
+}
+
+private extension UIApplication {
+    func dismissToRootViewController() {
+        guard let windowScene = connectedScenes.first as? UIWindowScene else { return }
+        windowScene.windows.first?.rootViewController?.dismiss(animated: true)
     }
 }

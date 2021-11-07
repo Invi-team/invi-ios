@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-class RegisterViewModel: ObservableObject {
+class RegisterViewModel: Identifiable, ObservableObject {
     typealias Dependencies = HasAuthenticator
 
     @Published var email: String = ""
@@ -139,7 +139,7 @@ struct RegisterView: View {
                 Button("Sign up with e-mail") {
                     viewModel.handleRegister()
                 }
-                .buttonStyle(LoginRegisterButtonStyle())
+                .buttonStyle(LoginRegisterButtonStyle(isLoading: false)) // TODO: Loading
                 Spacer()
                 
             }
