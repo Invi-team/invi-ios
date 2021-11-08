@@ -14,22 +14,22 @@ final class InvitationsViewModel: ObservableObject {
     enum State {
         case initial
         case loading
-        case loaded([Invitation])
+        case loaded([InvitationRowViewModel])
         case error(Error)
     }
 
+    enum Route {
+        case details(Invitation)
+    }
+
     @Published var state: State = .initial
+    @Published var route: Route?
 
     private let dependencies: Dependencies
     private var cancellables: Set<AnyCancellable> = []
 
     init(dependencies: Dependencies) {
-        print("INIT")
         self.dependencies = dependencies
-    }
-
-    deinit {
-        print("DEINIT")
     }
 
     func load() {
@@ -44,7 +44,7 @@ final class InvitationsViewModel: ObservableObject {
                 self?.state = .error(error)
             }
         }, receiveValue: { [weak self] invitations in
-            self?.state = .loaded(invitations)
+            self?.state = .loaded(invitations.map { InvitationRowViewModel(invitation: $0) })
         })
         .store(in: &cancellables)
     }

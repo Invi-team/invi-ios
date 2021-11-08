@@ -7,9 +7,15 @@
 
 import Combine
 import SwiftUI
+import CasePaths
 
 struct InvitationsView: View {
     @StateObject var viewModel: InvitationsViewModel
+
+    init(viewModel: InvitationsViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+        viewModel.load()
+    }
 
     var body: some View {
         NavigationView {
@@ -21,8 +27,8 @@ struct InvitationsView: View {
                     ActivityIndicator(style: .large)
                 case .loaded(let invitations):
                     List {
-                        ForEach(invitations) { invitation in
-                            Text("Invitation: \(invitation.id)")
+                        ForEach(invitations) { viewModel in
+                            InvitationRowView(viewModel: viewModel)
                         }
                     }
                 case .error:
@@ -34,7 +40,6 @@ struct InvitationsView: View {
             .toolbar {
                 Button("Logout") { viewModel.logout() }
             }
-            .onAppear(perform: viewModel.load)
         }
     }
 }
