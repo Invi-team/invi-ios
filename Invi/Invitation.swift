@@ -12,13 +12,13 @@ struct Invitation: Identifiable {
     let invitationCode: String
     let eventId: String
     let description: Int?
-    let eventDate: Date?
+    let eventDate: Date
     let responseDateDeadline: Date?
     let receivedAt: Date?
     let photoId: Int?
     let locations: [Location]
     let organisers: [Organiser]
-    let guests: [Guest]
+    var guests: [Guest]
 }
 
 extension Invitation: Decodable {
@@ -42,7 +42,7 @@ extension Invitation: Decodable {
         invitationCode = try container.decode(String.self, forKey: .invitationCode)
         eventId = try container.decode(String.self, forKey: .eventId)
         description = try container.decodeIfPresent(Int.self, forKey: .description)
-        eventDate = try container.decodeIfPresent(Date.self, forKey: .eventDate)
+        eventDate = try container.decode(Date.self, forKey: .eventDate)
         responseDateDeadline = try container.decodeIfPresent(Date.self, forKey: .responseDateDeadline)
         receivedAt = try? container.decode(Date.self, forKey: .receivedAt) // ignoring errors, manual decoding needed b/c server returns incorrect format for this date
         photoId = try container.decodeIfPresent(Int.self, forKey: .photoId)
@@ -74,7 +74,7 @@ extension Location: Decodable {
     }
 }
 
-struct Organiser: Decodable {
+struct Organiser: Identifiable, Decodable {
     enum OrganiserType: String, Decodable {
         case bride = "BRIDE"
         case groom = "GROOM"
@@ -86,13 +86,13 @@ struct Organiser: Decodable {
     let type: OrganiserType
 }
 
-struct Guest {
+struct Guest: Identifiable, Hashable {
     enum GuestType: String, Decodable {
         case invited = "INVITED"
         case companion = "COMPANION"
     }
 
-    enum Status: String, Decodable {
+    enum Status: String, CaseIterable, Decodable {
         case undecided
         case accepted
         case declined
@@ -110,7 +110,7 @@ struct Guest {
     let id: String
     let name: String?
     let surname: String?
-    let status: Status
+    var status: Status
     let type: GuestType
 }
 
@@ -121,5 +121,30 @@ extension Guest: Decodable {
         case surname
         case status
         case type
+    }
+
+    var readableNameAndSurname: String {
+        var result = ""
+        if let name = name {
+            result.append(name)
+        }
+        if let surname = surname {
+            result.append(" \(surname)")
+        }
+        return result
+    }
+}
+
+extension Invitation {
+    var wedding: Location? {
+        return locations.first(where: { $0.type == .wedding })
+    }
+
+    var party: Location? {
+        return locations.first(where: { $0.type == .party })
+    }
+
+    var eventName: String {
+        return organisers.map { $0.name }.compactMap { $0 }.joined(separator: " & ")
     }
 }
