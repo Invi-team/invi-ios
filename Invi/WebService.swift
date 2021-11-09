@@ -10,6 +10,7 @@ import Combine
 
 protocol WebServiceType {
     func load<T: Decodable>(resource: WebResource<T>) -> AnyPublisher<T, Swift.Error>
+    func load(request: URLRequest, authenticated: Bool) -> AnyPublisher<Data, Swift.Error>
 }
 
 final class WebService: WebServiceType {
@@ -44,7 +45,7 @@ final class WebService: WebServiceType {
             .eraseToAnyPublisher()
     }
 
-    private func load(request: URLRequest, authenticated: Bool) -> AnyPublisher<Data, Swift.Error> {
+    func load(request: URLRequest, authenticated: Bool) -> AnyPublisher<Data, Swift.Error> {
         debugPrint("Loading request with url: \(request.url!.absoluteString)") // TODO: Remove when logger in place
         var request = request
         if authenticated, let token = dependencies.authenticator.token {

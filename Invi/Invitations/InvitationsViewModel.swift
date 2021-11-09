@@ -43,8 +43,8 @@ final class InvitationsViewModel: ObservableObject {
             case .failure(let error):
                 self?.state = .error(error)
             }
-        }, receiveValue: { [weak self] invitations in
-            self?.state = .loaded(invitations.map { InvitationRowViewModel(invitation: $0) })
+        }, receiveValue: { [weak self, dependencies] invitations in
+            self?.state = .loaded(invitations.map { InvitationRowViewModel(invitation: $0, dependencies: dependencies) })
         })
         .store(in: &cancellables)
     }
@@ -54,7 +54,7 @@ final class InvitationsViewModel: ObservableObject {
     }
 }
 
-private enum InvitationsEndpointService {
+enum InvitationsEndpointService {
     static func invitations(dependencies: HasWebService & HasAppConfiguration) -> AnyPublisher<[Invitation], Error> {
         let request = URLRequest(url: dependencies.configuration.apiEnviroment.baseURL.appendingPathComponent("invitations"))
         let resource: WebResource<[Invitation]> = WebResource(request: request, authenticated: true)

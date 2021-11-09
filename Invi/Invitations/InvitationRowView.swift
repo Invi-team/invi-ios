@@ -9,20 +9,24 @@ import SwiftUI
 import CasePaths
 
 class InvitationRowViewModel: Identifiable, ObservableObject {
+    typealias Dependencies = InvitationDetailsViewModel.Dependencies
     enum Route {
-        case details(Invitation)
+        case details(InvitationDetailsViewModel)
     }
 
     @Published var invitation: Invitation
     @Published var route: Route?
 
-    init(invitation: Invitation, route: Route? = nil) {
+    private let dependencies: Dependencies
+
+    init(invitation: Invitation, route: Route? = nil, dependencies: Dependencies) {
         self.invitation = invitation
         self.route = route
+        self.dependencies = dependencies
     }
 
     func setDetailsNavigation(isActive: Bool) {
-        route = isActive ? .details(invitation) : nil
+        route = isActive ? .details(InvitationDetailsViewModel(invitationId: invitation.id, invitationName: invitation.eventName, dependencies: dependencies)) : nil
     }
 }
 
@@ -34,8 +38,8 @@ struct InvitationRowView: View {
             unwrap: $viewModel.route,
             case: /InvitationRowViewModel.Route.details,
             onNavigate: viewModel.setDetailsNavigation(isActive:),
-            destination: { invitation in
-                InvitationDetailsView(invitation: invitation)
+            destination: { viewModel in
+                InvitationDetailsView(viewModel: viewModel.wrappedValue)
             },
             label: {
                 VStack(alignment: .leading, spacing: 8) {
@@ -94,6 +98,6 @@ struct InvitationRowView_Previews: PreviewProvider {
         ], organisers: [
             Organiser(id: "937123", name: "Jan", surname: "Kowalski", phoneNumber: "123456789", type: .groom),
             Organiser(id: "937124", name: "Katarzyna", surname: "Nowak", phoneNumber: "123456781", type: .bride)
-        ], guests: [])))
+        ], guests: []), dependencies: Dependencies()))
     }
 }
