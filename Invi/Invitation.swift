@@ -92,25 +92,15 @@ struct Guest: Identifiable, Hashable {
         case companion = "COMPANION"
     }
 
-    enum Status: String, CaseIterable, Decodable {
-        case undecided
-        case accepted
-        case declined
-
-        init(from decoder: Decoder) throws {
-            let container = try decoder.singleValueContainer()
-            if let rawValue = try? container.decode(String.self), let status = Status(rawValue: rawValue) {
-                self = status
-            } else {
-                self = .undecided
-            }
-        }
+    enum Status: String, CaseIterable, Codable {
+        case accepted = "ACCEPTED"
+        case declined = "DECLINED"
     }
 
     let id: String
     let name: String?
     let surname: String?
-    var status: Status
+    var status: Status?
     let type: GuestType
 }
 
