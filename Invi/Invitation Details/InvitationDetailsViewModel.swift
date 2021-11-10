@@ -131,7 +131,6 @@ private enum InvitationEndpointService {
         let url = dependencies.configuration.apiEnviroment.baseURL
             .appendingPathComponent("invitation")
             .appendingPathComponent("guest-status")
-        await Task.sleep(NSEC_PER_SEC * 3)
         _ = try await dependencies.webService.put(model: model, request: URLRequest(url: url), authenticate: true)
     }
 }
