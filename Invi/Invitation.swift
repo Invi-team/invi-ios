@@ -95,15 +95,6 @@ struct Guest: Identifiable, Hashable {
     enum Status: String, CaseIterable, Codable {
         case accepted = "ACCEPTED"
         case declined = "DECLINED"
-
-        init(from decoder: Decoder) throws {
-            let container = try decoder.singleValueContainer()
-            if let rawValue = try? container.decode(String.self), let status = Status(rawValue: rawValue) {
-                self = status
-            } else {
-                throw ParsingError.cannotParse
-            }
-        }
     }
 
     let id: String
@@ -111,10 +102,6 @@ struct Guest: Identifiable, Hashable {
     let surname: String?
     var status: Status?
     let type: GuestType
-}
-
-enum ParsingError: Error {
-    case cannotParse
 }
 
 extension Guest: Decodable {

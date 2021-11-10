@@ -23,6 +23,7 @@
 		9293A4BB265703BC0056F02B /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4BA265703BC0056F02B /* Dependencies.swift */; };
 		9293A4BD265703FB0056F02B /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4BC265703FB0056F02B /* WebService.swift */; };
 		92960B4126715C620021EA47 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92960B4026715C620021EA47 /* LoginView.swift */; };
+		92AB77F6273C193D0080884F /* InvitationDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92AB77F5273C193D0080884F /* InvitationDetailsViewModel.swift */; };
 		92CB3909273831C4001732D0 /* InvitationDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CB3908273831C4001732D0 /* InvitationDetailsView.swift */; };
 		92CB390B273837B1001732D0 /* InvitationRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CB390A273837B1001732D0 /* InvitationRowView.swift */; };
 		92CB390D27388820001732D0 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CB390C27388820001732D0 /* Strings.swift */; };
@@ -77,6 +78,7 @@
 		9293A4BA265703BC0056F02B /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
 		9293A4BC265703FB0056F02B /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		92960B4026715C620021EA47 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		92AB77F5273C193D0080884F /* InvitationDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationDetailsViewModel.swift; sourceTree = "<group>"; };
 		92CB3908273831C4001732D0 /* InvitationDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationDetailsView.swift; sourceTree = "<group>"; };
 		92CB390A273837B1001732D0 /* InvitationRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationRowView.swift; sourceTree = "<group>"; };
 		92CB390C27388820001732D0 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 				D3A93D47266403DA00A481BB /* Login Wall Flow */,
 				9293A48C2656F9E00056F02B /* InviApp.swift */,
 				92E0BC4A270A31DD0043986E /* Invitations */,
+				92AB77F4273C18F50080884F /* Invitation Details */,
 				9293A4902656F9E20056F02B /* Assets.xcassets */,
 				9293A4952656F9E20056F02B /* LaunchScreen.storyboard */,
 				9293A4982656F9E20056F02B /* Info.plist */,
@@ -225,12 +228,20 @@
 			path = InviUITests;
 			sourceTree = "<group>";
 		};
+		92AB77F4273C18F50080884F /* Invitation Details */ = {
+			isa = PBXGroup;
+			children = (
+				92CB3908273831C4001732D0 /* InvitationDetailsView.swift */,
+				92AB77F5273C193D0080884F /* InvitationDetailsViewModel.swift */,
+			);
+			path = "Invitation Details";
+			sourceTree = "<group>";
+		};
 		92E0BC4A270A31DD0043986E /* Invitations */ = {
 			isa = PBXGroup;
 			children = (
 				92E0BC48270A31BF0043986E /* InvitationsViewModel.swift */,
 				9293A48E2656F9E00056F02B /* InvitationsView.swift */,
-				92CB3908273831C4001732D0 /* InvitationDetailsView.swift */,
 				92CB390A273837B1001732D0 /* InvitationRowView.swift */,
 			);
 			path = Invitations;
@@ -483,6 +494,7 @@
 			files = (
 				929049E92736FFD700276C41 /* NavigationHelpers.swift.swift in Sources */,
 				92960B4126715C620021EA47 /* LoginView.swift in Sources */,
+				92AB77F6273C193D0080884F /* InvitationDetailsViewModel.swift in Sources */,
 				92E0BC49270A31BF0043986E /* InvitationsViewModel.swift in Sources */,
 				92E0BC4C270A321D0043986E /* Invitation.swift in Sources */,
 				D3A93D492664040600A481BB /* LoginWallView.swift in Sources */,
