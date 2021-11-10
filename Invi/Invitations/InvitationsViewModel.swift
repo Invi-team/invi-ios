@@ -32,21 +32,15 @@ final class InvitationsViewModel: ObservableObject {
         self.dependencies = dependencies
     }
 
-    func load() {
+    @MainActor
+    func load() async {
         state = .loading
-        InvitationsEndpointService.invitations(dependencies: dependencies)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-            switch completion {
-            case .finished:
-                break
-            case .failure(let error):
-                self?.state = .error(error)
-            }
-        }, receiveValue: { [weak self, dependencies] invitations in
-            self?.state = .loaded(invitations.map { InvitationRowViewModel(invitation: $0, dependencies: dependencies) })
-        })
-        .store(in: &cancellables)
+        do {
+            let invitations = try await InvitationsEndpointService.invitations(dependencies: dependencies)
+            state = .loaded(invitations.map { InvitationRowViewModel(invitation: $0, dependencies: dependencies) })
+        } catch {
+            state = .error(error)
+        }
     }
 
     func logout() {
@@ -55,9 +49,8 @@ final class InvitationsViewModel: ObservableObject {
 }
 
 enum InvitationsEndpointService {
-    static func invitations(dependencies: HasWebService & HasAppConfiguration) -> AnyPublisher<[Invitation], Error> {
+    static func invitations(dependencies: HasWebService & HasAppConfiguration) async throws -> [Invitation] {
         let request = URLRequest(url: dependencies.configuration.apiEnviroment.baseURL.appendingPathComponent("invitations"))
-        let resource: WebResource<[Invitation]> = WebResource(request: request, authenticated: true)
-        return dependencies.webService.load(resource: resource)
+        return try await dependencies.webService.get(request: request, authenticate: true).value
     }
 }

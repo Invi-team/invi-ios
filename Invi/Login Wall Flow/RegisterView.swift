@@ -75,25 +75,19 @@ class RegisterViewModel: Identifiable, ObservableObject {
             .store(in: &cancellables)
     }
 
-    func handleRegister() {
+    func handleRegister() async {
         switch (emailValidationResult, passwordValidationResult) {
         case (.success, .success):
             print("Email: \(email), password: \(password)")
             isLoading = true
-            registerCancellable = dependencies.authenticator.register(email: email, password: password)
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { [weak self] completion in
-                    switch completion {
-                    case .failure(let error):
-                        print("Registration failed with error: \(error)")
-                        self?.isLoading = false
-                    case .finished:
-                        break
-                    }
-                }, receiveValue: { [weak self] _ in
-                    self?.isLoading = false
-                    self?.setSuccessfulNavigation(isActive: true)
-                })
+            do {
+                try await dependencies.authenticator.register(email: email, password: password)
+                isLoading = false
+                setSuccessfulNavigation(isActive: true)
+            } catch {
+                print("Registration failed with error: \(error)")
+                isLoading = false
+            }
         default:
             print("Invalid format of email or passowrd")
         }
@@ -161,7 +155,9 @@ struct RegisterView: View {
                         .padding(.bottom, 24)
                 }
                 Button("Sign up with e-mail") {
-                    viewModel.handleRegister()
+                    Task { @MainActor in
+                        await viewModel.handleRegister()
+                    }
                 }
                 .buttonStyle(LoginRegisterButtonStyle(isLoading: viewModel.isLoading))
                 Spacer()

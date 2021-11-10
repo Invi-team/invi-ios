@@ -44,7 +44,9 @@ struct InvitationDetailsView: View {
                 .navigationTitle(invitation.eventName)
             case .error:
                 Text("Error occured")
-                Button("Retry", action: { viewModel.loadInvitation() })
+                Button("Retry", action: {
+                    Task { @MainActor in await viewModel.loadInvitation() }
+                })
             }
         }
         .alert(
@@ -61,7 +63,7 @@ struct InvitationDetailsView: View {
             }
         )
         .task {
-            viewModel.loadInvitation()
+            Task { @MainActor in await viewModel.loadInvitation() }
         }
     }
 }
@@ -76,14 +78,16 @@ struct GuestView: View {
     var body: some View {
         Menu {
             Button {
-                viewModel.saveGuest(status: .accepted, for: guest) {
+                Task { @MainActor in
+                    try await viewModel.saveGuest(status: .accepted, for: guest)
                     viewModel.guest.wrappedValue.status = .accepted
                 }
             } label: {
                 GuestStatusLabel(title: "Accepted", systemImage: guest.status == .accepted ? "checkmark" : nil)
             }
             Button {
-                viewModel.saveGuest(status: .declined, for: guest) {
+                Task { @MainActor in
+                    try await viewModel.saveGuest(status: .declined, for: guest)
                     viewModel.guest.wrappedValue.status = .declined
                 }
             } label: {

@@ -55,24 +55,17 @@ class InvitationDetailsViewModel: ObservableObject {
         }
     }
 
-    func loadInvitation() {
+    @MainActor
+    func loadInvitation() async {
         guard !state.isLoaded else { return }
         state = .loading
-        InvitationEndpointService.invitation(id: invitationId, dependencies: dependencies)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                switch completion {
-                case .failure(let error):
-                    self?.state = .error(error)
-                case .finished:
-                    break
-                }
-            }, receiveValue: { [weak self] invitation in
-                var invitation = invitation
-                invitation.guests = invitation.guests.sortByInvitedFirst()
-                self?.state = .loaded(invitation)
-            })
-            .store(in: &cancellables)
+        do {
+            var invitation = try await InvitationEndpointService.invitation(id: invitationId, dependencies: dependencies)
+            invitation.guests = invitation.guests.sortByInvitedFirst()
+            state = .loaded(invitation)
+        } catch {
+            state = .error(error)
+        }
     }
 
     func okAlertTapped() {
@@ -95,25 +88,19 @@ class GuestViewModel: ObservableObject {
         self.dependencies = dependencies
     }
 
-    func saveGuest(status: Guest.Status, for guest: Guest, onSucceed: @escaping () -> Void) {
+    @MainActor
+    func saveGuest(status: Guest.Status, for guest: Guest) async throws {
         guard guest.status != status else { return }
         statusSavingState.wrappedValue = .loading(id: guest.id)
-        InvitationEndpointService.postInvitation(guestId: guest.id, status: status, dependencies: dependencies)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                switch completion {
-                case .failure(let error):
-                    debugPrint(error)
-                    self?.statusSavingState.wrappedValue = .failed
-                case .finished:
-                    break
-                }
-            }, receiveValue: { [weak self] _ in
-                self?.statusSavingState.wrappedValue = .idle
-                onSucceed()
-                debugPrint("Successful save")
-            })
-            .store(in: &cancellables)
+        do {
+            try await InvitationEndpointService.putInvitation(guestId: guest.id, status: status, dependencies: dependencies)
+            statusSavingState.wrappedValue = .idle
+            debugPrint("Successful save")
+        } catch {
+            debugPrint(error)
+            statusSavingState.wrappedValue = .failed
+            throw error
+        }
     }
 }
 
@@ -123,18 +110,15 @@ private enum InvitationEndpointService {
         case failedToEncodeGuestStatus
     }
 
-    static func invitation(id: String, dependencies: HasWebService & HasAppConfiguration) -> AnyPublisher<Invitation, Swift.Error> {
+    static func invitation(id: String, dependencies: HasWebService & HasAppConfiguration) async throws -> Invitation {
         let request = URLRequest(url: dependencies.configuration.apiEnviroment.baseURL.appendingPathComponent("invitations"))
-        let resource: WebResource<[Invitation]> = WebResource(request: request, authenticated: true)
-        return dependencies.webService.load(resource: resource)
-            .tryMap { invitations in
-                if let invitation = invitations.first(where: { $0.id == id }) {
-                    return invitation
-                } else {
-                    throw Error.noInvitation
-                }
-            }
-            .eraseToAnyPublisher()
+
+        let invitations: [Invitation] = try await dependencies.webService.get(request: request, authenticate: true).value
+        if let invitation = invitations.first(where: { $0.id == id }) {
+            return invitation
+        } else {
+            throw Error.noInvitation
+        }
     }
 
     struct GuestStatusBody: Encodable {
@@ -142,21 +126,13 @@ private enum InvitationEndpointService {
         let status: Guest.Status
     }
 
-    static func postInvitation(guestId: String, status: Guest.Status, dependencies: HasWebService & HasAppConfiguration) -> AnyPublisher<Data, Swift.Error> {
-        let body = GuestStatusBody(guestId: guestId, status: status)
+    static func putInvitation(guestId: String, status: Guest.Status, dependencies: HasWebService & HasAppConfiguration) async throws {
+        let model = GuestStatusBody(guestId: guestId, status: status)
         let url = dependencies.configuration.apiEnviroment.baseURL
             .appendingPathComponent("invitation")
             .appendingPathComponent("guest-status")
-
-        guard let data = try? JSONEncoder().encode(body) else {
-            return Fail(error: Error.failedToEncodeGuestStatus)
-                .eraseToAnyPublisher()
-        }
-        var request = URLRequest(url: url)
-        request.httpMethod = "PUT"
-        request.httpBody = data
-        return dependencies.webService.load(request: request, authenticated: true)
-            .eraseToAnyPublisher()
+        await Task.sleep(NSEC_PER_SEC * 3)
+        _ = try await dependencies.webService.put(model: model, request: URLRequest(url: url), authenticate: true)
     }
 }
 
