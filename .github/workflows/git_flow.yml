@@ -17,4 +17,5 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.IOS_CHANNEL_WEBHOOK }}
           DISCORD_USERNAME: Pull request tracker
         with:
-          args: '🎉🎉There is a new PR🎉🎉 Check it out here: https://github.com/Invi-team/invi-ios/pull/{{ EVENT_PAYLOAD.pull_request.id }}'
+          args: '🎉🎉There is a new PR🎉🎉 Number: {{ EVENT_PAYLOAD.pull_request.url }} Name: {{ EVENT_PAYLOAD.pull_request.title }} '
+#           args: '🎉🎉There is a new PR🎉🎉 Check it out here: https://github.com/Invi-team/invi-ios/pull/{{ EVENT_PAYLOAD.pull_request.id }}'
