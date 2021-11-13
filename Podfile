@@ -5,6 +5,9 @@ target 'Invi' do
   use_frameworks!
 
   pod 'SwiftLint'
+  
+  pod 'Firebase/Crashlytics'
+  pod 'Firebase/Analytics'
 
   target 'InviTests' do
     inherit! :search_paths
