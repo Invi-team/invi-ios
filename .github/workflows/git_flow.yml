@@ -16,4 +16,4 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.IOS_CHANNEL_WEBHOOK }}
         with:
-          args: 'The project ${{ github.base_ref }} has been deployed to development aws environment.'
+          args: 'There is a new PR: ${{ github.ref }} -> ${{ github.base_ref }}'
