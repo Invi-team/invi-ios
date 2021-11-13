@@ -16,4 +16,4 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.IOS_CHANNEL_WEBHOOK }}
         with:
-          args: 'There is a new PR: ${{ github.ref }} -> ${{ github.base_ref }}'
+          args: '🎉🎉There is a new PR🎉🎉\nCheck it out here: https://github.com/Invi-team/invi-ios/pulls'
