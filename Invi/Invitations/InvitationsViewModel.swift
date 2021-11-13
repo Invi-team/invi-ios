@@ -7,9 +7,10 @@
 
 import Foundation
 import Combine
+import InviClient
 
 final class InvitationsViewModel: ObservableObject {
-    typealias Dependencies = HasWebService & HasAppConfiguration & HasAuthenticator
+    typealias Dependencies = HasInviClient & HasAuthenticator
 
     enum State {
         case initial
@@ -36,7 +37,7 @@ final class InvitationsViewModel: ObservableObject {
     func load() async {
         state = .loading
         do {
-            let invitations = try await InvitationsEndpointService.invitations(dependencies: dependencies)
+            let invitations = try await dependencies.inviClient.invitations()
             state = .loaded(invitations.map { InvitationRowViewModel(invitation: $0, dependencies: dependencies) })
         } catch {
             state = .error(error)
@@ -45,12 +46,5 @@ final class InvitationsViewModel: ObservableObject {
 
     func logout() {
         dependencies.authenticator.logout()
-    }
-}
-
-enum InvitationsEndpointService {
-    static func invitations(dependencies: HasWebService & HasAppConfiguration) async throws -> [Invitation] {
-        let request = URLRequest(url: dependencies.configuration.apiEnviroment.baseURL.appendingPathComponent("invitations"))
-        return try await dependencies.webService.get(request: request, authenticate: true).value
     }
 }

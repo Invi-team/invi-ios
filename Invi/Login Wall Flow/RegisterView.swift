@@ -75,13 +75,14 @@ class RegisterViewModel: Identifiable, ObservableObject {
             .store(in: &cancellables)
     }
 
+    @MainActor
     func handleRegister() async {
         switch (emailValidationResult, passwordValidationResult) {
         case (.success, .success):
             print("Email: \(email), password: \(password)")
             isLoading = true
             do {
-                try await dependencies.authenticator.register(email: email, password: password)
+                try await dependencies.authenticator.register(email, password)
                 isLoading = false
                 setSuccessfulNavigation(isActive: true)
             } catch {
@@ -192,6 +193,6 @@ struct RegisterView: View {
 
 struct SignUpView_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterView(viewModel: RegisterViewModel(dependencies: Dependencies())) // TODO: Use some mock
+        RegisterView(viewModel: RegisterViewModel(dependencies: CustomDependencies())) // TODO: Use some mock
     }
 }

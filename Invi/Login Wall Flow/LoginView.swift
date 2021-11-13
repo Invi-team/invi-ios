@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import InviAuthenticator
 
 class LoginViewModel: Identifiable, ObservableObject {
     typealias Dependencies = HasAuthenticator
@@ -45,10 +46,11 @@ class LoginViewModel: Identifiable, ObservableObject {
         password = "123456"
     }
 
+    @MainActor
     func loginTapped() async {
         state = .evaluating
         do {
-            try await dependencies.authenticator.login(email: email, password: password)
+            try await dependencies.authenticator.login(email, password)
             onDismiss()
             state = .loggedIn
         } catch {
@@ -180,6 +182,6 @@ private extension LoginViewModel.State {
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView(viewModel: LoginViewModel(dependencies: Dependencies()))
+        LoginView(viewModel: LoginViewModel(dependencies: CustomDependencies()))
     }
 }

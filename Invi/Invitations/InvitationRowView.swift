@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CasePaths
+import InviClient
 
 class InvitationRowViewModel: Identifiable, ObservableObject {
     typealias Dependencies = InvitationDetailsViewModel.Dependencies
@@ -98,6 +99,6 @@ struct InvitationRowView_Previews: PreviewProvider {
         ], organisers: [
             Organiser(id: "937123", name: "Jan", surname: "Kowalski", phoneNumber: "123456789", type: .groom),
             Organiser(id: "937124", name: "Katarzyna", surname: "Nowak", phoneNumber: "123456781", type: .bride)
-        ], guests: []), dependencies: Dependencies()))
+        ], guests: []), dependencies: CustomDependencies()))
     }
 }

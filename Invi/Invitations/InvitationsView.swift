@@ -8,6 +8,7 @@
 import Combine
 import SwiftUI
 import CasePaths
+import InviClient
 
 struct InvitationsView: View {
     @StateObject var viewModel: InvitationsViewModel
@@ -45,7 +46,12 @@ struct InvitationsView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        InvitationsView(viewModel: InvitationsViewModel(dependencies: Dependencies()))
+        let viewModel = InvitationsViewModel(
+            dependencies: CustomDependencies(
+                inviClient: .happyPath
+            )
+        )
+        InvitationsView(viewModel: viewModel)
     }
 }
 

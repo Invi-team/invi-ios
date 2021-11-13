@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import InviClient
 import CasePaths
 
 enum GuestStatusSavingState {
@@ -16,7 +17,7 @@ enum GuestStatusSavingState {
 }
 
 class InvitationDetailsViewModel: ObservableObject {
-    typealias Dependencies = HasWebService & HasAppConfiguration
+    typealias Dependencies = HasInviClient
 
     enum State {
         case loading
@@ -60,7 +61,7 @@ class InvitationDetailsViewModel: ObservableObject {
         guard !state.isLoaded else { return }
         state = .loading
         do {
-            var invitation = try await InvitationEndpointService.invitation(id: invitationId, dependencies: dependencies)
+            var invitation = try await dependencies.inviClient.invitation(invitationId)
             invitation.guests = invitation.guests.sortByInvitedFirst()
             state = .loaded(invitation)
         } catch {
@@ -74,7 +75,7 @@ class InvitationDetailsViewModel: ObservableObject {
 }
 
 class GuestViewModel: ObservableObject {
-    typealias Dependencies = HasWebService & HasAppConfiguration
+    typealias Dependencies = HasInviClient
 
     var guest: Binding<Guest>
     var statusSavingState: Binding<GuestStatusSavingState>
@@ -93,7 +94,7 @@ class GuestViewModel: ObservableObject {
         guard guest.status != status else { return }
         statusSavingState.wrappedValue = .loading(id: guest.id)
         do {
-            try await InvitationEndpointService.putInvitation(guestId: guest.id, status: status, dependencies: dependencies)
+            try await dependencies.inviClient.putGuestStatus(guest.id, status)
             statusSavingState.wrappedValue = .idle
             debugPrint("Successful save")
         } catch {
@@ -101,37 +102,6 @@ class GuestViewModel: ObservableObject {
             statusSavingState.wrappedValue = .failed
             throw error
         }
-    }
-}
-
-private enum InvitationEndpointService {
-    enum Error: Swift.Error {
-        case noInvitation
-        case failedToEncodeGuestStatus
-    }
-
-    static func invitation(id: String, dependencies: HasWebService & HasAppConfiguration) async throws -> Invitation {
-        let request = URLRequest(url: dependencies.configuration.apiEnviroment.baseURL.appendingPathComponent("invitations"))
-
-        let invitations: [Invitation] = try await dependencies.webService.get(request: request, authenticate: true).value
-        if let invitation = invitations.first(where: { $0.id == id }) {
-            return invitation
-        } else {
-            throw Error.noInvitation
-        }
-    }
-
-    struct GuestStatusBody: Encodable {
-        let guestId: String
-        let status: Guest.Status
-    }
-
-    static func putInvitation(guestId: String, status: Guest.Status, dependencies: HasWebService & HasAppConfiguration) async throws {
-        let model = GuestStatusBody(guestId: guestId, status: status)
-        let url = dependencies.configuration.apiEnviroment.baseURL
-            .appendingPathComponent("invitation")
-            .appendingPathComponent("guest-status")
-        _ = try await dependencies.webService.put(model: model, request: URLRequest(url: url), authenticate: true)
     }
 }
 

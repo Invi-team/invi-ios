@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import CasePaths
+import InviClient
 
 struct InvitationDetailsView: View {
     @ObservedObject var viewModel: InvitationDetailsViewModel
@@ -166,6 +167,6 @@ private struct GuestStatusLabel: View {
 
 struct InvitationDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        InvitationDetailsView(viewModel: InvitationDetailsViewModel(invitationId: "", invitationName: "", state: .loaded(Invitation(id: "", invitationCode: "", eventId: "", description: nil, eventDate: Date.now, responseDateDeadline: nil, receivedAt: nil, photoId: nil, locations: [], organisers: [], guests: [])), dependencies: Dependencies()))
+        InvitationDetailsView(viewModel: InvitationDetailsViewModel(invitationId: "", invitationName: "", state: .loaded(Invitation(id: "", invitationCode: "", eventId: "", description: nil, eventDate: Date.now, responseDateDeadline: nil, receivedAt: nil, photoId: nil, locations: [], organisers: [], guests: [])), dependencies: CustomDependencies()))
     }
 }
