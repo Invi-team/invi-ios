@@ -10,6 +10,9 @@
 		42F2E5B65D52C6B403A87C97 /* Pods_Invi_InviUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 267959D0E72E09B03213F389 /* Pods_Invi_InviUITests.framework */; };
 		5C0D957CA0178529DA2F68E0 /* Pods_InviTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F1D23CB0E681224F7A658A1 /* Pods_InviTests.framework */; };
 		89FDC1ADB6611A83996D764F /* Pods_Invi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B88AB3D3CA7B498B4CB0E481 /* Pods_Invi.framework */; };
+		8C082676273FEDA800FCD1B3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C082675273FEDA800FCD1B3 /* GoogleService-Info.plist */; };
+		8C082677273FEDA800FCD1B3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C082675273FEDA800FCD1B3 /* GoogleService-Info.plist */; };
+		8C082678273FEDA800FCD1B3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C082675273FEDA800FCD1B3 /* GoogleService-Info.plist */; };
 		929049E92736FFD700276C41 /* NavigationHelpers.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929049E82736FFD700276C41 /* NavigationHelpers.swift.swift */; };
 		929049EC2737008F00276C41 /* CasePaths in Frameworks */ = {isa = PBXBuildFile; productRef = 929049EB2737008F00276C41 /* CasePaths */; };
 		929049EE2737E3DF00276C41 /* RegisterSuccessfulView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929049ED2737E3DE00276C41 /* RegisterSuccessfulView.swift */; };
@@ -59,6 +62,7 @@
 		267959D0E72E09B03213F389 /* Pods_Invi_InviUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Invi_InviUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F36D0B9698DD475121F6A19 /* Pods-InviTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InviTests.debug.xcconfig"; path = "Target Support Files/Pods-InviTests/Pods-InviTests.debug.xcconfig"; sourceTree = "<group>"; };
 		727791CD72AD8360C8E48D90 /* Pods-Invi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Invi.release.xcconfig"; path = "Target Support Files/Pods-Invi/Pods-Invi.release.xcconfig"; sourceTree = "<group>"; };
+		8C082675273FEDA800FCD1B3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		929049E82736FFD700276C41 /* NavigationHelpers.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationHelpers.swift.swift; sourceTree = "<group>"; };
 		929049ED2737E3DE00276C41 /* RegisterSuccessfulView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessfulView.swift; sourceTree = "<group>"; };
 		9293A4872656F9E00056F02B /* Invi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Invi.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -179,6 +183,7 @@
 		9293A4892656F9E00056F02B /* Invi */ = {
 			isa = PBXGroup;
 			children = (
+				8C082675273FEDA800FCD1B3 /* GoogleService-Info.plist */,
 				D3A93D47266403DA00A481BB /* Login Wall Flow */,
 				9293A48C2656F9E00056F02B /* InviApp.swift */,
 				92E0BC4A270A31DD0043986E /* Invitations */,
@@ -267,6 +272,7 @@
 				9293A4832656F9E00056F02B /* Sources */,
 				9293A4842656F9E00056F02B /* Frameworks */,
 				9293A4852656F9E00056F02B /* Resources */,
+				629AD44AD1BA46D9B9A023F5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -307,6 +313,7 @@
 				9293A4A42656F9E20056F02B /* Sources */,
 				9293A4A52656F9E20056F02B /* Frameworks */,
 				9293A4A62656F9E20056F02B /* Resources */,
+				F4E1A3E32F2E8150856574C6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -369,6 +376,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9293A4972656F9E20056F02B /* LaunchScreen.storyboard in Resources */,
+				8C082676273FEDA800FCD1B3 /* GoogleService-Info.plist in Resources */,
 				9293A4942656F9E20056F02B /* Preview Assets.xcassets in Resources */,
 				9293A4912656F9E20056F02B /* Assets.xcassets in Resources */,
 			);
@@ -378,6 +386,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C082677273FEDA800FCD1B3 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,6 +394,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C082678273FEDA800FCD1B3 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,6 +445,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		629AD44AD1BA46D9B9A023F5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Invi/Pods-Invi-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Invi/Pods-Invi-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Invi/Pods-Invi-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		6FBF8813743C5F7CB8C45393 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -473,6 +500,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
+		F4E1A3E32F2E8150856574C6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Invi-InviUITests/Pods-Invi-InviUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Invi-InviUITests/Pods-Invi-InviUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Invi-InviUITests/Pods-Invi-InviUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
