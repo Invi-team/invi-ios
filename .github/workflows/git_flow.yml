@@ -15,7 +15,7 @@ jobs:
         uses: Ilshidur/action-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.IOS_CHANNEL_WEBHOOK }}
-          DISCORD_USERNAME: Pull request tracker
+          DISCORD_USERNAME: 🎉🎉There is a new PR🎉🎉
         with:
-          args: '🎉🎉There is a new PR🎉🎉 Number: {{ EVENT_PAYLOAD.pull_request.url }} Name: {{ EVENT_PAYLOAD.pull_request.title }} '
+          args: '**{{ EVENT_PAYLOAD.pull_request.title }}** {{ EVENT_PAYLOAD.pull_request.html_url }}'
 #           args: '🎉🎉There is a new PR🎉🎉 Check it out here: https://github.com/Invi-team/invi-ios/pull/{{ EVENT_PAYLOAD.pull_request.id }}'
