@@ -8,12 +8,12 @@ on:
 
 jobs:
   inform:
-    name: Inform
+    name: Inform about the PR
     runs-on: ubuntu-latest
     steps: 
       - name: Discord notification  
         uses: Ilshidur/action-discord@master
         env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_WEBHOOK: ${{ secrets.IOS_CHANNEL_WEBHOOK }}
         with:
           args: 'The project ${{ github.base_ref }} has been deployed to development aws environment.'
