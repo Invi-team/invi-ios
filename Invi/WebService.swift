@@ -9,8 +9,12 @@ import Foundation
 import Combine
 
 protocol WebServiceType {
-    func load<T: Decodable>(resource: WebResource<T>) -> AnyPublisher<T, Swift.Error>
-    func load(request: URLRequest, authenticated: Bool) -> AnyPublisher<Data, Swift.Error>
+    func get<T: Decodable>(request: URLRequest, authenticate: Bool) async throws -> Task<T, Swift.Error>
+    func post<Model: Encodable, Response: Decodable>(model: Model, request: URLRequest, authenticate: Bool) async throws -> Task<Response, Swift.Error>
+    func put<Model: Encodable, Response: Decodable>(model: Model, request: URLRequest, authenticate: Bool) async throws -> Task<Response, Swift.Error>
+
+    // TODO: Remove when API stop returning empty response
+    func put<Model: Encodable>(model: Model, request: URLRequest, authenticate: Bool) async throws -> Task<Void, Swift.Error>
 }
 
 final class WebService: WebServiceType {
@@ -31,46 +35,82 @@ final class WebService: WebServiceType {
         case terminated
     }
 
-    func load<T: Decodable>(resource: WebResource<T>) -> AnyPublisher<T, Swift.Error> {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        return load(request: resource.request, authenticated: resource.authenticated)
-            .decode(type: T.self, decoder: decoder)
-            .handleEvents(receiveCompletion: { completion in
-                switch completion {
-                case .failure(let error): debugPrint(error)
-                case .finished: break
-                }
-            })
-            .eraseToAnyPublisher()
-    }
-
-    func load(request: URLRequest, authenticated: Bool) -> AnyPublisher<Data, Swift.Error> {
-        debugPrint("Loading request with url: \(request.url!.absoluteString)") // TODO: Remove when logger in place
-        var request = request
-        if authenticated, let token = dependencies.authenticator.token {
-            request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        }
-        return session.dataTaskPublisher(for: request)
-            .tryMap { data, response in
-                guard let httpResponse = response as? HTTPURLResponse else {
-                    throw Error.invalidResponse
-                }
-                guard 200..<400 ~= httpResponse.statusCode else {
-                    throw Error.httpError(httpResponse.statusCode)
-                }
-                return data
+    func get<T: Decodable>(request: URLRequest, authenticate: Bool) async throws -> Task<T, Swift.Error> {
+        Task {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            let data: Data
+            do {
+                data = try await load(request: request, authenticate: authenticate).value
+                return try decoder.decode(T.self, from: data)
+            } catch {
+                debugPrint(error)
+                throw error
             }
-            .eraseToAnyPublisher()
+        }
     }
-}
 
-struct WebResource<T: Decodable> {
-    let request: URLRequest
-    let authenticated: Bool
+    func post<Model: Encodable, Response: Decodable>(model: Model, request: URLRequest, authenticate: Bool) async throws -> Task<Response, Swift.Error> {
+        try await putOrPost(method: .post, model: model, request: request, authenticate: authenticate)
+    }
 
-    init(request: URLRequest, authenticated: Bool = false) {
-        self.request = request
-        self.authenticated = authenticated
+    func put<Model: Encodable, Response: Decodable>(model: Model, request: URLRequest, authenticate: Bool) async throws -> Task<Response, Swift.Error> {
+        try await putOrPost(method: .put, model: model, request: request, authenticate: authenticate)
+    }
+
+    func put<Model: Encodable>(model: Model, request: URLRequest, authenticate: Bool) async throws -> Task<Void, Swift.Error> {
+        Task {
+            let data = try JSONEncoder().encode(model)
+            var request = request
+            request.httpMethod = "PUT"
+            request.httpBody = data
+
+            do {
+                _ = try await load(request: request, authenticate: authenticate)
+            } catch {
+                debugPrint(error)
+                throw error
+            }
+        }
+    }
+
+    private enum PostOrPut: String {
+        case post = "POST", put = "PUT"
+    }
+
+    private func putOrPost<Model: Encodable, Response: Decodable>(method: PostOrPut, model: Model, request: URLRequest, authenticate: Bool) async throws -> Task<Response, Swift.Error> {
+        Task {
+            let data = try JSONEncoder().encode(model)
+            var request = request
+            request.httpMethod = method.rawValue
+            request.httpBody = data
+
+            let responseData: Data
+            do {
+                responseData = try await load(request: request, authenticate: authenticate).value
+                return try JSONDecoder().decode(Response.self, from: responseData)
+            } catch {
+                debugPrint(error)
+                throw error
+            }
+        }
+    }
+
+    private func load(request: URLRequest, authenticate: Bool) async throws -> Task<Data, Swift.Error> {
+        Task {
+            debugPrint("Loading request with url: \(request.url!.absoluteString)") // TODO: Remove when logger in place
+            var request = request
+            if authenticate, let token = dependencies.authenticator.token {
+                request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            }
+            let (data, response) = try await session.data(for: request)
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw Error.invalidResponse
+            }
+            guard 200..<400 ~= httpResponse.statusCode else {
+                throw Error.httpError(httpResponse.statusCode)
+            }
+            return data
+        }
     }
 }

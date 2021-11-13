@@ -45,30 +45,24 @@ class LoginViewModel: Identifiable, ObservableObject {
         password = "123456"
     }
 
-    func loginTapped() {
+    func loginTapped() async {
         state = .evaluating
-        loginCancellable = dependencies.authenticator.login(email: email, password: password)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                guard let self = self else { return }
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    switch error {
-                    case .invalidCredentials:
-                        self.state = .error(.invalidCredentials)
-                    case .other(let error):
-                        debugPrint("Login failed with error: \(error)")
-                        self.state = .error(.serverFailure)
-                    case .notLoggedOut:
-                        assertionFailure()
-                    }
-                }
-            }, receiveValue: { [weak self] _ in
-                self?.onDismiss()
-                self?.state = .loggedIn
-            })
+        do {
+            try await dependencies.authenticator.login(email: email, password: password)
+            onDismiss()
+            state = .loggedIn
+        } catch {
+            guard let error = error as? Authenticator.LoginError else { assertionFailure(); return }
+            switch error {
+            case .invalidCredentials:
+                self.state = .error(.invalidCredentials)
+            case .other(let error):
+                debugPrint("Login failed with error: \(error)")
+                self.state = .error(.serverFailure)
+            case .notLoggedOut:
+                assertionFailure()
+            }
+        }
     }
 
     func registerTapped() {
@@ -110,7 +104,7 @@ struct LoginView: View {
                     }
                     errorText
                     Button("Sign in") {
-                        viewModel.loginTapped()
+                        Task { @MainActor in await viewModel.loginTapped() }
                     }
                     .buttonStyle(LoginRegisterButtonStyle(isLoading: viewModel.state.isEvaluating))
                     Spacer()

@@ -11,8 +11,8 @@ import Combine
 protocol AuthenticatorType {
     var state: CurrentValueSubject<Authenticator.State, Never> { get }
     var token: String? { get }
-    func login(email: String, password: String) -> AnyPublisher<Void, Authenticator.LoginError>
-    func register(email: String, password: String) -> AnyPublisher<Void, Error>
+    func login(email: String, password: String) async throws
+    func register(email: String, password: String) async throws
     func logout()
 }
 
@@ -62,25 +62,22 @@ final class Authenticator: AuthenticatorType, ObservableObject {
         case other(Error)
     }
 
-    func login(email: String, password: String) -> AnyPublisher<Void, LoginError> {
+    func login(email: String, password: String) async throws {
         guard state.value == .loggedOut else {
             assertionFailure("Trying to login when already logged in or evaluating.")
-            return Fail(error: LoginError.notLoggedOut).eraseToAnyPublisher()
+            throw LoginError.notLoggedOut
         }
-        return LoginEndpointService.login(with: email, password: password, dependencies: dependencies)
-            .mapError { error in
-                if let error = error as? WebService.Error, case let .httpError(statusCode) = error, statusCode == 400 {
-                    return LoginError.invalidCredentials
-                } else {
-                    return LoginError.other(error)
-                }
+        do {
+            let token = try await LoginEndpointService.login(with: email, password: password, dependencies: dependencies)
+            self.token = token
+
+        } catch {
+            if let error = error as? WebService.Error, case let .httpError(statusCode) = error, statusCode == 400 {
+                throw LoginError.invalidCredentials
+            } else {
+                throw LoginError.other(error)
             }
-            .receive(on: DispatchQueue.main)
-            .handleEvents(receiveOutput: { [weak self] token in
-                self?.token = token
-            })
-            .map { _ in () }
-            .eraseToAnyPublisher()
+        }
     }
 
     func logout() {
@@ -88,29 +85,17 @@ final class Authenticator: AuthenticatorType, ObservableObject {
         token = nil
     }
 
-    func register(email: String, password: String) -> AnyPublisher<Void, Error> {
-        return RegisterEndpointService.register(with: email, password: password, dependencies: dependencies)
+    func register(email: String, password: String) async throws {
+        try await RegisterEndpointService.register(with: email, password: password, dependencies: dependencies)
     }
 }
 
 private enum LoginEndpointService {
-    static func login(with email: String, password: String, dependencies: HasWebService & HasAppConfiguration) -> AnyPublisher<String, Error> {
-        var request = URLRequest(url: dependencies.configuration.apiEnviroment.baseURL.appendingPathComponent("auth/login"))
+    static func login(with email: String, password: String, dependencies: HasWebService & HasAppConfiguration) async throws -> String {
+        let request = URLRequest(url: dependencies.configuration.apiEnviroment.baseURL.appendingPathComponent("auth/login"))
         let body = LoginRequestBody(email: email, password: password)
-        let data: Data
-        do {
-            data = try JSONEncoder().encode(body)
-        } catch {
-            return Fail(error: error).eraseToAnyPublisher()
-        }
-        request.httpBody = data
-        request.httpMethod = "POST"
-        let resource = WebResource<LoginResponse>(request: request)
-        return dependencies.webService.load(resource: resource)
-            .map { response in
-                return response.token
-            }
-            .eraseToAnyPublisher()
+        let loginResponse: LoginResponse = try await dependencies.webService.post(model: body, request: request, authenticate: false).value
+        return loginResponse.token
     }
 
     private struct LoginResponse: Decodable {
@@ -124,24 +109,12 @@ private enum LoginEndpointService {
 }
 
 private enum RegisterEndpointService {
-    static func register(with email: String, password: String, dependencies: HasWebService & HasAppConfiguration) -> AnyPublisher<Void, Error> {
-        var request = URLRequest(url: dependencies.configuration.apiEnviroment.baseURL.appendingPathComponent("register"))
+    static func register(with email: String, password: String, dependencies: HasWebService & HasAppConfiguration) async throws {
+        let request = URLRequest(url: dependencies.configuration.apiEnviroment.baseURL.appendingPathComponent("register"))
+
         let body = RegisterRequestBody(deviceId: "iOS-test", email: email, password: password) // TODO: Device id
-        let data: Data
-        do {
-            data = try JSONEncoder().encode(body)
-        } catch {
-            return Fail(error: error).eraseToAnyPublisher()
-        }
-        request.httpBody = data
-        request.httpMethod = "POST"
-        let resource = WebResource<RegisterResponse>(request: request)
-        return dependencies.webService.load(resource: resource)
-            .map { response in
-                 print("User registered with id: \(response.userId)")
-                 return ()
-            }
-            .eraseToAnyPublisher()
+
+        let _: RegisterResponse = try await dependencies.webService.post(model: body, request: request, authenticate: false).value
     }
 
     private struct RegisterResponse: Decodable {

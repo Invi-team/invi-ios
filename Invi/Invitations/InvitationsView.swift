@@ -28,7 +28,9 @@ struct InvitationsView: View {
                     }
                 case .error:
                     Text("Error occured")
-                    Button("Retry", action: { viewModel.load() })
+                    Button("Retry", action: {
+                        Task { @MainActor in await viewModel.load() }
+                    })
                 }
             }
             .navigationTitle("Invitation")
@@ -36,7 +38,7 @@ struct InvitationsView: View {
                 Button("Logout") { viewModel.logout() }
             }
         }.task {
-            viewModel.load()
+            Task { @MainActor in await viewModel.load() }
         }
     }
 }
