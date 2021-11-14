@@ -191,8 +191,8 @@ struct RegisterView: View {
     }
 }
 
-struct SignUpView_Previews: PreviewProvider {
+struct RegisterView_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterView(viewModel: RegisterViewModel(dependencies: CustomDependencies())) // TODO: Use some mock
+        RegisterView(viewModel: RegisterViewModel(dependencies: CustomDependencies()))
     }
 }

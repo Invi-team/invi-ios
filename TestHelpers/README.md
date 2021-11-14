@@ -1,3 +1,3 @@
 # TestHelpers
 
-A description of this package.
+TestsHelpers defines general mocks and helpers that are handy in a test code. 

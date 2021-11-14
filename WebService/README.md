@@ -1,3 +1,3 @@
 # WebService
 
-A description of this package.
+WebService is a networking layer that works with Rest APIs.

@@ -1,3 +1,3 @@
 # InviAuthenticator
 
-A description of this package.
+InviAuthenticator is a library for maintaining user session in the app.
