@@ -18,7 +18,7 @@ struct RootView: View {
         case .loginWall:
             LoginWallView(viewModel: LoginWallViewModel(dependencies: viewModel.dependencies))
         case .open:
-            InvitationsView(viewModel: InvitationsViewModel(dependencies: viewModel.dependencies))
+            HomeTabView(viewModel: HomeTabViewModel(dependencies: viewModel.dependencies))
         }
     }
 }

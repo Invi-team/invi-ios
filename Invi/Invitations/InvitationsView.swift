@@ -38,12 +38,9 @@ struct InvitationsView: View {
                     })
                 }
             }
-            .navigationTitle("Invitation")
-            .toolbar {
-                Button("Logout") { viewModel.logout() }
-            }
+            .navigationTitle(Strings.Tab.invitations)
         }.task {
-            Task { @MainActor in await viewModel.load() }
+            Task { @MainActor in await viewModel.loadOnce() }
         }
     }
 }

@@ -8,6 +8,10 @@
 import Foundation
 
 enum Strings {
+    enum Tab {
+        static let invitations = "Invitations"
+        static let settings = "Settings"
+    }
     enum Invitations {
         static let description1 = "Together with our families We invite you to join us as we say \"I Do\"!"
         static let description2 = "Please join us for our wedding. Let’s celebrate our happiness!"

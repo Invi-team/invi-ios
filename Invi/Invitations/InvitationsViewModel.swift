@@ -11,7 +11,7 @@ import InviClient
 import CasePaths
 
 final class InvitationsViewModel: ObservableObject {
-    typealias Dependencies = HasInviClient & HasAuthenticator
+    typealias Dependencies = HasInviClient
 
     enum State {
         case initial
@@ -35,6 +35,12 @@ final class InvitationsViewModel: ObservableObject {
     }
 
     @MainActor
+    func loadOnce() async {
+        guard !state.isLoaded else { return }
+        await load()
+    }
+
+    @MainActor
     func load() async {
         if !state.isLoaded {
             state = .loading
@@ -45,10 +51,6 @@ final class InvitationsViewModel: ObservableObject {
         } catch {
             state = .error(error)
         }
-    }
-
-    func logout() {
-        dependencies.authenticator.logout()
     }
 }
 
