@@ -1,5 +1,8 @@
 excluded: # paths to ignore during linting. Takes precedence over `included`.
  - Pods
+ - InviClient/Tests/InviClientTests
+ - WebService/Tests/WebServiceTests
+ - InviTests
 disabled_rules: # rule identifiers to exclude from running
  - trailing_whitespace
  - line_length

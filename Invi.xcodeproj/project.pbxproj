@@ -10,7 +10,12 @@
 		42F2E5B65D52C6B403A87C97 /* Pods_Invi_InviUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 267959D0E72E09B03213F389 /* Pods_Invi_InviUITests.framework */; };
 		5C0D957CA0178529DA2F68E0 /* Pods_InviTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F1D23CB0E681224F7A658A1 /* Pods_InviTests.framework */; };
 		89FDC1ADB6611A83996D764F /* Pods_Invi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B88AB3D3CA7B498B4CB0E481 /* Pods_Invi.framework */; };
-		929049E92736FFD700276C41 /* NavigationHelpers.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929049E82736FFD700276C41 /* NavigationHelpers.swift.swift */; };
+		92318DBF273EBB6D000C0F4C /* CustomDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92318DBE273EBB6D000C0F4C /* CustomDependencies.swift */; };
+		92318DC1273EBD37000C0F4C /* InviDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92318DC0273EBD37000C0F4C /* InviDependencies.swift */; };
+		92318DC3273EC17D000C0F4C /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92318DC2273EC17D000C0F4C /* RootView.swift */; };
+		92318DC5273EC9EF000C0F4C /* InviClient in Frameworks */ = {isa = PBXBuildFile; productRef = 92318DC4273EC9EF000C0F4C /* InviClient */; };
+		928DED802740305E00173BE8 /* InviAuthenticator in Frameworks */ = {isa = PBXBuildFile; productRef = 928DED7F2740305E00173BE8 /* InviAuthenticator */; };
+		929049E92736FFD700276C41 /* NavigationHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929049E82736FFD700276C41 /* NavigationHelpers.swift */; };
 		929049EC2737008F00276C41 /* CasePaths in Frameworks */ = {isa = PBXBuildFile; productRef = 929049EB2737008F00276C41 /* CasePaths */; };
 		929049EE2737E3DF00276C41 /* RegisterSuccessfulView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929049ED2737E3DE00276C41 /* RegisterSuccessfulView.swift */; };
 		9293A48D2656F9E00056F02B /* InviApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A48C2656F9E00056F02B /* InviApp.swift */; };
@@ -20,8 +25,7 @@
 		9293A4972656F9E20056F02B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9293A4952656F9E20056F02B /* LaunchScreen.storyboard */; };
 		9293A4A22656F9E20056F02B /* InviTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4A12656F9E20056F02B /* InviTests.swift */; };
 		9293A4AD2656F9E20056F02B /* InviUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4AC2656F9E20056F02B /* InviUITests.swift */; };
-		9293A4BB265703BC0056F02B /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4BA265703BC0056F02B /* Dependencies.swift */; };
-		9293A4BD265703FB0056F02B /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4BC265703FB0056F02B /* WebService.swift */; };
+		9293A4BB265703BC0056F02B /* LiveDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293A4BA265703BC0056F02B /* LiveDependencies.swift */; };
 		92960B4126715C620021EA47 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92960B4026715C620021EA47 /* LoginView.swift */; };
 		92AB77F6273C193D0080884F /* InvitationDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92AB77F5273C193D0080884F /* InvitationDetailsViewModel.swift */; };
 		92CB3909273831C4001732D0 /* InvitationDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CB3908273831C4001732D0 /* InvitationDetailsView.swift */; };
@@ -31,8 +35,6 @@
 		92D01775267E613D00C36495 /* ActivityIndiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D01774267E613D00C36495 /* ActivityIndiator.swift */; };
 		92E0BC47270A2AA30043986E /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E0BC46270A2AA30043986E /* AppConfiguration.swift */; };
 		92E0BC49270A31BF0043986E /* InvitationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E0BC48270A31BF0043986E /* InvitationsViewModel.swift */; };
-		92E0BC4C270A321D0043986E /* Invitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E0BC4B270A321D0043986E /* Invitation.swift */; };
-		D3A93D432664030400A481BB /* Authenticator .swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A93D422664030400A481BB /* Authenticator .swift */; };
 		D3A93D492664040600A481BB /* LoginWallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A93D482664040600A481BB /* LoginWallView.swift */; };
 		D3A93D51266404B700A481BB /* InviDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A93D50266404B700A481BB /* InviDesign.swift */; };
 /* End PBXBuildFile section */
@@ -60,7 +62,14 @@
 		267959D0E72E09B03213F389 /* Pods_Invi_InviUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Invi_InviUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F36D0B9698DD475121F6A19 /* Pods-InviTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InviTests.debug.xcconfig"; path = "Target Support Files/Pods-InviTests/Pods-InviTests.debug.xcconfig"; sourceTree = "<group>"; };
 		727791CD72AD8360C8E48D90 /* Pods-Invi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Invi.release.xcconfig"; path = "Target Support Files/Pods-Invi/Pods-Invi.release.xcconfig"; sourceTree = "<group>"; };
-		929049E82736FFD700276C41 /* NavigationHelpers.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationHelpers.swift.swift; sourceTree = "<group>"; };
+		92318DBA273EAFD6000C0F4C /* WebService */ = {isa = PBXFileReference; lastKnownFileType = text; path = WebService; sourceTree = SOURCE_ROOT; };
+		92318DBD273EB0F2000C0F4C /* InviClient */ = {isa = PBXFileReference; lastKnownFileType = text; path = InviClient; sourceTree = SOURCE_ROOT; };
+		92318DBE273EBB6D000C0F4C /* CustomDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDependencies.swift; sourceTree = "<group>"; };
+		92318DC0273EBD37000C0F4C /* InviDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviDependencies.swift; sourceTree = "<group>"; };
+		92318DC2273EC17D000C0F4C /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		92318DC8273F2DD1000C0F4C /* TestHelpers */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestHelpers; sourceTree = SOURCE_ROOT; };
+		928DED7E27402D9100173BE8 /* InviAuthenticator */ = {isa = PBXFileReference; lastKnownFileType = text; path = InviAuthenticator; sourceTree = SOURCE_ROOT; };
+		929049E82736FFD700276C41 /* NavigationHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationHelpers.swift; sourceTree = "<group>"; };
 		929049ED2737E3DE00276C41 /* RegisterSuccessfulView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessfulView.swift; sourceTree = "<group>"; };
 		9293A4872656F9E00056F02B /* Invi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Invi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9293A48C2656F9E00056F02B /* InviApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviApp.swift; sourceTree = "<group>"; };
@@ -75,8 +84,7 @@
 		9293A4A82656F9E20056F02B /* InviUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InviUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9293A4AC2656F9E20056F02B /* InviUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviUITests.swift; sourceTree = "<group>"; };
 		9293A4AE2656F9E20056F02B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9293A4BA265703BC0056F02B /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
-		9293A4BC265703FB0056F02B /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
+		9293A4BA265703BC0056F02B /* LiveDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveDependencies.swift; sourceTree = "<group>"; };
 		92960B4026715C620021EA47 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		92AB77F5273C193D0080884F /* InvitationDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationDetailsViewModel.swift; sourceTree = "<group>"; };
 		92CB3908273831C4001732D0 /* InvitationDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationDetailsView.swift; sourceTree = "<group>"; };
@@ -86,10 +94,8 @@
 		92D01774267E613D00C36495 /* ActivityIndiator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndiator.swift; sourceTree = "<group>"; };
 		92E0BC46270A2AA30043986E /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		92E0BC48270A31BF0043986E /* InvitationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationsViewModel.swift; sourceTree = "<group>"; };
-		92E0BC4B270A321D0043986E /* Invitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invitation.swift; sourceTree = "<group>"; };
 		B49D5D5066CC12372E865487 /* Pods-InviTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InviTests.release.xcconfig"; path = "Target Support Files/Pods-InviTests/Pods-InviTests.release.xcconfig"; sourceTree = "<group>"; };
 		B88AB3D3CA7B498B4CB0E481 /* Pods_Invi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Invi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D3A93D422664030400A481BB /* Authenticator .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Authenticator .swift"; sourceTree = "<group>"; };
 		D3A93D482664040600A481BB /* LoginWallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWallView.swift; sourceTree = "<group>"; };
 		D3A93D50266404B700A481BB /* InviDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviDesign.swift; sourceTree = "<group>"; };
 		E3FCCA8D500CE7F6CA4661E0 /* Pods-Invi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Invi.debug.xcconfig"; path = "Target Support Files/Pods-Invi/Pods-Invi.debug.xcconfig"; sourceTree = "<group>"; };
@@ -102,6 +108,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				89FDC1ADB6611A83996D764F /* Pods_Invi.framework in Frameworks */,
+				92318DC5273EC9EF000C0F4C /* InviClient in Frameworks */,
+				928DED802740305E00173BE8 /* InviAuthenticator in Frameworks */,
 				929049EC2737008F00276C41 /* CasePaths in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -148,10 +156,20 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9235EE7B273C928800E4E923 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				92318DC0273EBD37000C0F4C /* InviDependencies.swift */,
+				9293A4BA265703BC0056F02B /* LiveDependencies.swift */,
+				92318DBE273EBB6D000C0F4C /* CustomDependencies.swift */,
+			);
+			path = Dependencies;
+			sourceTree = "<group>";
+		};
 		929049E72736FFC000276C41 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				929049E82736FFD700276C41 /* NavigationHelpers.swift.swift */,
+				929049E82736FFD700276C41 /* NavigationHelpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -181,21 +199,23 @@
 		9293A4892656F9E00056F02B /* Invi */ = {
 			isa = PBXGroup;
 			children = (
+				928DED7E27402D9100173BE8 /* InviAuthenticator */,
+				92318DC8273F2DD1000C0F4C /* TestHelpers */,
+				92318DBD273EB0F2000C0F4C /* InviClient */,
+				92318DBA273EAFD6000C0F4C /* WebService */,
+				9235EE7B273C928800E4E923 /* Dependencies */,
 				D3A93D47266403DA00A481BB /* Login Wall Flow */,
 				9293A48C2656F9E00056F02B /* InviApp.swift */,
+				92318DC2273EC17D000C0F4C /* RootView.swift */,
+				92E0BC46270A2AA30043986E /* AppConfiguration.swift */,
 				92E0BC4A270A31DD0043986E /* Invitations */,
 				92AB77F4273C18F50080884F /* Invitation Details */,
 				9293A4902656F9E20056F02B /* Assets.xcassets */,
 				9293A4952656F9E20056F02B /* LaunchScreen.storyboard */,
 				9293A4982656F9E20056F02B /* Info.plist */,
 				9293A4922656F9E20056F02B /* Preview Content */,
-				9293A4BA265703BC0056F02B /* Dependencies.swift */,
-				9293A4BC265703FB0056F02B /* WebService.swift */,
-				92E0BC46270A2AA30043986E /* AppConfiguration.swift */,
-				D3A93D422664030400A481BB /* Authenticator .swift */,
 				D3A93D50266404B700A481BB /* InviDesign.swift */,
 				92D01774267E613D00C36495 /* ActivityIndiator.swift */,
-				92E0BC4D270A32220043986E /* Model */,
 				929049E72736FFC000276C41 /* Helpers */,
 				92CB390C27388820001732D0 /* Strings.swift */,
 			);
@@ -247,14 +267,6 @@
 			path = Invitations;
 			sourceTree = "<group>";
 		};
-		92E0BC4D270A32220043986E /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				92E0BC4B270A321D0043986E /* Invitation.swift */,
-			);
-			name = Model;
-			sourceTree = "<group>";
-		};
 		D3A93D47266403DA00A481BB /* Login Wall Flow */ = {
 			isa = PBXGroup;
 			children = (
@@ -286,6 +298,8 @@
 			name = Invi;
 			packageProductDependencies = (
 				929049EB2737008F00276C41 /* CasePaths */,
+				92318DC4273EC9EF000C0F4C /* InviClient */,
+				928DED7F2740305E00173BE8 /* InviAuthenticator */,
 			);
 			productName = Invi;
 			productReference = 9293A4872656F9E00056F02B /* Invi.app */;
@@ -492,25 +506,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				929049E92736FFD700276C41 /* NavigationHelpers.swift.swift in Sources */,
+				929049E92736FFD700276C41 /* NavigationHelpers.swift in Sources */,
 				92960B4126715C620021EA47 /* LoginView.swift in Sources */,
+				92318DC1273EBD37000C0F4C /* InviDependencies.swift in Sources */,
 				92AB77F6273C193D0080884F /* InvitationDetailsViewModel.swift in Sources */,
 				92E0BC49270A31BF0043986E /* InvitationsViewModel.swift in Sources */,
-				92E0BC4C270A321D0043986E /* Invitation.swift in Sources */,
 				D3A93D492664040600A481BB /* LoginWallView.swift in Sources */,
-				9293A4BB265703BC0056F02B /* Dependencies.swift in Sources */,
+				9293A4BB265703BC0056F02B /* LiveDependencies.swift in Sources */,
 				9293A48D2656F9E00056F02B /* InviApp.swift in Sources */,
 				92D01775267E613D00C36495 /* ActivityIndiator.swift in Sources */,
 				92E0BC47270A2AA30043986E /* AppConfiguration.swift in Sources */,
-				9293A4BD265703FB0056F02B /* WebService.swift in Sources */,
+				92318DC3273EC17D000C0F4C /* RootView.swift in Sources */,
 				92CB390D27388820001732D0 /* Strings.swift in Sources */,
 				92CB5822266D492F0021DAAA /* RegisterView.swift in Sources */,
 				929049EE2737E3DF00276C41 /* RegisterSuccessfulView.swift in Sources */,
 				92CB390B273837B1001732D0 /* InvitationRowView.swift in Sources */,
 				92CB3909273831C4001732D0 /* InvitationDetailsView.swift in Sources */,
+				92318DBF273EBB6D000C0F4C /* CustomDependencies.swift in Sources */,
 				9293A48F2656F9E00056F02B /* InvitationsView.swift in Sources */,
 				D3A93D51266404B700A481BB /* InviDesign.swift in Sources */,
-				D3A93D432664030400A481BB /* Authenticator .swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -854,6 +868,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		92318DC4273EC9EF000C0F4C /* InviClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = InviClient;
+		};
+		928DED7F2740305E00173BE8 /* InviAuthenticator */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = InviAuthenticator;
+		};
 		929049EB2737008F00276C41 /* CasePaths */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 929049EA2737008F00276C41 /* XCRemoteSwiftPackageReference "swift-case-paths" */;

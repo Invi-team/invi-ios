@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import InviAuthenticator
 
 class LoginViewModel: Identifiable, ObservableObject {
     typealias Dependencies = HasAuthenticator
@@ -33,6 +34,7 @@ class LoginViewModel: Identifiable, ObservableObject {
     enum ValidationError: Error {
         case invalidCredentials
         case serverFailure
+        case keychainProblem
     }
 
     private let dependencies: Dependencies
@@ -45,10 +47,11 @@ class LoginViewModel: Identifiable, ObservableObject {
         password = "123456"
     }
 
+    @MainActor
     func loginTapped() async {
         state = .evaluating
         do {
-            try await dependencies.authenticator.login(email: email, password: password)
+            try await dependencies.authenticator.login(email, password)
             onDismiss()
             state = .loggedIn
         } catch {
@@ -59,6 +62,9 @@ class LoginViewModel: Identifiable, ObservableObject {
             case .other(let error):
                 debugPrint("Login failed with error: \(error)")
                 self.state = .error(.serverFailure)
+            case .keychain(let error):
+                debugPrint("Login failed with keychain error: \(error)")
+                self.state = .error(.keychainProblem)
             case .notLoggedOut:
                 assertionFailure()
             }
@@ -180,6 +186,6 @@ private extension LoginViewModel.State {
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView(viewModel: LoginViewModel(dependencies: Dependencies()))
+        LoginView(viewModel: LoginViewModel(dependencies: CustomDependencies()))
     }
 }

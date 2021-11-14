@@ -8,17 +8,7 @@
 import Foundation
 
 struct AppConfiguration {
-    let apiEnviroment: ApiEnvironment = .prod
     let buildConfiguration: BuildConfiguration = .live
-}
-
-enum ApiEnvironment: String {
-    case stage
-    case prod
-
-    var baseURL: URL {
-        return URL(string: "https://\(rawValue).invi.click/api/v1/")!
-    }
 }
 
 enum BuildConfiguration: Equatable {
