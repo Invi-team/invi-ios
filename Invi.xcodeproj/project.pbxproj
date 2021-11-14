@@ -15,6 +15,8 @@
 		92318DC3273EC17D000C0F4C /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92318DC2273EC17D000C0F4C /* RootView.swift */; };
 		92318DC5273EC9EF000C0F4C /* InviClient in Frameworks */ = {isa = PBXBuildFile; productRef = 92318DC4273EC9EF000C0F4C /* InviClient */; };
 		9234077327419AFC00ADF666 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9234077227419AFC00ADF666 /* Images.swift */; };
+		923407792741A6B200ADF666 /* HomeTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923407782741A6B200ADF666 /* HomeTabView.swift */; };
+		9234077C2741ABB300ADF666 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9234077B2741ABB300ADF666 /* SettingsView.swift */; };
 		928DED802740305E00173BE8 /* InviAuthenticator in Frameworks */ = {isa = PBXBuildFile; productRef = 928DED7F2740305E00173BE8 /* InviAuthenticator */; };
 		929049E92736FFD700276C41 /* NavigationHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929049E82736FFD700276C41 /* NavigationHelpers.swift */; };
 		929049EC2737008F00276C41 /* CasePaths in Frameworks */ = {isa = PBXBuildFile; productRef = 929049EB2737008F00276C41 /* CasePaths */; };
@@ -70,6 +72,8 @@
 		92318DC2273EC17D000C0F4C /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		92318DC8273F2DD1000C0F4C /* TestHelpers */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestHelpers; sourceTree = SOURCE_ROOT; };
 		9234077227419AFC00ADF666 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
+		923407782741A6B200ADF666 /* HomeTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabView.swift; sourceTree = "<group>"; };
+		9234077B2741ABB300ADF666 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		928DED7E27402D9100173BE8 /* InviAuthenticator */ = {isa = PBXFileReference; lastKnownFileType = text; path = InviAuthenticator; sourceTree = SOURCE_ROOT; };
 		929049E82736FFD700276C41 /* NavigationHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationHelpers.swift; sourceTree = "<group>"; };
 		929049ED2737E3DE00276C41 /* RegisterSuccessfulView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessfulView.swift; sourceTree = "<group>"; };
@@ -158,6 +162,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9234077A2741AB9900ADF666 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				9234077B2741ABB300ADF666 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		9235EE7B273C928800E4E923 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
@@ -209,8 +221,10 @@
 				D3A93D47266403DA00A481BB /* Login Wall Flow */,
 				9293A48C2656F9E00056F02B /* InviApp.swift */,
 				92318DC2273EC17D000C0F4C /* RootView.swift */,
+				923407782741A6B200ADF666 /* HomeTabView.swift */,
 				92E0BC46270A2AA30043986E /* AppConfiguration.swift */,
 				92E0BC4A270A31DD0043986E /* Invitations */,
+				9234077A2741AB9900ADF666 /* Settings */,
 				92AB77F4273C18F50080884F /* Invitation Details */,
 				9293A4902656F9E20056F02B /* Assets.xcassets */,
 				9293A4952656F9E20056F02B /* LaunchScreen.storyboard */,
@@ -513,6 +527,7 @@
 				92960B4126715C620021EA47 /* LoginView.swift in Sources */,
 				92318DC1273EBD37000C0F4C /* InviDependencies.swift in Sources */,
 				92AB77F6273C193D0080884F /* InvitationDetailsViewModel.swift in Sources */,
+				923407792741A6B200ADF666 /* HomeTabView.swift in Sources */,
 				92E0BC49270A31BF0043986E /* InvitationsViewModel.swift in Sources */,
 				D3A93D492664040600A481BB /* LoginWallView.swift in Sources */,
 				9293A4BB265703BC0056F02B /* LiveDependencies.swift in Sources */,
@@ -529,6 +544,7 @@
 				9234077327419AFC00ADF666 /* Images.swift in Sources */,
 				9293A48F2656F9E00056F02B /* InvitationsView.swift in Sources */,
 				D3A93D51266404B700A481BB /* InviDesign.swift in Sources */,
+				9234077C2741ABB300ADF666 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
