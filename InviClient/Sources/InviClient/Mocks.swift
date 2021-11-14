@@ -52,4 +52,15 @@ extension InviClient {
             putGuestStatus: { _, _ in throw Error.fakeError }
         )
     }
+
+    public static var empty: Self {
+        enum Error: Swift.Error {
+            case fakeError
+        }
+        return InviClient(
+            invitations: { [] },
+            invitation: { _ in throw Error.fakeError },
+            putGuestStatus: { _, _ in throw Error.fakeError }
+        )
+    }
 }

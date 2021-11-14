@@ -44,7 +44,7 @@ struct InvitationRowView: View {
             },
             label: {
                 VStack(alignment: .leading, spacing: 8) {
-                    Image(uiImage: viewModel.invitation.photo)
+                    Image(viewModel.invitation.photoName)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                     Text(viewModel.invitation.eventName)
@@ -60,18 +60,18 @@ struct InvitationRowView: View {
 }
 
 private extension Invitation {
-    var photo: UIImage {
+    var photoName: String {
         switch photoId {
         case .some(2):
-            return UIImage(named: "invitation_image_type_2")!
+            return Images.invitationImage2
         case .some(3):
-            return UIImage(named: "invitation_image_type_3")!
+            return Images.invitationImage3
         case .some(4):
-            return UIImage(named: "invitation_image_type_4")!
+            return Images.invitationImage4
         case .some(5):
-            return UIImage(named: "invitation_image_type_5")!
+            return Images.invitationImage5
         default:
-            return UIImage(named: "invitation_image_type_1")!
+            return Images.invitationImage1
         }
     }
 

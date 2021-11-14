@@ -72,9 +72,9 @@ struct LoginWallView: View {
             ZStack {
                 InviDesign.Colors.Brand.light.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                 VStack(alignment: .center) {
-                    Image("invi-logo")
+                    Image(Images.inviLogo)
                     Spacer()
-                    Image("invi-envelope")
+                    Image(Images.inviEnvelope)
                     Spacer()
                     Button("Sign in with e-mail") {
                         viewModel.loginTapped()

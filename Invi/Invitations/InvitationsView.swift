@@ -22,9 +22,14 @@ struct InvitationsView: View {
                 case .loading:
                     ProgressView()
                 case .loaded(let invitations):
-                    List {
-                        ForEach(invitations) { viewModel in
-                            InvitationRowView(viewModel: viewModel)
+                    if invitations.isEmpty {
+                        NoInvitationsView()
+                        Spacer()
+                    } else {
+                        List {
+                            ForEach(invitations) { viewModel in
+                                InvitationRowView(viewModel: viewModel)
+                            }
                         }
                     }
                 case .error:
@@ -44,11 +49,26 @@ struct InvitationsView: View {
     }
 }
 
+struct NoInvitationsView: View {
+    var body: some View {
+        VStack(spacing: 16) {
+            Image(Images.loveLetter)
+            Text("Add first invitation")
+                .font(.title)
+            Text("Add the invitation you've received using the invitation code.")
+                .font(.body)
+                .fontWeight(.light)
+                .multilineTextAlignment(.center)
+        }
+        .padding(.top, 44)
+    }
+}
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = InvitationsViewModel(
             dependencies: CustomDependencies(
-                inviClient: .happyPath
+                inviClient: .empty
             )
         )
         InvitationsView(viewModel: viewModel)
