@@ -22,6 +22,7 @@ public struct Authenticator {
     public enum LoginError: Swift.Error {
         case invalidCredentials
         case notLoggedOut
+        case keychain(Error)
         case other(Error)
     }
 

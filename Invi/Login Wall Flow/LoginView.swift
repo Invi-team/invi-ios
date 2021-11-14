@@ -34,6 +34,7 @@ class LoginViewModel: Identifiable, ObservableObject {
     enum ValidationError: Error {
         case invalidCredentials
         case serverFailure
+        case keychainProblem
     }
 
     private let dependencies: Dependencies
@@ -61,6 +62,9 @@ class LoginViewModel: Identifiable, ObservableObject {
             case .other(let error):
                 debugPrint("Login failed with error: \(error)")
                 self.state = .error(.serverFailure)
+            case .keychain(let error):
+                debugPrint("Login failed with keychain error: \(error)")
+                self.state = .error(.keychainProblem)
             case .notLoggedOut:
                 assertionFailure()
             }

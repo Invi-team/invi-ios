@@ -13,9 +13,10 @@ import CasePaths
 extension Authenticator {
     public static func live(environment: ApiEnvironment) -> Self {
         let webService = WebService()
+        let keychainStorage = KeychainStorage()
 
         let state: CurrentValueSubject<Authenticator.State, Never>
-        if let storedToken = UserDefaults.standard.string(forKey: "token") {
+        if let storedToken = try? keychainStorage.getToken() {
             state = CurrentValueSubject(.loggedIn(token: storedToken))
         } else {
             state = CurrentValueSubject(.loggedOut)
@@ -32,11 +33,13 @@ extension Authenticator {
                     let request = URLRequest(url: environment.baseURL.appendingPathComponent("auth/login"))
                     let body = LoginRequestBody(email: email, password: password)
                     let loginResponse: LoginResponse = try await webService.post(model: body, request: request).value
+                    try keychainStorage.add(token: loginResponse.token)
                     state.value = .loggedIn(token: loginResponse.token)
-
                 } catch {
                     if let error = error as? WebService.Error, case let .httpError(statusCode) = error, statusCode == 400 {
                         throw Authenticator.LoginError.invalidCredentials
+                    } else if let error = error as? KeychainStorage.Error {
+                        throw Authenticator.LoginError.keychain(error)
                     } else {
                         throw Authenticator.LoginError.other(error)
                     }
@@ -49,7 +52,11 @@ extension Authenticator {
             },
             logout: {
                 state.value = .loggedOut
-                UserDefaults.standard.removeObject(forKey: "token")
+                do {
+                    try keychainStorage.removeToken()
+                } catch {
+                    debugPrint(error)
+                }
             })
     }
 }

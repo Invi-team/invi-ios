@@ -20,7 +20,7 @@ struct InvitationsView: View {
                 case .initial:
                     EmptyView()
                 case .loading:
-                    ActivityIndicator(style: .large)
+                    ProgressView()
                 case .loaded(let invitations):
                     List {
                         ForEach(invitations) { viewModel in
