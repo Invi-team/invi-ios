@@ -24,7 +24,6 @@ struct InvitationsView: View {
                 case .loaded(let invitations):
                     if invitations.isEmpty {
                         NoInvitationsView()
-                        Spacer()
                     } else {
                         List {
                             ForEach(invitations) { viewModel in
@@ -61,6 +60,7 @@ struct NoInvitationsView: View {
                 .multilineTextAlignment(.center)
         }
         .padding(.top, 44)
+        Spacer()
     }
 }
 
