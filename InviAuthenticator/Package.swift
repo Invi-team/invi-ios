@@ -9,7 +9,7 @@ let package = Package(
     products: [
         .library(
             name: "InviAuthenticator",
-            targets: ["InviAuthenticator"]),
+            targets: ["InviAuthenticator"])
     ],
     dependencies: [
         .package(url: "https://github.com/pointfreeco/swift-case-paths.git", from: "0.4.0"),

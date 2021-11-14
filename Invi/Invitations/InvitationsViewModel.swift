@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import InviClient
+import CasePaths
 
 final class InvitationsViewModel: ObservableObject {
     typealias Dependencies = HasInviClient & HasAuthenticator
@@ -35,7 +36,9 @@ final class InvitationsViewModel: ObservableObject {
 
     @MainActor
     func load() async {
-        state = .loading
+        if !state.isLoaded {
+            state = .loading
+        }
         do {
             let invitations = try await dependencies.inviClient.invitations()
             state = .loaded(invitations.map { InvitationRowViewModel(invitation: $0, dependencies: dependencies) })
@@ -46,5 +49,11 @@ final class InvitationsViewModel: ObservableObject {
 
     func logout() {
         dependencies.authenticator.logout()
+    }
+}
+
+extension InvitationsViewModel.State {
+    var isLoaded: Bool {
+        (/InvitationsViewModel.State.loaded).extract(from: self) != nil
     }
 }
