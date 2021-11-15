@@ -34,7 +34,7 @@ private class FakeURLSession: URLSessionType {
         case .some(.failure(let statusCode)):
             return (Data(), HTTPURLResponse(url: url, statusCode: statusCode, httpVersion: nil, headerFields: request.allHTTPHeaderFields)!)
         case .none:
-            fatalError("Result not defined not a given url. ")
+            fatalError("Result not defined for a given url. ")
         }
     }
 }

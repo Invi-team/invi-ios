@@ -8,12 +8,13 @@
 import Foundation
 
 public protocol WebServiceType {
-    func get<T: Decodable>(request: URLRequest) async throws -> Task<T, Swift.Error>
-    func post<Model: Encodable, Response: Decodable>(model: Model, request: URLRequest) async throws -> Task<Response, Swift.Error>
-    func put<Model: Encodable, Response: Decodable>(model: Model, request: URLRequest) async throws -> Task<Response, Swift.Error>
+    func get<T: Decodable>(request: URLRequest) -> Task<T, Swift.Error>
+    func post<Model: Encodable, Response: Decodable>(model: Model, request: URLRequest) -> Task<Response, Swift.Error>
+    func put<Model: Encodable, Response: Decodable>(model: Model, request: URLRequest) -> Task<Response, Swift.Error>
 
     // TODO: Remove when API stop returning empty response
-    func put<Model: Encodable>(model: Model, request: URLRequest) async throws -> Task<Void, Swift.Error>
+    func put<Model: Encodable>(model: Model, request: URLRequest) -> Task<Void, Swift.Error>
+    func post<Model: Encodable>(model: Model?, request: URLRequest) -> Task<Void, Swift.Error>
 }
 
 public protocol URLSessionType {
@@ -36,40 +37,59 @@ public final class WebService: WebServiceType {
         case httpError(Int)
     }
 
-    public func get<T: Decodable>(request: URLRequest) async throws -> Task<T, Swift.Error> {
+    public func get<T: Decodable>(request: URLRequest) -> Task<T, Swift.Error> {
         Task {
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-            let data: Data
-            do {
-                data = try await load(request: request).value
+            switch await load(request: request).result {
+            case .success(let data):
+                let decoder = JSONDecoder()
+                decoder.dateDecodingStrategy = .iso8601
                 return try decoder.decode(T.self, from: data)
-            } catch {
+            case .failure(let error):
                 debugPrint(error)
                 throw error
             }
         }
     }
 
-    public func post<Model: Encodable, Response: Decodable>(model: Model, request: URLRequest) async throws -> Task<Response, Swift.Error> {
-        try await putOrPost(method: .post, model: model, request: request)
+    public func post<Model: Encodable, Response: Decodable>(model: Model, request: URLRequest) -> Task<Response, Swift.Error> {
+        putOrPost(method: .post, model: model, request: request)
     }
 
-    public func put<Model: Encodable, Response: Decodable>(model: Model, request: URLRequest) async throws -> Task<Response, Swift.Error> {
-        try await putOrPost(method: .put, model: model, request: request)
+    public func put<Model: Encodable, Response: Decodable>(model: Model, request: URLRequest) -> Task<Response, Swift.Error> {
+        putOrPost(method: .put, model: model, request: request)
     }
 
-    public func put<Model: Encodable>(model: Model, request: URLRequest) async throws -> Task<Void, Swift.Error> {
+    public func put<Model: Encodable>(model: Model, request: URLRequest) -> Task<Void, Swift.Error> {
         Task {
             let data = try JSONEncoder().encode(model)
             var request = request
             request.httpMethod = "PUT"
             request.httpBody = data
 
-            do {
-                _ = try await load(request: request)
-            } catch {
-                debugPrint(error)
+            switch await load(request: request).result {
+            case .success:
+                debugPrint("Success")
+                return ()
+            case .failure(let error):
+                debugPrint("Failure \(error)")
+                throw error
+            }
+        }
+    }
+
+    public func post<Model: Encodable>(model: Model?, request: URLRequest) -> Task<Void, Swift.Error> {
+        Task {
+            let data = try model.flatMap { try JSONEncoder().encode($0) }
+            var request = request
+            request.httpMethod = "POST"
+            data.flatMap { request.httpBody = $0 }
+
+            switch await load(request: request).result {
+            case .success:
+                debugPrint("Success")
+                return ()
+            case .failure(let error):
+                debugPrint("Failure \(error)")
                 throw error
             }
         }
@@ -79,32 +99,33 @@ public final class WebService: WebServiceType {
         case post = "POST", put = "PUT"
     }
 
-    private func putOrPost<Model: Encodable, Response: Decodable>(method: PostOrPut, model: Model, request: URLRequest) async throws -> Task<Response, Swift.Error> {
+    private func putOrPost<Model: Encodable, Response: Decodable>(method: PostOrPut, model: Model, request: URLRequest) -> Task<Response, Swift.Error> {
         Task {
             let data = try JSONEncoder().encode(model)
             var request = request
             request.httpMethod = method.rawValue
             request.httpBody = data
 
-            let responseData: Data
-            do {
-                responseData = try await load(request: request).value
+            switch await load(request: request).result {
+            case .success(let responseData):
                 return try JSONDecoder().decode(Response.self, from: responseData)
-            } catch {
+            case .failure(let error):
                 debugPrint(error)
                 throw error
             }
         }
     }
 
-    private func load(request: URLRequest) async throws -> Task<Data, Swift.Error> {
+    private func load(request: URLRequest) -> Task<Data, Swift.Error> {
         Task {
+            try Task.checkCancellation()
             debugPrint("Loading request with url: \(request.url!.absoluteString)") // TODO: Remove when logger in place
             var request = request
             if let token = userToken() {
                 request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             }
             let (data, response) = try await session.data(for: request, delegate: nil)
+            try Task.checkCancellation()
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw Error.invalidResponse
             }

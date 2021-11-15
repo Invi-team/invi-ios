@@ -11,15 +11,18 @@ public struct InviClient {
     public var invitations: () async throws -> [Invitation]
     public var invitation: (_ id: String) async throws -> Invitation
     public var putGuestStatus: (_ guestId: String, _ status: Guest.Status) async throws -> Void
+    public var redeemInvitation: (_ code: Int) async throws -> Void
 
     public init(
         invitations: @escaping () async throws -> [Invitation],
         invitation: @escaping  (_ id: String) async throws -> Invitation,
-        putGuestStatus: @escaping  (_ guestId: String, _ status: Guest.Status) async throws -> Void
+        putGuestStatus: @escaping  (_ guestId: String, _ status: Guest.Status) async throws -> Void,
+        redeemInvitation: @escaping (_ code: Int) async throws -> Void
     ) {
         self.invitations = invitations
         self.invitation = invitation
         self.putGuestStatus = putGuestStatus
+        self.redeemInvitation = redeemInvitation
     }
 }
 

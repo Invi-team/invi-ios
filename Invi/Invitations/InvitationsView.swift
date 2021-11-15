@@ -39,8 +39,38 @@ struct InvitationsView: View {
                 }
             }
             .navigationTitle(Strings.Tab.invitations)
-        }.task {
+            .toolbar {
+                ToolbarItem {
+                    Button {
+                        viewModel.addButtonTapped()
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+        }
+        .task {
             Task { @MainActor in await viewModel.loadOnce() }
+        }
+        .sheet(unwrap: $viewModel.route, case: /InvitationsViewModel.Route.add) { addViewModel in
+            NavigationView {
+                AddInvitationView(viewModel: addViewModel.wrappedValue)
+                    .onReceive(addViewModel.wrappedValue.$state) { state in
+                        if state == .success {
+                            Task {
+                                await viewModel.load()
+                            }
+                        }
+                    }
+                    .toolbar {
+                        ToolbarItem {
+                            Button("Cancel") {
+                                viewModel.cancelButtonTapped()
+                            }
+                        }
+                    }
+                    .navigationTitle("Add invitation")
+            }
         }
     }
 }
