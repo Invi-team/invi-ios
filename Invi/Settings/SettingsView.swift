@@ -20,8 +20,9 @@ class SettingsViewModel: ObservableObject {
 
         Task { @MainActor in
             for await state in dependencies.authenticator.state.values {
-                guard case .loggedIn(_, let user) = state else { break }
-                self.user = user
+                if case .loggedIn(_, let user) = state {
+                    self.user = user
+                }
             }
         }
     }
