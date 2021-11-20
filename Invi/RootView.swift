@@ -43,17 +43,17 @@ final class RootViewModel: ObservableObject {
 
     init(dependencies: InviDependencies) {
         self.dependencies = dependencies
-        state = Self.state(for: dependencies.authenticator.state.value, dependencies: dependencies)
+        state = Self.rootState(for: dependencies.authenticator.state.value)
         observation = dependencies.authenticator.state
             .removeDuplicates()
             .print()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
-                self?.state = Self.state(for: state, dependencies: dependencies)
+                self?.state = Self.rootState(for: state)
             }
     }
 
-    private static func state(for authenticatorState: Authenticator.State, dependencies: InvitationsViewModel.Dependencies) -> RootState {
+    private static func rootState(for authenticatorState: Authenticator.State) -> RootState {
         switch authenticatorState {
         case .loggedOut:
             return .loginWall

@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 public struct Authenticator {
     public var state: CurrentValueSubject<Authenticator.State, Never>
@@ -15,7 +16,7 @@ public struct Authenticator {
     public var logout: () -> Void
 
     public enum State: Equatable {
-        case loggedIn(token: String)
+        case loggedIn(token: String, user: User?)
         case loggedOut
     }
 
@@ -27,11 +28,18 @@ public struct Authenticator {
     }
 
     public enum ApiEnvironment: String {
-        case stage
         case prod
+        case stage = "dev"
 
         var baseURL: URL {
             return URL(string: "https://\(rawValue).invi.click/api/v1/")!
         }
     }
+}
+
+public struct User: Equatable, Codable {
+    public let id: String
+    public let email: String
+    public let name: String?
+    public let surname: String?
 }

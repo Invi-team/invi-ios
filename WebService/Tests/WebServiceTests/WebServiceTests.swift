@@ -40,7 +40,7 @@ final class WebServiceTests: XCTestCase {
 
         // Assert
         let error = result.error as! WebService.Error
-        XCTAssertEqual(error, WebService.Error.httpError(503))
+        XCTAssertEqual(error, WebService.Error.httpError(503, metadata: []))
     }
 
     func testPostWithResponse_whenSuccess() async throws {
@@ -67,7 +67,7 @@ final class WebServiceTests: XCTestCase {
 
         // Assert
         let error = result.error as! WebService.Error
-        XCTAssertEqual(error, WebService.Error.httpError(404))
+        XCTAssertEqual(error, WebService.Error.httpError(404, metadata: []))
     }
 
     func testPostWithEmptyResponse_whenSuccess() async throws {
@@ -89,7 +89,7 @@ final class WebServiceTests: XCTestCase {
 
         // Assert
         let error = result.error as! WebService.Error
-        XCTAssertEqual(error, WebService.Error.httpError(404))
+        XCTAssertEqual(error, WebService.Error.httpError(404, metadata: []))
     }
 
     func testPutWithResponse_whenSuccess() async throws {
@@ -116,7 +116,7 @@ final class WebServiceTests: XCTestCase {
 
         // Assert
         let error = result.error as! WebService.Error
-        XCTAssertEqual(error, WebService.Error.httpError(404))
+        XCTAssertEqual(error, WebService.Error.httpError(404, metadata: []))
     }
 
     func testPutWithEmptyResponse_whenSuccess() async throws {
@@ -138,6 +138,6 @@ final class WebServiceTests: XCTestCase {
 
         // Assert
         let error = result.error as! WebService.Error
-        XCTAssertEqual(error, WebService.Error.httpError(404))
+        XCTAssertEqual(error, WebService.Error.httpError(404, metadata: []))
     }
 }

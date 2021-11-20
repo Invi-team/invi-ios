@@ -64,6 +64,7 @@ final class InvitationsViewModel: ObservableObject {
 
 extension InvitationsViewModel.State {
     var isLoaded: Bool {
-        (/InvitationsViewModel.State.loaded).extract(from: self) != nil
+        guard case .loaded = self else { return false }
+        return true
     }
 }

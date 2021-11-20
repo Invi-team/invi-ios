@@ -27,8 +27,8 @@ public struct InviClient {
 }
 
 public enum ApiEnvironment: String {
-    case stage
     case prod
+    case stage = "dev"
 
     public var baseURL: URL {
         return URL(string: "https://\(rawValue).invi.click/api/v1/")!

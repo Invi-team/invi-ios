@@ -11,15 +11,36 @@ import WebService
 import CasePaths
 
 extension Authenticator {
+    // swiftlint:disable:next function_body_length
     public static func live(environment: ApiEnvironment) -> Self {
         let webService = WebService()
         let keychainStorage = KeychainStorage()
 
         let state: CurrentValueSubject<Authenticator.State, Never>
         if let storedToken = try? keychainStorage.getToken() {
-            state = CurrentValueSubject(.loggedIn(token: storedToken))
+            state = CurrentValueSubject(.loggedIn(token: storedToken, user: nil))
         } else {
             state = CurrentValueSubject(.loggedOut)
+        }
+
+        @Sendable func user(for token: String) async throws -> User {
+            let url = environment.baseURL.appendingPathComponent("user")
+            var request = URLRequest(url: url)
+            request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            return try await webService.get(request: request).value
+        }
+
+        Task { @MainActor in
+            for await currentState in state.eraseToAnyPublisher().values {
+                if case .loggedIn(let token, let currentUser) = currentState, currentUser == nil {
+                    do {
+                        let user = try await user(for: token)
+                        state.value = .loggedIn(token: token, user: user)
+                    } catch {
+                        debugPrint("Failed fetching User with error: \(error)")
+                    }
+                }
+            }
         }
 
         return Authenticator(
@@ -34,9 +55,9 @@ extension Authenticator {
                     let body = LoginRequestBody(email: email, password: password)
                     let loginResponse: LoginResponse = try await webService.post(model: body, request: request).value
                     try keychainStorage.add(token: loginResponse.token)
-                    state.value = .loggedIn(token: loginResponse.token)
+                    state.value = .loggedIn(token: loginResponse.token, user: nil)
                 } catch {
-                    if let error = error as? WebService.Error, case let .httpError(statusCode) = error, statusCode == 400 {
+                    if let error = error as? WebService.Error, case let .httpError(statusCode, _) = error, statusCode == 400 {
                         throw Authenticator.LoginError.invalidCredentials
                     } else if let error = error as? KeychainStorage.Error {
                         throw Authenticator.LoginError.keychain(error)
@@ -57,7 +78,8 @@ extension Authenticator {
                 } catch {
                     debugPrint(error)
                 }
-            })
+            }
+        )
     }
 }
 
@@ -86,6 +108,7 @@ extension Authenticator.State {
     }
 
     public var token: String? {
-        (/Authenticator.State.loggedIn).extract(from: self)
+        guard case .loggedIn(let token, _) = self else { return nil }
+        return token
     }
 }
