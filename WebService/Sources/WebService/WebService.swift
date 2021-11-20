@@ -34,7 +34,7 @@ public final class WebService: WebServiceType {
 
     public enum Error: Equatable, Swift.Error {
         case invalidResponse
-        case httpError(Int)
+        case httpError(Int, metadata: [String])
     }
 
     public func get<T: Decodable>(request: URLRequest) -> Task<T, Swift.Error> {
@@ -105,6 +105,7 @@ public final class WebService: WebServiceType {
             var request = request
             request.httpMethod = method.rawValue
             request.httpBody = data
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
             switch await load(request: request).result {
             case .success(let responseData):
@@ -114,6 +115,11 @@ public final class WebService: WebServiceType {
                 throw error
             }
         }
+    }
+
+    private struct ErrorResponse: Decodable {
+        let code: Int
+        let metadata: [String]?
     }
 
     private func load(request: URLRequest) -> Task<Data, Swift.Error> {
@@ -130,7 +136,9 @@ public final class WebService: WebServiceType {
                 throw Error.invalidResponse
             }
             guard 200..<400 ~= httpResponse.statusCode else {
-                throw Error.httpError(httpResponse.statusCode)
+                let errorResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data)
+                let metadata = errorResponse?.metadata ?? []
+                throw Error.httpError(httpResponse.statusCode, metadata: metadata)
             }
             return data
         }
