@@ -10,8 +10,9 @@ import Combine
 import InviClient
 import CasePaths
 
+@MainActor
 final class InvitationsViewModel: ObservableObject {
-    typealias Dependencies = HasInviClient
+    typealias Dependencies = HasInviClient & AddInvitationViewModel.Dependencies
 
     enum State {
         case initial
@@ -22,6 +23,7 @@ final class InvitationsViewModel: ObservableObject {
 
     enum Route {
         case details(Invitation)
+        case add(AddInvitationViewModel)
     }
 
     @Published var state: State = .initial
@@ -34,13 +36,11 @@ final class InvitationsViewModel: ObservableObject {
         self.dependencies = dependencies
     }
 
-    @MainActor
     func loadOnce() async {
         guard !state.isLoaded else { return }
         await load()
     }
 
-    @MainActor
     func load() async {
         if !state.isLoaded {
             state = .loading
@@ -51,6 +51,14 @@ final class InvitationsViewModel: ObservableObject {
         } catch {
             state = .error(error)
         }
+    }
+
+    func addButtonTapped() {
+        route = .add(AddInvitationViewModel(dependencies: dependencies))
+    }
+
+    func cancelButtonTapped() {
+        route = nil
     }
 }
 

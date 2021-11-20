@@ -38,7 +38,8 @@ extension InviClient {
             invitation: { _ in
                 return firstInvitation
             },
-            putGuestStatus: { _, _ in }
+            putGuestStatus: { _, _ in },
+            redeemInvitation: { _ in }
         )
     }
 
@@ -49,7 +50,8 @@ extension InviClient {
         return InviClient(
             invitations: { throw Error.fakeError },
             invitation: { _ in throw Error.fakeError },
-            putGuestStatus: { _, _ in throw Error.fakeError }
+            putGuestStatus: { _, _ in throw Error.fakeError },
+            redeemInvitation: { _ in throw Error.fakeError }
         )
     }
 
@@ -60,7 +62,8 @@ extension InviClient {
         return InviClient(
             invitations: { [] },
             invitation: { _ in throw Error.fakeError },
-            putGuestStatus: { _, _ in throw Error.fakeError }
+            putGuestStatus: { _, _ in throw Error.fakeError },
+            redeemInvitation: { _ in throw Error.fakeError }
         )
     }
 }

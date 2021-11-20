@@ -9,7 +9,7 @@ import Foundation
 import WebService
 
 extension InviClient {
-    enum Error: Swift.Error {
+    enum ClientError: Error {
         case noInvitation
         case failedToEncodeGuestStatus
     }
@@ -32,15 +32,20 @@ extension InviClient {
                 if let invitation = invitations.first(where: { $0.id == invitationId }) {
                     return invitation
                 } else {
-                    throw Error.noInvitation
+                    throw ClientError.noInvitation
                 }
-
             }, putGuestStatus: { guestId, status in
                 let model = GuestStatusBody(guestId: guestId, status: status)
                 let url = environment.baseURL
                     .appendingPathComponent("invitation")
                     .appendingPathComponent("guest-status")
-                _ = try await webService.put(model: model, request: URLRequest(url: url))
+                _ = try await webService.put(model: model, request: URLRequest(url: url)).value
+            }, redeemInvitation: { code in
+                struct Empty: Encodable {}
+                let url = environment.baseURL
+                    .appendingPathComponent("invitation")
+                    .appendingPathComponent("\(code)")
+                _  = try await webService.post(model: Empty?.none, request: URLRequest(url: url)).value
             }
         )
     }

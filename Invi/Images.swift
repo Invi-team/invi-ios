@@ -9,7 +9,7 @@ import Foundation
 
 enum Images {
     static let inviLogo = "invi-logo"
-    static let inviEnvelope = "invo-envelope"
+    static let inviEnvelope = "invi-envelope"
     static let loveLetter = "love-letter"
 
     static let invitationImage1 = "invitation_image_type_1"
