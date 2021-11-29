@@ -10,6 +10,7 @@
 		42F2E5B65D52C6B403A87C97 /* Pods_Invi_InviUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 267959D0E72E09B03213F389 /* Pods_Invi_InviUITests.framework */; };
 		5C0D957CA0178529DA2F68E0 /* Pods_InviTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F1D23CB0E681224F7A658A1 /* Pods_InviTests.framework */; };
 		89FDC1ADB6611A83996D764F /* Pods_Invi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B88AB3D3CA7B498B4CB0E481 /* Pods_Invi.framework */; };
+		8C8254A5274ED01900BB8642 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8254A4274ED01900BB8642 /* Application.swift */; };
 		92318DBF273EBB6D000C0F4C /* CustomDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92318DBE273EBB6D000C0F4C /* CustomDependencies.swift */; };
 		92318DC1273EBD37000C0F4C /* InviDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92318DC0273EBD37000C0F4C /* InviDependencies.swift */; };
 		92318DC3273EC17D000C0F4C /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92318DC2273EC17D000C0F4C /* RootView.swift */; };
@@ -66,6 +67,7 @@
 		267959D0E72E09B03213F389 /* Pods_Invi_InviUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Invi_InviUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F36D0B9698DD475121F6A19 /* Pods-InviTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InviTests.debug.xcconfig"; path = "Target Support Files/Pods-InviTests/Pods-InviTests.debug.xcconfig"; sourceTree = "<group>"; };
 		727791CD72AD8360C8E48D90 /* Pods-Invi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Invi.release.xcconfig"; path = "Target Support Files/Pods-Invi/Pods-Invi.release.xcconfig"; sourceTree = "<group>"; };
+		8C8254A4274ED01900BB8642 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		92318DBA273EAFD6000C0F4C /* WebService */ = {isa = PBXFileReference; lastKnownFileType = text; path = WebService; sourceTree = SOURCE_ROOT; };
 		92318DBD273EB0F2000C0F4C /* InviClient */ = {isa = PBXFileReference; lastKnownFileType = text; path = InviClient; sourceTree = SOURCE_ROOT; };
 		92318DBE273EBB6D000C0F4C /* CustomDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDependencies.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				92318DC0273EBD37000C0F4C /* InviDependencies.swift */,
 				9293A4BA265703BC0056F02B /* LiveDependencies.swift */,
 				92318DBE273EBB6D000C0F4C /* CustomDependencies.swift */,
+				8C8254A4274ED01900BB8642 /* Application.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -535,6 +538,7 @@
 				D3A93D492664040600A481BB /* LoginWallView.swift in Sources */,
 				9293A4BB265703BC0056F02B /* LiveDependencies.swift in Sources */,
 				9293A48D2656F9E00056F02B /* InviApp.swift in Sources */,
+				8C8254A5274ED01900BB8642 /* Application.swift in Sources */,
 				92D01775267E613D00C36495 /* ActivityIndiator.swift in Sources */,
 				92E0BC47270A2AA30043986E /* AppConfiguration.swift in Sources */,
 				92318DC3273EC17D000C0F4C /* RootView.swift in Sources */,
@@ -719,6 +723,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Invi/Preview Content\"";
+				DEVELOPMENT_TEAM = KHXKFHKG4G;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Invi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -741,6 +746,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Invi/Preview Content\"";
+				DEVELOPMENT_TEAM = KHXKFHKG4G;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Invi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;

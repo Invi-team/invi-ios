@@ -14,14 +14,18 @@ final class CustomDependencies: InviDependencies {
     let inviClient: InviClient
     let authenticator: Authenticator
     let configuration: AppConfiguration
+    let application: Application
 
     init(inviClient: InviClient? = nil,
          authenticator: Authenticator? = nil,
-         configuration: AppConfiguration? = nil) {
+         configuration: AppConfiguration? = nil,
+         application: Application? = nil
+    ) {
         let liveDependencies = LiveDependencies()
         self.inviClient = inviClient ?? liveDependencies.inviClient
         self.authenticator = authenticator ?? liveDependencies.authenticator
         self.configuration = configuration ?? liveDependencies.configuration
+        self.application = application ?? liveDependencies.application
     }
 }
 #endif

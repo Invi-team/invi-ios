@@ -7,7 +7,7 @@
 import InviClient
 import InviAuthenticator
 
-typealias InviDependencies = HasAuthenticator & HasAppConfiguration & HasInviClient
+typealias InviDependencies = HasAuthenticator & HasAppConfiguration & HasInviClient & HasApplication
 
 protocol HasInviClient {
     var inviClient: InviClient { get }
@@ -19,4 +19,8 @@ protocol HasAuthenticator {
 
 protocol HasAppConfiguration {
     var configuration: AppConfiguration { get }
+}
+
+protocol HasApplication {
+    var application: Application { get }
 }

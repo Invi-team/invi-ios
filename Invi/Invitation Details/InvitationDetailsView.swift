@@ -32,6 +32,9 @@ struct InvitationDetailsView: View {
                             HStack(spacing: 8) {
                                 Image(systemName: "person")
                                 Text("\(organiser.name) \(organiser.surname)")
+                                Button("Call") {
+                                    viewModel.startACall(phoneNumber: organiser.phoneNumber)
+                                }
                             }
                         }
                     }
