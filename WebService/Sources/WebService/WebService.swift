@@ -42,6 +42,7 @@ public final class WebService: WebServiceType {
             switch await load(request: request).result {
             case .success(let data):
                 let decoder = JSONDecoder()
+                decoder.dateDecodingStrategy = .iso8601
                 return try decoder.decode(T.self, from: data)
             case .failure(let error):
                 debugPrint(error)
