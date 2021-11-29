@@ -28,7 +28,7 @@ enum BuildConfiguration: Equatable {
             } else {
                 if Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" {
                     return .release(.testFlight)
-                } else {33
+                } else {
                     return .release(.appStore)
                 }
             }
