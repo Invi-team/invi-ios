@@ -34,7 +34,7 @@ final class InviClientTests: XCTestCase {
             XCTFail()
         } catch {
             let error = error as! WebService.Error
-            XCTAssertEqual(error, WebService.Error.httpError(503))
+            XCTAssertEqual(error, WebService.Error.httpError(503, metadata: []))
         }
     }
 }
