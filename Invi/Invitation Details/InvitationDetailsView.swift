@@ -33,7 +33,7 @@ struct InvitationDetailsView: View {
                                 Image(systemName: "person")
                                 Text("\(organiser.name) \(organiser.surname)")
                                 Button("Call") {
-                                    viewModel.startACall(phoneNumber: organiser.phoneNumber)
+                                    viewModel.makePhoneCall(with: organiser.phoneNumber)
                                 }
                             }
                         }

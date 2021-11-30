@@ -180,7 +180,6 @@
 				92318DC0273EBD37000C0F4C /* InviDependencies.swift */,
 				9293A4BA265703BC0056F02B /* LiveDependencies.swift */,
 				92318DBE273EBB6D000C0F4C /* CustomDependencies.swift */,
-				8C8254A4274ED01900BB8642 /* Application.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -223,11 +222,11 @@
 				92318DBD273EB0F2000C0F4C /* InviClient */,
 				92318DBA273EAFD6000C0F4C /* WebService */,
 				9235EE7B273C928800E4E923 /* Dependencies */,
+				92BC791C2756C1CA0008F5EC /* Services */,
 				D3A93D47266403DA00A481BB /* Login Wall Flow */,
 				9293A48C2656F9E00056F02B /* InviApp.swift */,
 				92318DC2273EC17D000C0F4C /* RootView.swift */,
 				923407782741A6B200ADF666 /* HomeTabView.swift */,
-				92E0BC46270A2AA30043986E /* AppConfiguration.swift */,
 				92E0BC4A270A31DD0043986E /* Invitations */,
 				9234077A2741AB9900ADF666 /* Settings */,
 				92AB77F4273C18F50080884F /* Invitation Details */,
@@ -278,6 +277,15 @@
 				92AB77F5273C193D0080884F /* InvitationDetailsViewModel.swift */,
 			);
 			path = "Invitation Details";
+			sourceTree = "<group>";
+		};
+		92BC791C2756C1CA0008F5EC /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				8C8254A4274ED01900BB8642 /* Application.swift */,
+				92E0BC46270A2AA30043986E /* AppConfiguration.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		92E0BC4A270A31DD0043986E /* Invitations */ = {

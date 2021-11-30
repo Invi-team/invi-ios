@@ -73,8 +73,8 @@ class InvitationDetailsViewModel: ObservableObject {
         route = nil
     }
     
-    func startACall(phoneNumber: String) {
-        guard let url = URL(string: "tel://\(phoneNumber.removeSpaces())") else { return }
+    func makePhoneCall(with number: String) {
+        guard let url = URL(string: "tel://\(number.removingSpaces)") else { return }
         if dependencies.application.canOpenUrl(url) {
             dependencies.application.openUrl(url)
         } else {
@@ -121,7 +121,7 @@ private extension Array where Element == Guest {
 }
 
 private extension String {
-    func removeSpaces() -> String {
+    var removingSpaces: String {
         return replacingOccurrences(of: " ", with: "")
     }
 }
