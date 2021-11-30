@@ -9,7 +9,6 @@ import Foundation
 import InviClient
 import InviAuthenticator
 
-#if DEBUG
 final class CustomDependencies: InviDependencies {
     let inviClient: InviClient
     let authenticator: Authenticator
@@ -28,4 +27,3 @@ final class CustomDependencies: InviDependencies {
         self.application = application ?? liveDependencies.application
     }
 }
-#endif
