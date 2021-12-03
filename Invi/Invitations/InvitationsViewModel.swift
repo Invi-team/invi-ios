@@ -49,6 +49,7 @@ final class InvitationsViewModel: ObservableObject {
             let invitations = try await dependencies.inviClient.invitations()
             state = .loaded(invitations.map { InvitationRowViewModel(invitation: $0, dependencies: dependencies) })
         } catch {
+            debugPrint(error)
             state = .error(error)
         }
     }

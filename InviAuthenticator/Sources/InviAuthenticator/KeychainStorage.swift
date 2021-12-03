@@ -8,7 +8,13 @@
 import Foundation
 import Security
 
-struct KeychainStorage {
+protocol KeychainStorageType {
+    func add(token: String) throws
+    func getToken() throws -> String
+    func removeToken() throws
+}
+
+struct KeychainStorage: KeychainStorageType {
     enum Error: Swift.Error {
         case addingTokenFailed
         case readingTokenFailed

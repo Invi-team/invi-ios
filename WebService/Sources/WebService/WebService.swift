@@ -26,23 +26,26 @@ extension URLSession: URLSessionType {}
 public final class WebService: WebServiceType {
     private let session: URLSessionType
     private let userToken: () -> String?
+    private let decoder: JSONDecoder
 
-    public init(session: URLSessionType = URLSession.shared, userToken: @escaping () -> String? = { nil }) {
+    public init(
+        session: URLSessionType = URLSession.shared,
+        decoder: JSONDecoder = JSONDecoder(),
+        userToken: @escaping () -> String? = { nil }) {
         self.session = session
+        self.decoder = decoder
         self.userToken = userToken
     }
 
     public enum Error: Equatable, Swift.Error {
         case invalidResponse
-        case httpError(Int, metadata: [String])
+        case httpError(Int, message: String, metadata: [String])
     }
 
     public func get<T: Decodable>(request: URLRequest) -> Task<T, Swift.Error> {
         Task {
             switch await load(request: request).result {
             case .success(let data):
-                let decoder = JSONDecoder()
-                decoder.dateDecodingStrategy = .iso8601
                 return try decoder.decode(T.self, from: data)
             case .failure(let error):
                 debugPrint(error)
@@ -109,7 +112,7 @@ public final class WebService: WebServiceType {
 
             switch await load(request: request).result {
             case .success(let responseData):
-                return try JSONDecoder().decode(Response.self, from: responseData)
+                return try decoder.decode(Response.self, from: responseData)
             case .failure(let error):
                 debugPrint(error)
                 throw error
@@ -119,6 +122,7 @@ public final class WebService: WebServiceType {
 
     private struct ErrorResponse: Decodable {
         let code: Int
+        let message: String?
         let metadata: [String]?
     }
 
@@ -136,9 +140,10 @@ public final class WebService: WebServiceType {
                 throw Error.invalidResponse
             }
             guard 200..<400 ~= httpResponse.statusCode else {
-                let errorResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data)
+                let errorResponse = try? decoder.decode(ErrorResponse.self, from: data)
                 let metadata = errorResponse?.metadata ?? []
-                throw Error.httpError(httpResponse.statusCode, metadata: metadata)
+                let message = errorResponse?.message ?? ""
+                throw Error.httpError(httpResponse.statusCode, message: message, metadata: metadata)
             }
             return data
         }

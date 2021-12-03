@@ -15,7 +15,7 @@ extension InviClient {
     }
 
     public static func live(environment: ApiEnvironment, userToken: @escaping () -> String?) -> Self {
-        let webService = WebService(userToken: userToken)
+        let webService = WebService(decoder: JSONDecoder.inviDecoder, userToken: userToken)
         return Self.live(environment: environment, webService: webService)
     }
 
@@ -53,5 +53,13 @@ extension InviClient {
     private struct GuestStatusBody: Encodable {
         let guestId: String
         let status: Guest.Status
+    }
+}
+
+extension JSONDecoder {
+    static var inviDecoder: JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = JSONDecoder.flexibleDateDecoding
+        return decoder
     }
 }

@@ -14,8 +14,8 @@ public enum FakeResult {
 }
 
 extension WebService {
-    public convenience init(results: [URL: FakeResult]) {
-        self.init(session: FakeURLSession(results: results))
+    public convenience init(results: [URL: FakeResult], decoder: JSONDecoder = JSONDecoder()) {
+        self.init(session: FakeURLSession(results: results), decoder: decoder)
     }
 }
 
