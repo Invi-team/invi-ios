@@ -9,11 +9,11 @@ on:
 jobs:
   build:
     runs-on: macos-latest
-  steps:
-    - uses: actions/checkout@v2 #6
+    steps:
+    - uses: actions/checkout@v2
     - name: Install fastlane
-  run: |
-      bundle install #7
+      run: |
+        bundle install
     - name: Execute fastlane
       run: |
         bundle exec fastlane scan(scheme: "AllTests", clean: true)
