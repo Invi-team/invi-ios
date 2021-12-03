@@ -13,4 +13,5 @@ final class LiveDependencies: InviDependencies {
     lazy var inviClient: InviClient = .live(environment: .stage, userToken: { [weak self] in self?.authenticator.state.value.token })
     let authenticator: Authenticator = .live(environment: .stage)
     let configuration = AppConfiguration()
+    let application: Application = .live
 }

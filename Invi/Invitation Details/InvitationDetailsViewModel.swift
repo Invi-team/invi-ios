@@ -17,7 +17,7 @@ enum GuestStatusSavingState {
 }
 
 class InvitationDetailsViewModel: ObservableObject {
-    typealias Dependencies = HasInviClient
+    typealias Dependencies = HasInviClient & HasApplication
 
     enum State {
         case loading
@@ -72,6 +72,15 @@ class InvitationDetailsViewModel: ObservableObject {
     func okAlertTapped() {
         route = nil
     }
+    
+    func makePhoneCall(with number: String) {
+        guard let url = URL(string: "tel://\(number.removingSpaces)") else { return }
+        if dependencies.application.canOpenUrl(url) {
+            dependencies.application.openUrl(url)
+        } else {
+            debugPrint("Not able to make a call")
+        }
+    }
 }
 
 class GuestViewModel: ObservableObject {
@@ -108,5 +117,11 @@ class GuestViewModel: ObservableObject {
 private extension Array where Element == Guest {
     func sortByInvitedFirst() -> [Guest] {
         return sorted(by: { $0.type.rawValue > $1.type.rawValue })
+    }
+}
+
+private extension String {
+    var removingSpaces: String {
+        return replacingOccurrences(of: " ", with: "")
     }
 }

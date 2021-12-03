@@ -12,7 +12,7 @@ import CasePaths
 
 @MainActor
 final class InvitationsViewModel: ObservableObject {
-    typealias Dependencies = HasInviClient & AddInvitationViewModel.Dependencies
+    typealias Dependencies = HasInviClient & AddInvitationViewModel.Dependencies & HasApplication
 
     enum State {
         case initial
