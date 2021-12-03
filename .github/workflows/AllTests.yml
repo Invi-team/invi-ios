@@ -11,9 +11,12 @@ jobs:
     runs-on: macos-11
     steps:
     - uses: actions/checkout@v2
-    - name: Install fastlane
+    - name: Install gems
       run: |
         bundle install
+    - name: Run pods
+      run: |
+        pod install
     - name: Execute fastlane
       run: |
-        bundle exec fastlane scan --scheme "AllTests" --device "iPhone 13 Pro" --clean
+        bundle exec fastlane scan --workspace "Invi.xcworkspace" --scheme "AllTests" --device "iPhone 13 Pro" --clean
