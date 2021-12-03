@@ -32,8 +32,11 @@ struct InvitationDetailsView: View {
                             HStack(spacing: 8) {
                                 Image(systemName: "person")
                                 Text("\(organiser.name) \(organiser.surname)")
-                                Button("Call") {
+                                    .padding(.trailing)
+                                Button {
                                     viewModel.makePhoneCall(with: organiser.phoneNumber)
+                                } label: {
+                                    Image(systemName: "phone.fill")
                                 }
                             }
                         }
