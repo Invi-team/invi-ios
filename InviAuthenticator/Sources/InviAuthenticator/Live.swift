@@ -11,11 +11,12 @@ import WebService
 import CasePaths
 
 extension Authenticator {
-    // swiftlint:disable:next function_body_length
     public static func live(environment: ApiEnvironment) -> Self {
-        let webService = WebService()
-        let keychainStorage = KeychainStorage()
+        live(environment: environment, webService: WebService(decoder: JSONDecoder.inviDecoder), keychainStorage: KeychainStorage())
+    }
 
+    // swiftlint:disable:next function_body_length
+    static func live(environment: ApiEnvironment, webService: WebServiceType, keychainStorage: KeychainStorageType) -> Self {
         let state: CurrentValueSubject<Authenticator.State, Never>
         if let storedToken = try? keychainStorage.getToken() {
             state = CurrentValueSubject(.loggedIn(token: storedToken, user: nil))
@@ -57,7 +58,8 @@ extension Authenticator {
                     try keychainStorage.add(token: loginResponse.token)
                     state.value = .loggedIn(token: loginResponse.token, user: nil)
                 } catch {
-                    if let error = error as? WebService.Error, case let .httpError(statusCode, _) = error, statusCode == 400 {
+                    debugPrint(error)
+                    if let error = error as? WebService.Error, case let .httpError(statusCode, _, _) = error, statusCode == 400 {
                         throw Authenticator.LoginError.invalidCredentials
                     } else if let error = error as? KeychainStorage.Error {
                         throw Authenticator.LoginError.keychain(error)
@@ -110,5 +112,13 @@ extension Authenticator.State {
     public var token: String? {
         guard case .loggedIn(let token, _) = self else { return nil }
         return token
+    }
+}
+
+extension JSONDecoder {
+    static var inviDecoder: JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = JSONDecoder.flexibleDateDecoding
+        return decoder
     }
 }
