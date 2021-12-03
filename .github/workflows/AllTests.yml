@@ -16,4 +16,4 @@ jobs:
         bundle install
     - name: Execute fastlane
       run: |
-        bundle exec fastlane scan(scheme: "AllTests", clean: true)
+        bundle exec fastlane scan --scheme "AllTests" --device "iPhone 13 Pro" --clean
