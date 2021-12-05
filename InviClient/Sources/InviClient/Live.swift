@@ -14,19 +14,19 @@ extension InviClient {
         case failedToEncodeGuestStatus
     }
 
-    public static func live(environment: ApiEnvironment, userToken: @escaping () -> String?) -> Self {
-        let webService = WebService(decoder: JSONDecoder.inviDecoder, userToken: userToken)
-        return Self.live(environment: environment, webService: webService)
+    public static func live(configuration: Configuration) -> Self {
+        let webService = WebService(decoder: JSONDecoder.inviDecoder, userToken: configuration.token)
+        return Self.live(environment: configuration.environment, webService: webService)
     }
 
-    static func live(environment: ApiEnvironment, webService: WebServiceType) -> Self {
+    static func live(environment: @escaping () -> ApiEnvironment, webService: WebServiceType) -> Self {
         return InviClient(
             invitations: {
-                let request = URLRequest(url: environment.baseURL.appendingPathComponent("invitations"))
+                let request = URLRequest(url: environment().baseURL.appendingPathComponent("invitations"))
                 return try await webService.get(request: request).value
             },
             invitation: { invitationId in
-                let request = URLRequest(url: environment.baseURL.appendingPathComponent("invitations"))
+                let request = URLRequest(url: environment().baseURL.appendingPathComponent("invitations"))
 
                 let invitations: [Invitation] = try await webService.get(request: request).value
                 if let invitation = invitations.first(where: { $0.id == invitationId }) {
@@ -36,13 +36,13 @@ extension InviClient {
                 }
             }, putGuestStatus: { guestId, status in
                 let model = GuestStatusBody(guestId: guestId, status: status)
-                let url = environment.baseURL
+                let url = environment().baseURL
                     .appendingPathComponent("invitation")
                     .appendingPathComponent("guest-status")
                 _ = try await webService.put(model: model, request: URLRequest(url: url)).value
             }, redeemInvitation: { code in
                 struct Empty: Encodable {}
-                let url = environment.baseURL
+                let url = environment().baseURL
                     .appendingPathComponent("invitation")
                     .appendingPathComponent("\(code)")
                 _  = try await webService.post(model: Empty?.none, request: URLRequest(url: url)).value

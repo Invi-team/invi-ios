@@ -6,9 +6,44 @@
 //
 
 import Foundation
+import InviAuthenticator
+import InviClient
 
 struct AppConfiguration {
-    let buildConfiguration: BuildConfiguration = .live
+    typealias Dependencies = HasUserDefaults
+
+    private let dependencies: Dependencies
+
+    let buildConfiguration: BuildConfiguration
+
+    init(buildConfiguration: BuildConfiguration, dependencies: Dependencies) {
+        self.buildConfiguration = buildConfiguration
+        self.dependencies = dependencies
+    }
+}
+
+extension AppConfiguration {
+    var inviAuthenticatorEnvironment: Authenticator.ApiEnvironment {
+        switch buildConfiguration {
+        case .release(.appStore):
+            return .prod
+        default:
+            return dependencies.userDefaults.bool(forKey: .apiDevEnvrionmentEnabled) == true ? .stage : .prod
+        }
+    }
+
+    var inviClientEnvironment: InviClient.ApiEnvironment {
+        switch buildConfiguration {
+        case .release(.appStore):
+            return .prod
+        default:
+            return dependencies.userDefaults.bool(forKey: .apiDevEnvrionmentEnabled) == true ? .stage : .prod
+        }
+    }
+
+    var isAppStore: Bool {
+        buildConfiguration == .release(.appStore)
+    }
 }
 
 enum BuildConfiguration: Equatable {

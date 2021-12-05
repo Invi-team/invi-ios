@@ -25,7 +25,8 @@ class InvitationDetailsViewModel: ObservableObject {
         case error(Error)
 
         var isLoaded: Bool {
-            (/State.loaded).extract(from: self) != nil
+            guard case .loaded = self else { return false }
+            return true
         }
     }
 
