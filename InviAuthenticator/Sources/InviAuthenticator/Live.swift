@@ -11,12 +11,16 @@ import WebService
 import CasePaths
 
 extension Authenticator {
-    public static func live(environment: ApiEnvironment) -> Self {
-        live(environment: environment, webService: WebService(decoder: JSONDecoder.inviDecoder), keychainStorage: KeychainStorage())
+    public static func live(configuration: Configuration) -> Self {
+        live(
+            configuration: configuration,
+            webService: WebService(decoder: JSONDecoder.inviDecoder),
+            keychainStorage: KeychainStorage()
+        )
     }
 
     // swiftlint:disable:next function_body_length
-    static func live(environment: ApiEnvironment, webService: WebServiceType, keychainStorage: KeychainStorageType) -> Self {
+    static func live(configuration: Configuration, webService: WebServiceType, keychainStorage: KeychainStorageType) -> Self {
         let state: CurrentValueSubject<Authenticator.State, Never>
         if let storedToken = try? keychainStorage.getToken() {
             state = CurrentValueSubject(.loggedIn(token: storedToken, user: nil))
@@ -25,7 +29,7 @@ extension Authenticator {
         }
 
         @Sendable func user(for token: String) async throws -> User {
-            let url = environment.baseURL.appendingPathComponent("user")
+            let url = configuration.environment().baseURL.appendingPathComponent("user")
             var request = URLRequest(url: url)
             request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             return try await webService.get(request: request).value
@@ -52,7 +56,7 @@ extension Authenticator {
                     throw Authenticator.LoginError.notLoggedOut
                 }
                 do {
-                    let request = URLRequest(url: environment.baseURL.appendingPathComponent("auth/login"))
+                    let request = URLRequest(url: configuration.environment().baseURL.appendingPathComponent("auth/login"))
                     let body = LoginRequestBody(email: email, password: password)
                     let loginResponse: LoginResponse = try await webService.post(model: body, request: request).value
                     try keychainStorage.add(token: loginResponse.token)
@@ -69,7 +73,7 @@ extension Authenticator {
                 }
             },
             register: { email, password in
-                let request = URLRequest(url: environment.baseURL.appendingPathComponent("register"))
+                let request = URLRequest(url: configuration.environment().baseURL.appendingPathComponent("register"))
                 let body = RegisterRequestBody(deviceId: "iOS-test", email: email, password: password) // TODO: Device id
                 let _: RegisterResponse = try await webService.post(model: body, request: request).value
             },

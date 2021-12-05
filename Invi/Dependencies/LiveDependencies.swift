@@ -10,8 +10,14 @@ import InviClient
 import InviAuthenticator
 
 final class LiveDependencies: InviDependencies {
-    lazy var inviClient: InviClient = .live(environment: .prod, userToken: { [weak self] in self?.authenticator.state.value.token })
-    let authenticator: Authenticator = .live(environment: .prod)
-    let configuration = AppConfiguration()
+    lazy var inviClient: InviClient = .live(configuration: .init(
+        environment: { [unowned self] in self.configuration.inviClientEnvironment },
+        token: { [weak self] in self?.authenticator.state.value.token }
+    ))
+    lazy var authenticator: Authenticator = .live(configuration: .init(
+        environment: { [unowned self] in self.configuration.inviAuthenticatorEnvironment }
+    ))
+    lazy var configuration = AppConfiguration(buildConfiguration: .live, dependencies: self)
     let application: Application = .live
+    let userDefaults: UserDefaultsType = UserDefaults.standard
 }

@@ -11,6 +11,11 @@
 		5C0D957CA0178529DA2F68E0 /* Pods_InviTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F1D23CB0E681224F7A658A1 /* Pods_InviTests.framework */; };
 		89FDC1ADB6611A83996D764F /* Pods_Invi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B88AB3D3CA7B498B4CB0E481 /* Pods_Invi.framework */; };
 		8C8254A5274ED01900BB8642 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8254A4274ED01900BB8642 /* Application.swift */; };
+		921CE5C0275CD62C000E4E9E /* UserDefaultsType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921CE5BF275CD62C000E4E9E /* UserDefaultsType.swift */; };
+		921CE5C2275CDBB3000E4E9E /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921CE5C1275CDBB3000E4E9E /* DebugView.swift */; };
+		921CE5C5275CDBE5000E4E9E /* DebugViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921CE5C4275CDBE5000E4E9E /* DebugViewModel.swift */; };
+		921CE5C7275CF274000E4E9E /* AppConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921CE5C6275CF274000E4E9E /* AppConfigurationTests.swift */; };
+		921CE5C9275CF279000E4E9E /* FakeUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921CE5C8275CF279000E4E9E /* FakeUserDefaults.swift */; };
 		92318DBF273EBB6D000C0F4C /* CustomDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92318DBE273EBB6D000C0F4C /* CustomDependencies.swift */; };
 		92318DC1273EBD37000C0F4C /* InviDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92318DC0273EBD37000C0F4C /* InviDependencies.swift */; };
 		92318DC3273EC17D000C0F4C /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92318DC2273EC17D000C0F4C /* RootView.swift */; };
@@ -19,6 +24,7 @@
 		923407792741A6B200ADF666 /* HomeTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923407782741A6B200ADF666 /* HomeTabView.swift */; };
 		9234077C2741ABB300ADF666 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9234077B2741ABB300ADF666 /* SettingsView.swift */; };
 		9234077E2741C9A200ADF666 /* AddInvitationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9234077D2741C9A200ADF666 /* AddInvitationView.swift */; };
+		926C19EA275ACD140012EF06 /* View+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C19E9275ACD140012EF06 /* View+Shake.swift */; };
 		928DED802740305E00173BE8 /* InviAuthenticator in Frameworks */ = {isa = PBXBuildFile; productRef = 928DED7F2740305E00173BE8 /* InviAuthenticator */; };
 		929049E92736FFD700276C41 /* NavigationHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929049E82736FFD700276C41 /* NavigationHelpers.swift */; };
 		929049EC2737008F00276C41 /* CasePaths in Frameworks */ = {isa = PBXBuildFile; productRef = 929049EB2737008F00276C41 /* CasePaths */; };
@@ -68,6 +74,11 @@
 		5F36D0B9698DD475121F6A19 /* Pods-InviTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InviTests.debug.xcconfig"; path = "Target Support Files/Pods-InviTests/Pods-InviTests.debug.xcconfig"; sourceTree = "<group>"; };
 		727791CD72AD8360C8E48D90 /* Pods-Invi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Invi.release.xcconfig"; path = "Target Support Files/Pods-Invi/Pods-Invi.release.xcconfig"; sourceTree = "<group>"; };
 		8C8254A4274ED01900BB8642 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
+		921CE5BF275CD62C000E4E9E /* UserDefaultsType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsType.swift; sourceTree = "<group>"; };
+		921CE5C1275CDBB3000E4E9E /* DebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
+		921CE5C4275CDBE5000E4E9E /* DebugViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugViewModel.swift; sourceTree = "<group>"; };
+		921CE5C6275CF274000E4E9E /* AppConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfigurationTests.swift; sourceTree = "<group>"; };
+		921CE5C8275CF279000E4E9E /* FakeUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeUserDefaults.swift; sourceTree = "<group>"; };
 		92318DBA273EAFD6000C0F4C /* WebService */ = {isa = PBXFileReference; lastKnownFileType = text; path = WebService; sourceTree = SOURCE_ROOT; };
 		92318DBD273EB0F2000C0F4C /* InviClient */ = {isa = PBXFileReference; lastKnownFileType = text; path = InviClient; sourceTree = SOURCE_ROOT; };
 		92318DBE273EBB6D000C0F4C /* CustomDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDependencies.swift; sourceTree = "<group>"; };
@@ -78,6 +89,7 @@
 		923407782741A6B200ADF666 /* HomeTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabView.swift; sourceTree = "<group>"; };
 		9234077B2741ABB300ADF666 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		9234077D2741C9A200ADF666 /* AddInvitationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInvitationView.swift; sourceTree = "<group>"; };
+		926C19E9275ACD140012EF06 /* View+Shake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Shake.swift"; sourceTree = "<group>"; };
 		928DED7E27402D9100173BE8 /* InviAuthenticator */ = {isa = PBXFileReference; lastKnownFileType = text; path = InviAuthenticator; sourceTree = SOURCE_ROOT; };
 		929049E82736FFD700276C41 /* NavigationHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationHelpers.swift; sourceTree = "<group>"; };
 		929049ED2737E3DE00276C41 /* RegisterSuccessfulView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessfulView.swift; sourceTree = "<group>"; };
@@ -166,6 +178,23 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		921CE5C3275CDBB9000E4E9E /* Debug Menu */ = {
+			isa = PBXGroup;
+			children = (
+				921CE5C1275CDBB3000E4E9E /* DebugView.swift */,
+				921CE5C4275CDBE5000E4E9E /* DebugViewModel.swift */,
+			);
+			path = "Debug Menu";
+			sourceTree = "<group>";
+		};
+		921CE5CA275CF283000E4E9E /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				921CE5C8275CF279000E4E9E /* FakeUserDefaults.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		9234077A2741AB9900ADF666 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -188,6 +217,7 @@
 			isa = PBXGroup;
 			children = (
 				929049E82736FFD700276C41 /* NavigationHelpers.swift */,
+				926C19E9275ACD140012EF06 /* View+Shake.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -226,6 +256,7 @@
 				D3A93D47266403DA00A481BB /* Login Wall Flow */,
 				9293A48C2656F9E00056F02B /* InviApp.swift */,
 				92318DC2273EC17D000C0F4C /* RootView.swift */,
+				921CE5C3275CDBB9000E4E9E /* Debug Menu */,
 				923407782741A6B200ADF666 /* HomeTabView.swift */,
 				92E0BC4A270A31DD0043986E /* Invitations */,
 				9234077A2741AB9900ADF666 /* Settings */,
@@ -255,6 +286,8 @@
 		9293A4A02656F9E20056F02B /* InviTests */ = {
 			isa = PBXGroup;
 			children = (
+				921CE5C6275CF274000E4E9E /* AppConfigurationTests.swift */,
+				921CE5CA275CF283000E4E9E /* Mocks */,
 				9293A4A12656F9E20056F02B /* InviTests.swift */,
 				9293A4A32656F9E20056F02B /* Info.plist */,
 			);
@@ -284,6 +317,7 @@
 			children = (
 				8C8254A4274ED01900BB8642 /* Application.swift */,
 				92E0BC46270A2AA30043986E /* AppConfiguration.swift */,
+				921CE5BF275CD62C000E4E9E /* UserDefaultsType.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -541,6 +575,7 @@
 				92960B4126715C620021EA47 /* LoginView.swift in Sources */,
 				92318DC1273EBD37000C0F4C /* InviDependencies.swift in Sources */,
 				92AB77F6273C193D0080884F /* InvitationDetailsViewModel.swift in Sources */,
+				921CE5C0275CD62C000E4E9E /* UserDefaultsType.swift in Sources */,
 				923407792741A6B200ADF666 /* HomeTabView.swift in Sources */,
 				92E0BC49270A31BF0043986E /* InvitationsViewModel.swift in Sources */,
 				D3A93D492664040600A481BB /* LoginWallView.swift in Sources */,
@@ -550,6 +585,7 @@
 				92D01775267E613D00C36495 /* ActivityIndiator.swift in Sources */,
 				92E0BC47270A2AA30043986E /* AppConfiguration.swift in Sources */,
 				92318DC3273EC17D000C0F4C /* RootView.swift in Sources */,
+				921CE5C5275CDBE5000E4E9E /* DebugViewModel.swift in Sources */,
 				92CB390D27388820001732D0 /* Strings.swift in Sources */,
 				92CB5822266D492F0021DAAA /* RegisterView.swift in Sources */,
 				929049EE2737E3DF00276C41 /* RegisterSuccessfulView.swift in Sources */,
@@ -557,7 +593,9 @@
 				92CB3909273831C4001732D0 /* InvitationDetailsView.swift in Sources */,
 				92318DBF273EBB6D000C0F4C /* CustomDependencies.swift in Sources */,
 				9234077327419AFC00ADF666 /* Images.swift in Sources */,
+				921CE5C2275CDBB3000E4E9E /* DebugView.swift in Sources */,
 				9293A48F2656F9E00056F02B /* InvitationsView.swift in Sources */,
+				926C19EA275ACD140012EF06 /* View+Shake.swift in Sources */,
 				9234077E2741C9A200ADF666 /* AddInvitationView.swift in Sources */,
 				D3A93D51266404B700A481BB /* InviDesign.swift in Sources */,
 				9234077C2741ABB300ADF666 /* SettingsView.swift in Sources */,
@@ -568,6 +606,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				921CE5C7275CF274000E4E9E /* AppConfigurationTests.swift in Sources */,
+				921CE5C9275CF279000E4E9E /* FakeUserDefaults.swift in Sources */,
 				9293A4A22656F9E20056F02B /* InviTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

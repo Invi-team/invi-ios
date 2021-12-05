@@ -27,6 +27,15 @@ public struct Authenticator {
         case other(Error)
     }
 
+    public struct Configuration {
+        let environment: () -> ApiEnvironment
+        public init(environment: @escaping () -> ApiEnvironment) {
+            self.environment = environment
+        }
+
+        public static let prod = Configuration { .prod }
+    }
+
     public enum ApiEnvironment: String {
         case prod
         case stage = "dev"

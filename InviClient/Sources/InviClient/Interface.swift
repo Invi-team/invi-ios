@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 public struct InviClient {
     public var invitations: () async throws -> [Invitation]
@@ -26,12 +27,27 @@ public struct InviClient {
     }
 }
 
-public enum ApiEnvironment: String {
-    case prod
-    case stage = "dev"
+extension InviClient {
+    public struct Configuration {
+        let environment: () -> ApiEnvironment
+        let token: () -> String?
 
-    public var baseURL: URL {
-        return URL(string: "https://\(rawValue).invi.click/api/v1/")!
+        public init(
+            environment: @escaping () -> ApiEnvironment,
+            token: @escaping () -> String?
+        ) {
+            self.environment = environment
+            self.token = token
+        }
+    }
+
+    public enum ApiEnvironment: String {
+        case prod
+        case stage = "dev"
+
+        public var baseURL: URL {
+            return URL(string: "https://\(rawValue).invi.click/api/v1/")!
+        }
     }
 }
 
