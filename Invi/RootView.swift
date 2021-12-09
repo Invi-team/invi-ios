@@ -13,7 +13,6 @@ import CasePaths
 
 struct RootView: View {
     @ObservedObject var viewModel: RootViewModel
-    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         Group {
