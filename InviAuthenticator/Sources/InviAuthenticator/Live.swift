@@ -75,7 +75,20 @@ extension Authenticator {
             register: { email, password in
                 let request = URLRequest(url: configuration.environment().baseURL.appendingPathComponent("register"))
                 let body = RegisterRequestBody(deviceId: "iOS-test", email: email, password: password) // TODO: Device id
-                let _: RegisterResponse = try await webService.post(model: body, request: request).value
+                do {
+                    let _: RegisterResponse = try await webService.post(model: body, request: request).value
+                } catch {
+                    if let error = error as? WebService.Error, case let .httpError(_, _, metadata) = error {
+                        if metadata.contains(MetadataValues.passwordTooShort) {
+                            throw RegisterError.passwordTooShort
+                        } else if metadata.contains(MetadataValues.invalidEmail) {
+                            throw RegisterError.emailInvalid
+                        } else if metadata.contains(MetadataValues.emailTaken) {
+                            throw RegisterError.emailAlreadyTaken
+                        }
+                    }
+                    throw RegisterError.other(error)
+                }
             },
             logout: {
                 state.value = .loggedOut
@@ -87,6 +100,12 @@ extension Authenticator {
             }
         )
     }
+}
+
+private enum MetadataValues {
+    static let passwordTooShort = "PASSWORD_TOO_SHORT"
+    static let invalidEmail = "EMAIL_NOT_VALID"
+    static let emailTaken = "EMAIL_ALREADY_TAKEN"
 }
 
 private struct LoginResponse: Decodable {

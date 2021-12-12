@@ -175,7 +175,7 @@ private extension LoginViewModel.State {
     var errorMessage: String? {
         switch self {
         case .error(.invalidCredentials):
-            return "Email or password is incorrect. Try again."
+            return "E-mail or password is incorrect. Try again."
         case .error(.serverFailure):
             return "Something went wrong. Try again."
         default:

@@ -8,6 +8,8 @@
 import SwiftUI
 import Combine
 import CasePaths
+import WebService
+import InviAuthenticator
 
 class RegisterViewModel: Identifiable, ObservableObject {
     typealias Dependencies = HasAuthenticator
@@ -26,59 +28,57 @@ class RegisterViewModel: Identifiable, ObservableObject {
     var onLogin: () -> Void = { assertionFailure("Needs to be set") }
     var onDismiss: () -> Void = { assertionFailure("Needs to be set") }
 
-    var emailValidationResult: Result<Void, ValidationError> = .failure(.empty)
-    var passwordValidationResult: Result<Void, ValidationError> = .failure(.empty)
+    @Published var emailValidationResult: Result<Void, EmailValidationError>?
+    @Published var passwordValidationResult: Result<Void, PasswordValidationError>?
+    @Published var repeatedPasswordValidationResult: Result<Void, RepeatedPasswordValidationError>?
+    @Published var requestError: Error?
 
-    enum ValidationError: Error {
-        case invalidEmail
+    enum EmailValidationError: Error {
+        case invalidFormat
+        case alreadyUsed
+    }
+
+    enum PasswordValidationError: Error {
         case passwordTooShort
-        case passwordIncorrectlyRepeated
-        case empty
-        // TODO: Think about more cases re: credentials
+    }
+
+    enum RepeatedPasswordValidationError: Error {
+        case incorrectlyRepeated
     }
 
     private let dependencies: Dependencies
     private var cancellables: Set<AnyCancellable> = []
     private var registerCancellable: AnyCancellable?
+    private var takenEmail: String?
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
 
-        $email
-            .sink { [unowned self] emailValue in
-                if emailValue.contains("@") {
-                    self.emailValidationResult = .success(())
-                } else {
-                    self.emailValidationResult = .failure(.invalidEmail)
-                }
+        $email.filter { !$0.isEmpty }
+            .sink { [unowned self] _ in
+                self.takenEmail = nil
+                self.validateEmail(showFailure: false)
             }
             .store(in: &cancellables)
 
-        $password
-            .sink { [unowned self] passwordValue in
-                if !passwordValue.isEmpty {
-                    self.passwordValidationResult = .success(())
-                } else {
-                    self.passwordValidationResult = .failure(.passwordTooShort)
-                }
+        $password.filter { !$0.isEmpty }
+            .sink { [unowned self] _ in
+                self.validatePassword(showFailure: true)
             }
             .store(in: &cancellables)
 
-        $repeatedPassword
-            .sink { [unowned self] passwordValue in
-                if passwordValue == password {
-                    self.passwordValidationResult = .success(())
-                } else {
-                    self.passwordValidationResult = .failure(.passwordIncorrectlyRepeated)
-                }
+        $repeatedPassword.filter { !$0.isEmpty }
+            .sink { [unowned self] _ in
+                self.validateRepeatedPassword(showFailure: true)
             }
             .store(in: &cancellables)
     }
 
     @MainActor
     func handleRegister() async {
-        switch (emailValidationResult, passwordValidationResult) {
-        case (.success, .success):
+        guard !isLoading else { return }
+        switch (emailValidationResult, passwordValidationResult, repeatedPasswordValidationResult) {
+        case (.success, .success, .success):
             print("Email: \(email), password: \(password)")
             isLoading = true
             do {
@@ -86,11 +86,28 @@ class RegisterViewModel: Identifiable, ObservableObject {
                 isLoading = false
                 setSuccessfulNavigation(isActive: true)
             } catch {
-                print("Registration failed with error: \(error)")
                 isLoading = false
+                debugPrint(error)
+                guard let error = error as? Authenticator.RegisterError else {
+                    assertionFailure("Incorrect Authenticator error implementation")
+                    return
+                }
+                switch error {
+                case .passwordTooShort:
+                    passwordValidationResult = .failure(.passwordTooShort)
+                case .emailInvalid:
+                    emailValidationResult = .failure(.invalidFormat)
+                case .emailAlreadyTaken:
+                    takenEmail = email
+                    emailValidationResult = .failure(.alreadyUsed)
+                case .other(let otherError):
+                    requestError = otherError
+                }
             }
         default:
-            print("Invalid format of email or passowrd")
+            validateEmail(showFailure: true)
+            validatePassword(showFailure: true)
+            validateRepeatedPassword(showFailure: true)
         }
     }
 
@@ -104,6 +121,35 @@ class RegisterViewModel: Identifiable, ObservableObject {
             self?.onDismiss()
         }
         route = .registerSuccessful(viewModel)
+    }
+
+    private func validateEmail(showFailure: Bool) {
+        if email == takenEmail, case .some(.failure(.alreadyUsed)) = emailValidationResult {
+            return
+        }
+        let emailPattern = #"^\S+@\S+\.\S+$"#
+        let isEmailValid = email.range(of: emailPattern, options: .regularExpression) != nil
+        if isEmailValid {
+            emailValidationResult = .success(())
+        } else if showFailure {
+            emailValidationResult = .failure(.invalidFormat)
+        }
+    }
+
+    private func validatePassword(showFailure: Bool) {
+        if password.trimmingCharacters(in: .whitespacesAndNewlines).count >= 6 {
+            passwordValidationResult = .success(())
+        } else if showFailure {
+            passwordValidationResult = .failure(.passwordTooShort)
+        }
+    }
+
+    private func validateRepeatedPassword(showFailure: Bool) {
+        if repeatedPassword == password, !password.isEmpty {
+            repeatedPasswordValidationResult = .success(())
+        } else if showFailure {
+            repeatedPasswordValidationResult = .failure(.incorrectlyRepeated)
+        }
     }
 }
 
@@ -133,8 +179,11 @@ struct RegisterView: View {
                     Divider()
                         .background(InviDesign.Colors.Background.grey)
                         .frame(height: 2)
-                        .padding(.bottom, 16)
+                    emailErrorText
+                        .font(.footnote)
+                        .foregroundColor(.red)
                 }
+                .padding(.bottom, 16)
                 VStack(alignment: .leading) {
                     Text("Password")
                         .foregroundColor(InviDesign.Colors.Brand.grey)
@@ -143,8 +192,11 @@ struct RegisterView: View {
                     Divider()
                         .background(InviDesign.Colors.Background.grey)
                         .frame(height: 2)
-                        .padding(.bottom, 16)
+                    passwordErrorText
+                        .font(.footnote)
+                        .foregroundColor(.red)
                 }
+                .padding(.bottom, 16)
                 VStack(alignment: .leading) {
                     Text("Repeat Password")
                         .foregroundColor(InviDesign.Colors.Brand.grey)
@@ -153,14 +205,21 @@ struct RegisterView: View {
                     Divider()
                         .background(InviDesign.Colors.Background.grey)
                         .frame(height: 2)
-                        .padding(.bottom, 24)
+                    repeatedPasswordErrorText
+                        .font(.footnote)
+                        .foregroundColor(.red)
                 }
+                .padding(.bottom, 16)
+                requestErrorText
+                    .font(.footnote)
+                    .foregroundColor(.red)
                 Button("Sign up with e-mail") {
                     Task { @MainActor in
                         await viewModel.handleRegister()
                     }
                 }
                 .buttonStyle(LoginRegisterButtonStyle(isLoading: viewModel.isLoading))
+                .padding(.top, 8)
                 Spacer()
                 
             }
@@ -187,6 +246,50 @@ struct RegisterView: View {
             }
             .font(Font.system(size: 14).weight(.semibold))
             .foregroundColor(InviDesign.Colors.Brand.dark)
+        }
+    }
+
+    @ViewBuilder var requestErrorText: some View {
+        viewModel.requestError.flatMap { _ in
+            Text("Something went wrong. Try again later.")
+        }
+    }
+
+    @ViewBuilder var emailErrorText: some View {
+        switch viewModel.emailValidationResult {
+        case .some(.success), .none:
+            EmptyView()
+        case .some(.failure(.invalidFormat)):
+            Text("Please enter a correct e-mail.")
+        case .some(.failure(.alreadyUsed)):
+            Text("This e-mail is already in use. Choose another one.")
+        }
+    }
+
+    @ViewBuilder var passwordErrorText: some View {
+        switch viewModel.passwordValidationResult {
+        case .some(.success), .none:
+            EmptyView()
+        case .some(.failure(.passwordTooShort)):
+            Text("Password needs to have 6 or more characters.")
+        }
+    }
+
+    @ViewBuilder var repeatedPasswordErrorText: some View {
+        switch viewModel.repeatedPasswordValidationResult {
+        case .some(.success), .none:
+            EmptyView()
+        case .some(.failure(.incorrectlyRepeated)):
+            Text("Repeated password does not match.")
+        }
+    }
+
+    private var isRegisterButtonEnabled: Bool {
+        switch (viewModel.emailValidationResult, viewModel.passwordValidationResult, viewModel.repeatedPasswordValidationResult) {
+        case (.success, .success, .success):
+            return true
+        default:
+            return false
         }
     }
 }

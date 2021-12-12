@@ -20,10 +20,17 @@ public struct Authenticator {
         case loggedOut
     }
 
-    public enum LoginError: Swift.Error {
+    public enum LoginError: Error {
         case invalidCredentials
         case notLoggedOut
         case keychain(Error)
+        case other(Error)
+    }
+
+    public enum RegisterError: Error {
+        case emailInvalid
+        case emailAlreadyTaken
+        case passwordTooShort
         case other(Error)
     }
 
