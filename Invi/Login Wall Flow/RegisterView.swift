@@ -77,8 +77,8 @@ class RegisterViewModel: Identifiable, ObservableObject {
     @MainActor
     func handleRegister() async {
         guard !isLoading else { return }
-        switch (emailValidationResult, passwordValidationResult) {
-        case (.success, .success):
+        switch (emailValidationResult, passwordValidationResult, repeatedPasswordValidationResult) {
+        case (.success, .success, .success):
             print("Email: \(email), password: \(password)")
             isLoading = true
             do {
@@ -127,7 +127,9 @@ class RegisterViewModel: Identifiable, ObservableObject {
         if email == takenEmail, case .some(.failure(.alreadyUsed)) = emailValidationResult {
             return
         }
-        if email.contains("@") {
+        let emailPattern = #"^\S+@\S+\.\S+$"#
+        let isEmailValid = email.range(of: emailPattern, options: .regularExpression) != nil
+        if isEmailValid {
             emailValidationResult = .success(())
         } else if showFailure {
             emailValidationResult = .failure(.invalidFormat)
@@ -135,7 +137,7 @@ class RegisterViewModel: Identifiable, ObservableObject {
     }
 
     private func validatePassword(showFailure: Bool) {
-        if password.count >= 6 {
+        if password.trimmingCharacters(in: .whitespacesAndNewlines).count >= 6 {
             passwordValidationResult = .success(())
         } else if showFailure {
             passwordValidationResult = .failure(.passwordTooShort)
