@@ -48,7 +48,7 @@ public struct Authenticator {
         case stage = "dev"
 
         var baseURL: URL {
-            return URL(string: "https://dev.invi.click/api/v1/")!
+            return URL(string: "https://\(rawValue).invi.click/api/v1/")!
         }
     }
 }

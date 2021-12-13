@@ -46,7 +46,7 @@ extension InviClient {
         case stage = "dev"
 
         public var baseURL: URL {
-            return URL(string: "https://dev.invi.click/api/v1/")!
+            return URL(string: "https://\(rawValue).invi.click/api/v1/")!
         }
     }
 }
