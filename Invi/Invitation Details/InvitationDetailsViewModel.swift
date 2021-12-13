@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 import InviClient
 import CasePaths
+import MapKit
 
 enum GuestStatusSavingState {
     case loading(id: String)
@@ -124,5 +125,15 @@ private extension Array where Element == Guest {
 private extension String {
     var removingSpaces: String {
         return replacingOccurrences(of: " ", with: "")
+    }
+}
+
+class LocationViewModel: ObservableObject {
+
+    func navigateTo(location: Location) {
+        let coordinate = CLLocationCoordinate2DMake(Double(location.latitude)!, Double(location.longitude)!)
+        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary: nil))
+        mapItem.name = location.name
+        mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
     }
 }
