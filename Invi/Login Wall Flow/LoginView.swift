@@ -43,8 +43,6 @@ class LoginViewModel: Identifiable, ObservableObject {
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
-        email = "marcin@invi.click"
-        password = "123456"
     }
 
     @MainActor
