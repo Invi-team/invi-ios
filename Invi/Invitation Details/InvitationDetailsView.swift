@@ -25,6 +25,9 @@ struct InvitationDetailsView: View {
                             ForEach(invitation.guests) { $guest in
                                 GuestView(viewModel: GuestViewModel(guest: $guest, statusSavingState: $viewModel.statusSavingState, dependencies: viewModel.dependencies))
                             }
+                            deadlineText(invitation: invitation.wrappedValue)?
+                                .font(.footnote)
+                                .fontWeight(.thin)
                         }
                     }
                     Section("Wedding couple") {
@@ -71,6 +74,15 @@ struct InvitationDetailsView: View {
         )
         .task {
             Task { @MainActor in await viewModel.loadInvitation() }
+        }
+    }
+
+    private func deadlineText(invitation: Invitation) -> Text? {
+        guard let deadline = invitation.responseDateDeadline else { return nil }
+        if invitation.areAllGuestsAnswered {
+            return Text("You can change your mind until: ") + Text(deadline, style: .date)
+        } else {
+            return Text("Please answer the invitation until: ") + Text(deadline, style: .date)
         }
     }
 }
@@ -182,5 +194,11 @@ private extension Date.FormatStyle {
         var formatStyle = Date.FormatStyle.dateTime
         formatStyle.timeZone = TimeZone(abbreviation: "UTC")!
         return formatStyle
+    }
+}
+
+private extension Invitation {
+    var areAllGuestsAnswered: Bool {
+        return guests.allSatisfy { $0.status != nil }
     }
 }
