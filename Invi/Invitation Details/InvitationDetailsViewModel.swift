@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 import InviClient
 import CasePaths
+import MapKit
 
 enum GuestStatusSavingState {
     case loading(id: String)
@@ -112,6 +113,16 @@ class GuestViewModel: ObservableObject {
             statusSavingState.wrappedValue = .failed
             throw error
         }
+    }
+}
+
+class LocationViewModel {
+    func navigateTo(location: Location) {
+        guard let latitude = Double(location.latitude), let longitude = Double(location.longitude) else { return }
+        let coordinate = CLLocationCoordinate2DMake(latitude, longitude)
+        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary: nil))
+        mapItem.name = location.name
+        mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
     }
 }
 

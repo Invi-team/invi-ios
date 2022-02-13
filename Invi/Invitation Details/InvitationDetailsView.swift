@@ -42,10 +42,10 @@ struct InvitationDetailsView: View {
                         }
                     }
                     Section("Wedding") {
-                        LocationView(location: invitation.wedding, date: invitation.eventDate)
+                        LocationView(viewModel: LocationViewModel(), location: invitation.wedding, date: invitation.eventDate)
                     }
                     Section("Wedding party") {
-                        LocationView(location: invitation.party, date: nil)
+                        LocationView(viewModel: LocationViewModel(), location: invitation.party, date: nil)
                     }
                 }
                 .navigationTitle(invitation.eventName)
@@ -128,6 +128,7 @@ struct GuestView: View {
 }
 
 private struct LocationView: View {
+    let viewModel: LocationViewModel
     let location: Location?
     let date: Date?
 
@@ -148,11 +149,11 @@ private struct LocationView: View {
                     Image(systemName: "mappin")
                     Text("\(location.name) \n\(location.address)")
                 }
+                Button("Navigate") {
+                    viewModel.navigateTo(location: location)
+                }
             } else {
                 Text("Location to be announced.")
-            }
-            Button("Navigate") {
-                // TODO
             }
         }
     }
