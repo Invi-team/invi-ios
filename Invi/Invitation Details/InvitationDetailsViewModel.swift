@@ -126,7 +126,6 @@ class LocationViewModel {
     }
 }
 
-
 private extension Array where Element == Guest {
     func sortByInvitedFirst() -> [Guest] {
         return sorted(by: { $0.type.rawValue > $1.type.rawValue })
