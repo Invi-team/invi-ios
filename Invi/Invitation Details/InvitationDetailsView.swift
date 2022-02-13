@@ -141,7 +141,7 @@ private struct LocationView: View {
                 }
                 HStack(spacing: 8) {
                     Image(systemName: "clock")
-                    Text(date.formatted(date: .omitted, time: .shortened))
+                    Text(date.formatted(Date.FormatStyle.eventFormatStyle.hour().minute()))
                 }
             }
             if let location = location {
@@ -175,5 +175,13 @@ private struct GuestStatusLabel: View {
 struct InvitationDetailsView_Previews: PreviewProvider {
     static var previews: some View {
         InvitationDetailsView(viewModel: InvitationDetailsViewModel(invitationId: "", invitationName: "", state: .loaded(Invitation(id: "", invitationCode: "", eventId: "", description: nil, eventDate: Date.now, responseDateDeadline: nil, receivedAt: nil, photoId: nil, locations: [], organisers: [], guests: [])), dependencies: CustomDependencies()))
+    }
+}
+
+private extension Date.FormatStyle {
+    static var eventFormatStyle: Date.FormatStyle {
+        var formatStyle = Date.FormatStyle.dateTime
+        formatStyle.timeZone = TimeZone(abbreviation: "UTC")!
+        return formatStyle
     }
 }
