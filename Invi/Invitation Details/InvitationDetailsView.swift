@@ -128,7 +128,7 @@ struct GuestView: View {
 }
 
 private struct LocationView: View {
-    @ObservedObject var viewModel: LocationViewModel
+    let viewModel: LocationViewModel
     let location: Location?
     let date: Date?
 

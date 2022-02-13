@@ -116,6 +116,17 @@ class GuestViewModel: ObservableObject {
     }
 }
 
+class LocationViewModel {
+    func navigateTo(location: Location) {
+        guard let latitude = Double(location.latitude), let longitude = Double(location.longitude) else { return }
+        let coordinate = CLLocationCoordinate2DMake(latitude, longitude)
+        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary: nil))
+        mapItem.name = location.name
+        mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
+    }
+}
+
+
 private extension Array where Element == Guest {
     func sortByInvitedFirst() -> [Guest] {
         return sorted(by: { $0.type.rawValue > $1.type.rawValue })
@@ -125,15 +136,5 @@ private extension Array where Element == Guest {
 private extension String {
     var removingSpaces: String {
         return replacingOccurrences(of: " ", with: "")
-    }
-}
-
-class LocationViewModel: ObservableObject {
-
-    func navigateTo(location: Location) {
-        let coordinate = CLLocationCoordinate2DMake(Double(location.latitude)!, Double(location.longitude)!)
-        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary: nil))
-        mapItem.name = location.name
-        mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
     }
 }
