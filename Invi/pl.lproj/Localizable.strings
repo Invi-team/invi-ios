@@ -1,0 +1,32 @@
+/* 
+  Localizable.strings
+  Invi
+
+  Created by Jakub Kwiatek on 16/05/2022.
+  
+*/
+"general_cancel" = "Cofnij";
+"general_error" = "Coś poszło nie tak. Spróbuj ponownie później.";
+
+"login_cta" = "Zaloguj się z adresem email";
+"login_switch_to_sign_up_hint" =  "Nie masz jeszcze konta?";
+"login_switch_to_sign_up_cta" =  " Zarejestruj się";
+
+"sign_in_screen_title" = "Zaloguj się";
+"sign_in_switch_to_sign_up" = "Używasz Invi pierwszy raz? ";
+"sign_in_switch_to_cta" = " Stwórz konto";
+"sign_in_email_field" = "Adres email";
+"sign_in_password_field" = "Hasło";
+"sign_in_cta" = "Zaloguj się";
+"sign_in_failed_error" = "Adres email lub hasło jest niepoprawne. Spróbuj ponownie";
+
+"sing_up_screen_title" = "Zarejestruj się";
+"switch_to_login_hint" = "Masz już konto?";
+"switch_to_login_cta" = "Zaloguj się";
+"sign_up_email_field" = "Adres e-mail";
+"sign_up_password_field" = "Hasło";
+"sign_up_repeat_password_field" = "Powtórz hasło";
+"sign_up_cta" = "Zarejestruj się";
+"sign_up_incorrect_email_format_error" = "Wpisz poprawny adres e-mail";
+"sign_up_password_too_short_errror" = "Hasło musi zawierać conajmniej 6 znaków";
+"sign_up_repeat_password_error" = "Hasła są różne";

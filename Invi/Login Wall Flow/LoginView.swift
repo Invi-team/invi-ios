@@ -84,7 +84,7 @@ struct LoginView: View {
                     headerText
                         .padding(.bottom, 24)
                     VStack(alignment: .leading) {
-                        Text("E-mail")
+                        Text(String(localized: "sign_in_email_field"))
                             .foregroundColor(InviDesign.Colors.Brand.grey)
                             .font(Font.system(size: 12))
                         TextField("", text: $viewModel.email)
@@ -97,7 +97,7 @@ struct LoginView: View {
                             .padding(.bottom, 16)
                     }
                     VStack(alignment: .leading) {
-                        Text("Password")
+                        Text(String(localized: "sign_in_password_field"))
                             .foregroundColor(InviDesign.Colors.Brand.grey)
                             .font(Font.system(size: 12))
                         SecureField("", text: $viewModel.password)
@@ -107,7 +107,7 @@ struct LoginView: View {
                             .padding(.bottom, 24)
                     }
                     errorText
-                    Button("Sign in") {
+                    Button(String(localized: "sign_in_cta")) {
                         Task { @MainActor in await viewModel.loginTapped() }
                     }
                     .buttonStyle(LoginRegisterButtonStyle(isLoading: viewModel.state.isEvaluating))
@@ -117,10 +117,10 @@ struct LoginView: View {
                 .padding()
             }
         }
-        .navigationTitle("Sign in")
+        .navigationTitle(String(localized: "sign_in_screen_title"))
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button("Cancel") { viewModel.onDismiss() }
+                Button(String(localized: "general_cancel")) { viewModel.onDismiss() }
                     .foregroundColor(InviDesign.Colors.Brand.dark)
                     .disabled(viewModel.state == .evaluating)
             }
@@ -130,10 +130,10 @@ struct LoginView: View {
 
     @ViewBuilder var headerText: some View {
         HStack {
-            Text("Using Invi for the first time? ")
+            Text(String(localized: "sign_in_switch_to_sign_up"))
                 .font(Font.system(size: 14))
                 .foregroundColor(InviDesign.Colors.Brand.grey)
-            Button("Create Account") {
+            Button(String(localized: "sign_in_switch_to_cta")) {
                 viewModel.registerTapped()
             }
             .font(Font.system(size: 14).weight(.semibold))
@@ -173,9 +173,9 @@ private extension LoginViewModel.State {
     var errorMessage: String? {
         switch self {
         case .error(.invalidCredentials):
-            return "E-mail or password is incorrect. Try again."
+            return String(localized: "sign_in_failed_error")
         case .error(.serverFailure):
-            return "Something went wrong. Try again."
+            return String(localized: "general_error")
         default:
             return nil
         }

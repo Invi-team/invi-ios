@@ -10,6 +10,7 @@
 		42F2E5B65D52C6B403A87C97 /* Pods_Invi_InviUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 267959D0E72E09B03213F389 /* Pods_Invi_InviUITests.framework */; };
 		5C0D957CA0178529DA2F68E0 /* Pods_InviTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F1D23CB0E681224F7A658A1 /* Pods_InviTests.framework */; };
 		89FDC1ADB6611A83996D764F /* Pods_Invi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B88AB3D3CA7B498B4CB0E481 /* Pods_Invi.framework */; };
+		8C250C8E2832F62D00A3F154 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C250C902832F62D00A3F154 /* Localizable.strings */; };
 		8C8254A5274ED01900BB8642 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8254A4274ED01900BB8642 /* Application.swift */; };
 		921CE5C0275CD62C000E4E9E /* UserDefaultsType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921CE5BF275CD62C000E4E9E /* UserDefaultsType.swift */; };
 		921CE5C2275CDBB3000E4E9E /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921CE5C1275CDBB3000E4E9E /* DebugView.swift */; };
@@ -73,6 +74,8 @@
 		267959D0E72E09B03213F389 /* Pods_Invi_InviUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Invi_InviUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F36D0B9698DD475121F6A19 /* Pods-InviTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InviTests.debug.xcconfig"; path = "Target Support Files/Pods-InviTests/Pods-InviTests.debug.xcconfig"; sourceTree = "<group>"; };
 		727791CD72AD8360C8E48D90 /* Pods-Invi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Invi.release.xcconfig"; path = "Target Support Files/Pods-Invi/Pods-Invi.release.xcconfig"; sourceTree = "<group>"; };
+		8C250C8F2832F62D00A3F154 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8C250C912832F65E00A3F154 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8C8254A4274ED01900BB8642 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		921CE5BF275CD62C000E4E9E /* UserDefaultsType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsType.swift; sourceTree = "<group>"; };
 		921CE5C1275CDBB3000E4E9E /* DebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
@@ -247,6 +250,7 @@
 		9293A4892656F9E00056F02B /* Invi */ = {
 			isa = PBXGroup;
 			children = (
+				8C250C902832F62D00A3F154 /* Localizable.strings */,
 				928DED7E27402D9100173BE8 /* InviAuthenticator */,
 				92318DC8273F2DD1000C0F4C /* TestHelpers */,
 				92318DBD273EB0F2000C0F4C /* InviClient */,
@@ -437,6 +441,7 @@
 			knownRegions = (
 				en,
 				Base,
+				pl,
 			);
 			mainGroup = 9293A47E2656F9E00056F02B;
 			packageReferences = (
@@ -459,6 +464,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9293A4972656F9E20056F02B /* LaunchScreen.storyboard in Resources */,
+				8C250C8E2832F62D00A3F154 /* Localizable.strings in Resources */,
 				9293A4942656F9E20056F02B /* Preview Assets.xcassets in Resources */,
 				9293A4912656F9E20056F02B /* Assets.xcassets in Resources */,
 			);
@@ -636,6 +642,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		8C250C902832F62D00A3F154 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C250C8F2832F62D00A3F154 /* en */,
+				8C250C912832F65E00A3F154 /* pl */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		9293A4952656F9E20056F02B /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -651,6 +666,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -712,6 +728,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

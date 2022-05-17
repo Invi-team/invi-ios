@@ -169,7 +169,7 @@ struct RegisterView: View {
                 headerText
                     .padding(.bottom, 24)
                 VStack(alignment: .leading) {
-                    Text("E-mail")
+                    Text(String(localized: "sign_up_email_field"))
                         .foregroundColor(InviDesign.Colors.Brand.grey)
                         .font(Font.system(size: 12))
                     TextField("", text: $viewModel.email)
@@ -185,7 +185,7 @@ struct RegisterView: View {
                 }
                 .padding(.bottom, 16)
                 VStack(alignment: .leading) {
-                    Text("Password")
+                    Text(String(localized: "sign_up_password_field"))
                         .foregroundColor(InviDesign.Colors.Brand.grey)
                         .font(Font.system(size: 12))
                     SecureField("", text: $viewModel.password)
@@ -198,7 +198,7 @@ struct RegisterView: View {
                 }
                 .padding(.bottom, 16)
                 VStack(alignment: .leading) {
-                    Text("Repeat Password")
+                    Text(String(localized: "sign_up_repeat_password_field"))
                         .foregroundColor(InviDesign.Colors.Brand.grey)
                         .font(Font.system(size: 12))
                     SecureField("", text: $viewModel.repeatedPassword)
@@ -213,7 +213,7 @@ struct RegisterView: View {
                 requestErrorText
                     .font(.footnote)
                     .foregroundColor(.red)
-                Button("Sign up with e-mail") {
+                Button(String(localized: "sign_up_cta")) {
                     Task { @MainActor in
                         await viewModel.handleRegister()
                     }
@@ -225,10 +225,10 @@ struct RegisterView: View {
             }
             .padding()
         }
-        .navigationTitle("Sign up")
+        .navigationTitle(String(localized: "sing_up_screen_title"))
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button("Cancel") { viewModel.onDismiss() }
+                Button(String(localized: "general_cancel")) { viewModel.onDismiss() }
                     .foregroundColor(InviDesign.Colors.Brand.dark)
                     .disabled(viewModel.isLoading)
             }
@@ -238,10 +238,10 @@ struct RegisterView: View {
 
     @ViewBuilder var headerText: some View {
         HStack {
-            Text("Already have account? ")
+            Text(String(localized: "switch_to_login_hint"))
                 .font(Font.system(size: 14))
                 .foregroundColor(InviDesign.Colors.Brand.grey)
-            Button("Sign in") {
+            Button(String(localized: "switch_to_login_cta")) {
                 viewModel.onLogin()
             }
             .font(Font.system(size: 14).weight(.semibold))
@@ -251,7 +251,7 @@ struct RegisterView: View {
 
     @ViewBuilder var requestErrorText: some View {
         viewModel.requestError.flatMap { _ in
-            Text("Something went wrong. Try again later.")
+            Text(String(localized: "general_error"))
         }
     }
 
@@ -260,9 +260,9 @@ struct RegisterView: View {
         case .some(.success), .none:
             EmptyView()
         case .some(.failure(.invalidFormat)):
-            Text("Please enter a correct e-mail.")
+            Text(String(localized: "sign_up_incorrect_email_format_error"))
         case .some(.failure(.alreadyUsed)):
-            Text("This e-mail is already in use. Choose another one.")
+            Text(String(localized:  "sign_up_incorrect_email_format_error"))
         }
     }
 
@@ -271,7 +271,7 @@ struct RegisterView: View {
         case .some(.success), .none:
             EmptyView()
         case .some(.failure(.passwordTooShort)):
-            Text("Password needs to have 6 or more characters.")
+            Text(String(localized: "sign_up_password_too_short_errror"))
         }
     }
 
@@ -280,7 +280,7 @@ struct RegisterView: View {
         case .some(.success), .none:
             EmptyView()
         case .some(.failure(.incorrectlyRepeated)):
-            Text("Repeated password does not match.")
+            Text(String(localized: "sign_up_repeat_password_error"))
         }
     }
 

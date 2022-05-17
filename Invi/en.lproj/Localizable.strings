@@ -1,0 +1,32 @@
+/* 
+  Localizable.strings
+  Invi
+
+  Created by Jakub Kwiatek on 16/05/2022.
+  
+*/
+"general_cancel" = "Cancel";
+"general_error" = "Something went wrong. Try again later.";
+
+"login_cta" = "Sign in with e-mail";
+"login_switch_to_sign_up_hint" = "You don't have an account?";
+"login_switch_to_sign_up_cta" = " Sign up";
+
+"sign_in_screen_title" = "Sign in";
+"sign_in_switch_to_sign_up" = "Using Invi for the first time?";
+"sign_in_switch_to_cta" = " Create Account";
+"sign_in_email_field" = "E-mail";
+"sign_in_password_field" = "Password";
+"sign_in_cta" = "Sign in";
+"sign_in_failed_error" = "E-mail or password is incorrect. Try again.";
+
+"sing_up_screen_title" = "Sign up";
+"switch_to_login_hint" = "Already have account?";
+"switch_to_login_cta" = "Sign in";
+"sign_up_email_field" = "E-mail";
+"sign_up_password_field" = "Password";
+"sign_up_repeat_password_field" = "Repeat password";
+"sign_up_cta" = "Sign up";
+"sign_up_incorrect_email_format_error" = "Please enter a correct e-mail";
+"sign_up_password_too_short_errror" = "Password needs to have 6 or more characters";
+"sign_up_repeat_password_error" = "Repeated password does not match";

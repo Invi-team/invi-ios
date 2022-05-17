@@ -76,7 +76,7 @@ struct LoginWallView: View {
                     Spacer()
                     Image(Images.inviEnvelope)
                     Spacer()
-                    Button("Sign in with e-mail") {
+                    Button(String(localized: "login_cta")) {
                         viewModel.loginTapped()
                     }
                     .padding()
@@ -109,10 +109,10 @@ struct LoginWallView: View {
     }
 
     @ViewBuilder var signUpButton: some View {
-        Text("You don't have an account?")
+        Text(String(localized: "login_switch_to_sign_up_hint"))
             .foregroundColor(Color(.white))
             +
-            Text(" Sign up")
+            Text(String(localized: "login_switch_to_sign_up_cta"))
             .foregroundColor(InviDesign.Colors.Brand.dark)
     }
 }
