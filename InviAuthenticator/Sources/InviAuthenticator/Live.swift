@@ -19,7 +19,7 @@ extension Authenticator {
         )
     }
 
-    // swiftlint:disable:next function_body_length
+    // swiftlint:disable:next function_body_length cyclomatic_complexity
     static func live(configuration: Configuration, webService: WebServiceType, keychainStorage: KeychainStorageType) -> Self {
         let state: CurrentValueSubject<Authenticator.State, Never>
         if let storedToken = try? keychainStorage.getToken() {
