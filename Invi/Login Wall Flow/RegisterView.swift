@@ -262,7 +262,7 @@ struct RegisterView: View {
         case .some(.failure(.invalidFormat)):
             Text(String(localized: "sign_up_incorrect_email_format_error"))
         case .some(.failure(.alreadyUsed)):
-            Text(String(localized:  "sign_up_incorrect_email_format_error"))
+            Text(String(localized: "sign_up_incorrect_email_format_error"))
         }
     }
 
