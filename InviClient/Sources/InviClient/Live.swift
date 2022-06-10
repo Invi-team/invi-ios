@@ -23,12 +23,12 @@ extension InviClient {
         return InviClient(
             invitations: {
                 let request = URLRequest(url: environment().baseURL.appendingPathComponent("invitations"))
-                return try await webService.get(request: request).value
+                return try await webService.get(request: request)
             },
             invitation: { invitationId in
                 let request = URLRequest(url: environment().baseURL.appendingPathComponent("invitations"))
 
-                let invitations: [Invitation] = try await webService.get(request: request).value
+                let invitations: [Invitation] = try await webService.get(request: request)
                 if let invitation = invitations.first(where: { $0.id == invitationId }) {
                     return invitation
                 } else {
@@ -39,13 +39,13 @@ extension InviClient {
                 let url = environment().baseURL
                     .appendingPathComponent("invitation")
                     .appendingPathComponent("guest-status")
-                _ = try await webService.put(model: model, request: URLRequest(url: url)).value
+                try await webService.put(model: model, request: URLRequest(url: url))
             }, redeemInvitation: { code in
                 struct Empty: Encodable {}
                 let url = environment().baseURL
                     .appendingPathComponent("invitation")
                     .appendingPathComponent("\(code)")
-                _  = try await webService.post(model: Empty?.none, request: URLRequest(url: url)).value
+                try await webService.post(model: Empty?.none, request: URLRequest(url: url))
             }
         )
     }
