@@ -32,7 +32,7 @@ extension Authenticator {
             let url = configuration.environment().baseURL.appendingPathComponent("user")
             var request = URLRequest(url: url)
             request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            return try await webService.get(request: request).value
+            return try await webService.get(request: request)
         }
 
         Task { @MainActor in
@@ -58,7 +58,7 @@ extension Authenticator {
                 do {
                     let request = URLRequest(url: configuration.environment().baseURL.appendingPathComponent("auth/login"))
                     let body = LoginRequestBody(email: email, password: password)
-                    let loginResponse: LoginResponse = try await webService.post(model: body, request: request).value
+                    let loginResponse: LoginResponse = try await webService.post(model: body, request: request)
                     try keychainStorage.add(token: loginResponse.token)
                     state.value = .loggedIn(token: loginResponse.token, user: nil)
                 } catch {
@@ -76,7 +76,7 @@ extension Authenticator {
                 let request = URLRequest(url: configuration.environment().baseURL.appendingPathComponent("register"))
                 let body = RegisterRequestBody(deviceId: "iOS-test", email: email, password: password) // TODO: Device id
                 do {
-                    let _: RegisterResponse = try await webService.post(model: body, request: request).value
+                    try await webService.post(model: body, request: request)
                 } catch {
                     if let error = error as? WebService.Error, case let .httpError(_, _, metadata) = error {
                         if metadata.contains(MetadataValues.passwordTooShort) {
