@@ -59,3 +59,8 @@ public struct User: Equatable, Codable {
     public let name: String?
     public let surname: String?
 }
+
+public struct UserTokens: Equatable, Codable {
+    let accessToken: String
+    let refreshToken: String
+}

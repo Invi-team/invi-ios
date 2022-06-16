@@ -21,6 +21,6 @@ let package = Package(
             dependencies: ["WebService", .product(name: "CasePaths", package: "swift-case-paths")]),
         .testTarget(
             name: "InviAuthenticatorTests",
-            dependencies: ["InviAuthenticator"])
+            dependencies: ["InviAuthenticator", .product(name: "WebServiceTestHelpers", package: "WebService")])
     ]
 )

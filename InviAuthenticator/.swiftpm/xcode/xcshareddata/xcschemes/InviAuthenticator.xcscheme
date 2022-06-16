@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "WebService"
-               BuildableName = "WebService"
-               BlueprintName = "WebService"
+               BlueprintIdentifier = "InviAuthenticator"
+               BuildableName = "InviAuthenticator"
+               BlueprintName = "InviAuthenticator"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "WebServiceTests"
-               BuildableName = "WebServiceTests"
-               BlueprintName = "WebServiceTests"
+               BlueprintIdentifier = "InviAuthenticatorTests"
+               BuildableName = "InviAuthenticatorTests"
+               BlueprintName = "InviAuthenticatorTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>
@@ -60,9 +60,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "WebService"
-            BuildableName = "WebService"
-            BlueprintName = "WebService"
+            BlueprintIdentifier = "InviAuthenticator"
+            BuildableName = "InviAuthenticator"
+            BlueprintName = "InviAuthenticator"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>

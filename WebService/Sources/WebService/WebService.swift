@@ -15,6 +15,7 @@ public protocol WebServiceType {
     // TODO: Remove when API stop returning empty response
     func put<Model: Encodable>(model: Model, request: URLRequest) async throws
     func post<Model: Encodable>(model: Model?, request: URLRequest) async throws
+    func data(for request: URLRequest, delegate: URLSessionTaskDelegate?) async throws -> (Data, URLResponse)
 }
 
 public protocol URLSessionType {
@@ -77,6 +78,10 @@ public final class WebService: WebServiceType {
         
         _ = try await load(request: request)
     }
+    
+    public func data(for request: URLRequest, delegate: URLSessionTaskDelegate?) async throws -> (Data, URLResponse) {
+        try await session.data(for: request, delegate: delegate)
+    }
 
     private enum PostOrPut: String {
         case post = "POST", put = "PUT"
@@ -100,14 +105,8 @@ public final class WebService: WebServiceType {
     }
 
     private func load(request: URLRequest) async throws -> Data {
-        try Task.checkCancellation()
         debugPrint("Loading request with url: \(request.url!.absoluteString)") // TODO: Remove when logger in place
-        var request = request
-        if let token = userToken() {
-            request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        }
         let (data, response) = try await session.data(for: request, delegate: nil)
-        try Task.checkCancellation()
         guard let httpResponse = response as? HTTPURLResponse else {
             throw Error.invalidResponse
         }
