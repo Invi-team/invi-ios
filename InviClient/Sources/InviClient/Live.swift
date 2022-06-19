@@ -7,7 +7,6 @@
 
 import Foundation
 import WebService
-import InviAuthenticator
 
 extension InviClient {
     enum ClientError: Error {
