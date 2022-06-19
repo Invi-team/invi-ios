@@ -24,7 +24,7 @@ final class AuthenticatedSessionTests: XCTestCase {
         }
         let fakeTokens = UserTokens(accessToken: "accessToken", refreshToken: "refreshToken")
         let fakeTokenController = FakeTokenController(userTokens: fakeTokens)
-        let sut = AuthenticatedSession(tokenController: fakeTokenController, webService: fakeWebService, configuration: configuration)
+        let sut = AuthenticatedSession(tokenController: fakeTokenController, webService: fakeWebService, configuration: configuration, onRefreshTokenInvalid: {})
         
         // Act
         let (data, response) = try await sut.data(for: URLRequest(url: endpointURL))
@@ -48,7 +48,7 @@ final class AuthenticatedSessionTests: XCTestCase {
         }
         let fakeTokens = UserTokens(accessToken: "accessToken", refreshToken: "refreshToken")
         let fakeTokenController = FakeTokenController(userTokens: fakeTokens)
-        let sut = AuthenticatedSession(tokenController: fakeTokenController, webService: fakeWebService, configuration: configuration)
+        let sut = AuthenticatedSession(tokenController: fakeTokenController, webService: fakeWebService, configuration: configuration, onRefreshTokenInvalid: {})
         // Act
         let (_, response) = try await sut.data(for: URLRequest(url: endpointURL))
         
@@ -79,7 +79,7 @@ final class AuthenticatedSessionTests: XCTestCase {
                 refreshTokenURL: .success(newTokensData)
             ]
         }
-        let sut = AuthenticatedSession(tokenController: fakeTokenController, webService: fakeWebService, configuration: configuration)
+        let sut = AuthenticatedSession(tokenController: fakeTokenController, webService: fakeWebService, configuration: configuration, onRefreshTokenInvalid: {})
         // Act
         let (data, response) = try await sut.data(for: URLRequest(url: endpointURL))
         
@@ -109,7 +109,7 @@ final class AuthenticatedSessionTests: XCTestCase {
                 refreshTokenURL: .success(newTokensData)
             ]
         }
-        let sut = AuthenticatedSession(tokenController: fakeTokenController, webService: fakeWebService, configuration: configuration)
+        let sut = AuthenticatedSession(tokenController: fakeTokenController, webService: fakeWebService, configuration: configuration, onRefreshTokenInvalid: {})
         // Act
         let (_, response) = try await sut.data(for: URLRequest(url: endpointURL))
         
@@ -120,7 +120,7 @@ final class AuthenticatedSessionTests: XCTestCase {
         XCTAssertEqual(tokens, newTokens)
     }
     
-    func testData_whenFailed401ResponseAndFailedRefresh_shouldFail() async throws {
+    func testData_whenFailed401ResponseAndFailedRefresh500_shouldFail() async throws {
         // Arrange
         let configuration = Authenticator.Configuration.prod
         let endpointURL = URL(string: "https://prod.invi.click/api/v1/fakePrivateEndpoint")!
@@ -131,15 +131,16 @@ final class AuthenticatedSessionTests: XCTestCase {
         
         let fakeSuccessData = "fakeSuccess".data(using: .utf8)!
         
+        var tokenInvalidCalled = false
         var numberOfTimesCalled = 0
         let fakeWebService = WebService {
             numberOfTimesCalled += 1
             return [
                 endpointURL: numberOfTimesCalled == 1 ? .failure(401) : .success(fakeSuccessData),
-                refreshTokenURL: .failure(503)
+                refreshTokenURL: .failure(500)
             ]
         }
-        let sut = AuthenticatedSession(tokenController: fakeTokenController, webService: fakeWebService, configuration: configuration)
+        let sut = AuthenticatedSession(tokenController: fakeTokenController, webService: fakeWebService, configuration: configuration, onRefreshTokenInvalid: { tokenInvalidCalled = true })
         // Act
         let (_, response) = try await sut.data(for: URLRequest(url: endpointURL))
         
@@ -148,6 +149,39 @@ final class AuthenticatedSessionTests: XCTestCase {
         XCTAssertEqual(numberOfTimesCalled, 2)
         let tokens = await fakeTokenController.userTokens
         XCTAssertEqual(tokens, oldTokens)
+        XCTAssertFalse(tokenInvalidCalled)
+    }
+    
+    func testData_whenFailed401ResponseAndFailedRefresh400_shouldFail() async throws {
+        // Arrange
+        let configuration = Authenticator.Configuration.prod
+        let endpointURL = URL(string: "https://prod.invi.click/api/v1/fakePrivateEndpoint")!
+        let refreshTokenURL = URL(string: "https://prod.invi.click/api/v1/auth/refresh-session")!
+        
+        let oldTokens = UserTokens(accessToken: "oldAccessToken", refreshToken: "oldRefreshToken")
+        let fakeTokenController = FakeTokenController(userTokens: oldTokens)
+        
+        let fakeSuccessData = "fakeSuccess".data(using: .utf8)!
+        
+        var tokenInvalidCalled = false
+        var numberOfTimesCalled = 0
+        let fakeWebService = WebService {
+            numberOfTimesCalled += 1
+            return [
+                endpointURL: numberOfTimesCalled == 1 ? .failure(401) : .success(fakeSuccessData),
+                refreshTokenURL: .failure(statusCode: 400, metadata: ["REFRESH_TOKEN_INVALID"])
+            ]
+        }
+        let sut = AuthenticatedSession(tokenController: fakeTokenController, webService: fakeWebService, configuration: configuration, onRefreshTokenInvalid: { tokenInvalidCalled = true })
+        // Act
+        let (_, response) = try await sut.data(for: URLRequest(url: endpointURL))
+        
+        // Assert
+        XCTAssertEqual(response.statusCode, 401)
+        XCTAssertEqual(numberOfTimesCalled, 2)
+        let tokens = await fakeTokenController.userTokens
+        XCTAssertEqual(tokens, oldTokens)
+        XCTAssertTrue(tokenInvalidCalled)
     }
 }
 
@@ -161,6 +195,4 @@ private actor FakeTokenController: TokenControllerType {
     func set(tokens: UserTokens) {
         userTokens = tokens
     }
-    
-    
 }

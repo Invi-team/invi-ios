@@ -7,6 +7,7 @@
 
 import Foundation
 import WebService
+import InviAuthenticator
 
 extension InviClient {
     enum ClientError: Error {
@@ -15,20 +16,28 @@ extension InviClient {
     }
 
     public static func live(configuration: Configuration) -> Self {
-        let webService = WebService(decoder: JSONDecoder.inviDecoder, userToken: configuration.token)
-        return Self.live(environment: configuration.environment, webService: webService)
+        let webService = WebService(decoder: JSONDecoder.inviDecoder)
+        return Self.live(
+            environment: configuration.environment,
+            webService: webService,
+            authenticatedSession: configuration.authenticatedSession
+        )
     }
 
-    static func live(environment: @escaping () -> ApiEnvironment, webService: WebServiceType) -> Self {
+    static func live(
+        environment: @escaping () -> ApiEnvironment,
+        webService: WebServiceType,
+        authenticatedSession: @escaping () -> URLSessionType?
+    ) -> Self {
         return InviClient(
             invitations: {
                 let request = URLRequest(url: environment().baseURL.appendingPathComponent("invitations"))
-                return try await webService.get(request: request)
+                return try await webService.get(request: request, customSession: authenticatedSession())
             },
             invitation: { invitationId in
                 let request = URLRequest(url: environment().baseURL.appendingPathComponent("invitations"))
 
-                let invitations: [Invitation] = try await webService.get(request: request)
+                let invitations: [Invitation] = try await webService.get(request: request, customSession: authenticatedSession())
                 if let invitation = invitations.first(where: { $0.id == invitationId }) {
                     return invitation
                 } else {
@@ -39,13 +48,13 @@ extension InviClient {
                 let url = environment().baseURL
                     .appendingPathComponent("invitation")
                     .appendingPathComponent("guest-status")
-                try await webService.put(model: model, request: URLRequest(url: url))
+                try await webService.put(model: model, request: URLRequest(url: url), customSession: authenticatedSession())
             }, redeemInvitation: { code in
                 struct Empty: Encodable {}
                 let url = environment().baseURL
                     .appendingPathComponent("invitation")
                     .appendingPathComponent("\(code)")
-                try await webService.post(model: Empty?.none, request: URLRequest(url: url))
+                try await webService.post(model: Empty?.none, request: URLRequest(url: url), customSession: authenticatedSession())
             }
         )
     }

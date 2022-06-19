@@ -8,45 +8,30 @@
 import Foundation
 import WebService
 
-protocol TokenControllerType: Actor {
-    var userTokens: UserTokens { get }
-    func set(tokens: UserTokens)
-}
-
-actor TokenController: TokenControllerType {
-    private(set) var userTokens: UserTokens {
-        didSet {
-            // TODO: Handle saving tokens
-        }
+public final class AuthenticatedSession: Equatable, URLSessionType {
+    public func data(for request: URLRequest, delegate: URLSessionTaskDelegate?) async throws -> (Data, URLResponse) {
+        return try await data(for: request)
     }
     
-    private let keychainStorage: KeychainStorageType
-    
-    init(userTokens: UserTokens, keychainStorage: KeychainStorageType) {
-        self.userTokens = userTokens
-        self.keychainStorage = keychainStorage
-        
-        // TODO: Handle saving tokens
-    }
-    
-    func set(tokens: UserTokens) {
-        userTokens = tokens
-    }
-}
-
-final class AuthenticatedSession {
     let tokenController: TokenControllerType
     let webService: WebServiceType
     let configuration: Authenticator.Configuration
+    let onRefreshTokenInvalid: () -> Void
     
     init(
         tokenController: TokenControllerType,
         webService: WebServiceType,
-        configuration: Authenticator.Configuration
+        configuration: Authenticator.Configuration,
+        onRefreshTokenInvalid: @escaping () -> Void
     ) {
         self.tokenController = tokenController
         self.webService = webService
         self.configuration = configuration
+        self.onRefreshTokenInvalid = onRefreshTokenInvalid
+    }
+    
+    public static func == (lhs: AuthenticatedSession, rhs: AuthenticatedSession) -> Bool {
+        return false
     }
     
     func data(for request: URLRequest) async throws -> (Data, HTTPURLResponse) {
@@ -55,8 +40,13 @@ final class AuthenticatedSession {
             do {
                 let tokens = try await refreshToken()
                 await tokenController.set(tokens: tokens)
+                debugPrint("Access token successfully refreshed.")
                 return try await mainRequestData(for: request)
             } catch {
+                if let httpError = error as? WebService.Error, case .httpError(let statusCode, _, let metadata) = httpError, statusCode == 400, metadata.contains("REFRESH_TOKEN_INVALID") {
+                    debugPrint("Failed refreshing the token because the refresh token is invalid.")
+                    onRefreshTokenInvalid()
+                }
                 return (data, httpResponse)
             }
         } else {
@@ -74,9 +64,7 @@ final class AuthenticatedSession {
     }
     
     private enum AuthenticatedSessionError: Error {
-        case encodingRefreshTokenFailure
         case invalidResponse
-        case refreshTokenError(statusCode: Int)
     }
     
     private func refreshToken() async throws -> UserTokens {
@@ -84,6 +72,7 @@ final class AuthenticatedSession {
             .appendingPathComponent("auth")
             .appendingPathComponent("refresh-session")
         let refreshToken = await tokenController.userTokens.refreshToken
+        debugPrint("Attempting to refresh the accessToken...")
         return try await webService.post(model: RefreshRequestBody(refreshToken: refreshToken), request: URLRequest(url: url))
     }
     
@@ -107,4 +96,3 @@ private extension URLRequest {
 private struct RefreshRequestBody: Encodable {
     let refreshToken: String
 }
-

@@ -21,26 +21,27 @@ extension Authenticator {
 
     // swiftlint:disable:next function_body_length cyclomatic_complexity
     static func live(configuration: Configuration, webService: WebServiceType, keychainStorage: KeychainStorageType) -> Self {
-        let state: CurrentValueSubject<Authenticator.State, Never>
-        if let storedToken = try? keychainStorage.getToken() {
-            state = CurrentValueSubject(.loggedIn(token: storedToken, user: nil))
-        } else {
-            state = CurrentValueSubject(.loggedOut)
+        let state: CurrentValueSubject<Authenticator.State, Never>! = .init(.loggedOut)
+        if let tokenController = TokenController(keychainStorage: keychainStorage) {
+            let session = AuthenticatedSession(tokenController: tokenController, webService: webService, configuration: configuration, onRefreshTokenInvalid: logout)
+            state.value = .loggedIn(session: session, user: nil)
+        }
+        
+        func logout() {
+            state.value = .loggedOut
         }
 
-        @Sendable func user(for token: String) async throws -> User {
+        @Sendable func user(for session: AuthenticatedSession) async throws -> User {
             let url = configuration.environment().baseURL.appendingPathComponent("user")
-            var request = URLRequest(url: url)
-            request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            return try await webService.get(request: request)
+            return try await webService.get(request: URLRequest(url: url), customSession: session)
         }
 
         Task { @MainActor in
             for await currentState in state.eraseToAnyPublisher().values {
-                if case .loggedIn(let token, let currentUser) = currentState, currentUser == nil {
+                if case .loggedIn(let session, let currentUser) = currentState, currentUser == nil {
                     do {
-                        let user = try await user(for: token)
-                        state.value = .loggedIn(token: token, user: user)
+                        let user = try await user(for: session)
+                        state.value = .loggedIn(session: session, user: user)
                     } catch {
                         debugPrint("Failed fetching User with error: \(error)")
                     }
@@ -59,8 +60,10 @@ extension Authenticator {
                     let request = URLRequest(url: configuration.environment().baseURL.appendingPathComponent("auth/login"))
                     let body = LoginRequestBody(email: email, password: password)
                     let loginResponse: LoginResponse = try await webService.post(model: body, request: request)
-                    try keychainStorage.add(token: loginResponse.token)
-                    state.value = .loggedIn(token: loginResponse.token, user: nil)
+                    let userTokens = UserTokens(accessToken: loginResponse.accessToken, refreshToken: loginResponse.refreshToken)
+                    let tokenController = TokenController(userTokens: userTokens, keychainStorage: keychainStorage)
+                    let authenticatedSession = AuthenticatedSession(tokenController: tokenController, webService: webService, configuration: configuration, onRefreshTokenInvalid: logout)
+                    state.value = .loggedIn(session: authenticatedSession, user: nil)
                 } catch {
                     debugPrint(error)
                     if let error = error as? WebService.Error, case let .httpError(statusCode, _, _) = error, statusCode == 400 {
@@ -91,12 +94,7 @@ extension Authenticator {
                 }
             },
             logout: {
-                state.value = .loggedOut
-                do {
-                    try keychainStorage.removeToken()
-                } catch {
-                    debugPrint(error)
-                }
+                logout()
             }
         )
     }
@@ -109,7 +107,8 @@ private enum MetadataValues {
 }
 
 private struct LoginResponse: Decodable {
-    let token: String
+    let accessToken: String
+    let refreshToken: String
 }
 
 private struct LoginRequestBody: Encodable {
@@ -130,11 +129,6 @@ private struct RegisterRequestBody: Encodable {
 extension Authenticator.State {
     public var isLoggedOut: Bool {
         (/Authenticator.State.loggedOut).extract(from: self) != nil
-    }
-
-    public var token: String? {
-        guard case .loggedIn(let token, _) = self else { return nil }
-        return token
     }
 }
 
