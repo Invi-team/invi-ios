@@ -9,10 +9,6 @@ import Foundation
 import WebService
 
 public final class AuthenticatedSession: Equatable, URLSessionType {
-    public func data(for request: URLRequest, delegate: URLSessionTaskDelegate?) async throws -> (Data, URLResponse) {
-        return try await data(for: request)
-    }
-    
     let tokenController: TokenControllerType
     let webService: WebServiceType
     let configuration: Authenticator.Configuration
@@ -32,6 +28,10 @@ public final class AuthenticatedSession: Equatable, URLSessionType {
     
     public static func == (lhs: AuthenticatedSession, rhs: AuthenticatedSession) -> Bool {
         return false
+    }
+    
+    public func data(for request: URLRequest, delegate: URLSessionTaskDelegate?) async throws -> (Data, URLResponse) {
+        return try await data(for: request)
     }
     
     func data(for request: URLRequest) async throws -> (Data, HTTPURLResponse) {
@@ -77,11 +77,11 @@ public final class AuthenticatedSession: Equatable, URLSessionType {
     }
     
     private func authenticatedRequest(_ request: URLRequest, tokens: UserTokens?) -> URLRequest {
-        var requestCopy = request
+        var request = request
         if let bearer = tokens?.accessToken {
-            requestCopy.setValue("Bearer \(bearer)", forHTTPHeaderField: "Authorization")
+            request.setValue("Bearer \(bearer)", forHTTPHeaderField: "Authorization")
         }
-        return requestCopy
+        return request
     }
 }
 

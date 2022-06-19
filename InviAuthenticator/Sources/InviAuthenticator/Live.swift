@@ -21,7 +21,7 @@ extension Authenticator {
 
     // swiftlint:disable:next function_body_length cyclomatic_complexity
     static func live(configuration: Configuration, webService: WebServiceType, keychainStorage: KeychainStorageType) -> Self {
-        let state: CurrentValueSubject<Authenticator.State, Never>! = .init(.loggedOut)
+        let state: CurrentValueSubject<Authenticator.State, Never> = .init(.loggedOut)
         if let tokenController = TokenController(keychainStorage: keychainStorage) {
             let session = AuthenticatedSession(tokenController: tokenController, webService: webService, configuration: configuration, onRefreshTokenInvalid: logout)
             state.value = .loggedIn(session: session, user: nil)
