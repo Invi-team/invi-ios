@@ -16,7 +16,7 @@ public struct Authenticator {
     public var logout: () -> Void
 
     public enum State: Equatable {
-        case loggedIn(token: String, user: User?)
+        case loggedIn(session: AuthenticatedSession, user: User?)
         case loggedOut
     }
 
@@ -58,4 +58,16 @@ public struct User: Equatable, Codable {
     public let email: String
     public let name: String?
     public let surname: String?
+}
+
+public struct UserTokens: Equatable, Codable {
+    let accessToken: String
+    let refreshToken: String
+}
+
+public extension Authenticator.State {
+    var authenticatedSession: AuthenticatedSession? {
+        guard case .loggedIn(let session, _) = self else { return nil }
+        return session
+    }
 }

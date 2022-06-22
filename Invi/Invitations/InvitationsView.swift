@@ -41,16 +41,23 @@ struct InvitationsView: View {
             .navigationTitle(Strings.Tab.invitations)
             .toolbar {
                 ToolbarItem {
-                    Button {
-                        viewModel.addButtonTapped()
-                    } label: {
-                        Image(systemName: "plus")
+                    HStack(spacing: 16) {
+                        Button {
+                            Task { await viewModel.load() }
+                        } label: {
+                            Image(systemName: "arrow.clockwise")
+                        }
+                        Button {
+                            viewModel.addButtonTapped()
+                        } label: {
+                            Image(systemName: "plus")
+                        }
                     }
                 }
             }
         }
         .task {
-            Task { @MainActor in await viewModel.loadOnce() }
+            Task { @MainActor in await viewModel.load() }
         }
         .sheet(unwrap: $viewModel.route, case: /InvitationsViewModel.Route.add) { addViewModel in
             NavigationView {

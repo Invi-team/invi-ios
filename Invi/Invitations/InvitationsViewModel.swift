@@ -42,9 +42,7 @@ final class InvitationsViewModel: ObservableObject {
     }
 
     func load() async {
-        if !state.isLoaded {
-            state = .loading
-        }
+        state = .loading
         do {
             let invitations = try await dependencies.inviClient.invitations()
             state = .loaded(invitations.map { InvitationRowViewModel(invitation: $0, dependencies: dependencies) })

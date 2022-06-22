@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import WebService
 
 public struct InviClient {
     public var invitations: () async throws -> [Invitation]
@@ -30,14 +31,14 @@ public struct InviClient {
 extension InviClient {
     public struct Configuration {
         let environment: () -> ApiEnvironment
-        let token: () -> String?
+        let authenticatedSession: () -> URLSessionType?
 
         public init(
             environment: @escaping () -> ApiEnvironment,
-            token: @escaping () -> String?
+            authenticatedSession: @escaping () -> URLSessionType?
         ) {
             self.environment = environment
-            self.token = token
+            self.authenticatedSession = authenticatedSession
         }
     }
 

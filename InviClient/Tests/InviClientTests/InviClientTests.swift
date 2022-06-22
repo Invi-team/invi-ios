@@ -11,7 +11,7 @@ final class InviClientTests: XCTestCase {
         let url = URL(string: "https://prod.invi.click/api/v1/invitations")!
         let data = try Bundle.module.readLocalFile(forName: "Invitations")
         let webService = WebService(results: [url: .success(data)], decoder: JSONDecoder.inviDecoder)
-        let client: InviClient = .live(environment: { environment }, webService: webService)
+        let client: InviClient = .live(environment: { environment }, webService: webService, authenticatedSession: { nil })
 
         // Act
         let invitations = try await client.invitations()
@@ -26,7 +26,7 @@ final class InviClientTests: XCTestCase {
         let environment: InviClient.ApiEnvironment = .prod
         let url = URL(string: "https://prod.invi.click/api/v1/invitations")!
         let webService = WebService(results: [url: .failure(503)], decoder: JSONDecoder.inviDecoder)
-        let client: InviClient = .live(environment: { environment }, webService: webService)
+        let client: InviClient = .live(environment: { environment }, webService: webService, authenticatedSession: { nil })
 
         // Act
         do {
@@ -44,7 +44,7 @@ final class InviClientTests: XCTestCase {
         let url = URL(string: "https://dev.invi.click/api/v1/invitations")!
         let data = try Bundle.module.readLocalFile(forName: "Invitations")
         let webService = WebService(results: [url: .success(data)], decoder: JSONDecoder.inviDecoder)
-        let client: InviClient = .live(environment: { environment }, webService: webService)
+        let client: InviClient = .live(environment: { environment }, webService: webService, authenticatedSession: { nil })
 
         // Act
         let invitations = try await client.invitations()
@@ -59,7 +59,7 @@ final class InviClientTests: XCTestCase {
         let environment: InviClient.ApiEnvironment = .stage
         let url = URL(string: "https://dev.invi.click/api/v1/invitations")!
         let webService = WebService(results: [url: .failure(503)], decoder: JSONDecoder.inviDecoder)
-        let client: InviClient = .live(environment: { environment }, webService: webService)
+        let client: InviClient = .live(environment: { environment }, webService: webService, authenticatedSession: { nil })
 
         // Act
         do {
