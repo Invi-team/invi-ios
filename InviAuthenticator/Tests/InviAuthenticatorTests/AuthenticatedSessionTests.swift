@@ -146,7 +146,7 @@ final class AuthenticatedSessionTests: XCTestCase {
         
         // Assert
         XCTAssertEqual(response.statusCode, 401)
-        XCTAssertEqual(numberOfTimesCalled, 2)
+        XCTAssertEqual(numberOfTimesCalled, 4) // with retries
         let tokens = await fakeTokenController.userTokens
         XCTAssertEqual(tokens, oldTokens)
         XCTAssertFalse(tokenInvalidCalled)
