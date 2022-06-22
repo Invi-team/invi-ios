@@ -14,6 +14,8 @@ public final class AuthenticatedSession: Equatable, URLSessionType {
     let configuration: Authenticator.Configuration
     let onRefreshTokenInvalid: () -> Void
     
+    private var runningRefreshTokenTask: Task<UserTokens, Error>?
+    
     init(
         tokenController: TokenControllerType,
         webService: WebServiceType,
@@ -43,7 +45,7 @@ public final class AuthenticatedSession: Equatable, URLSessionType {
                 debugPrint("Access token successfully refreshed.")
                 return try await mainRequestData(for: request)
             } catch {
-                if let httpError = error as? WebService.Error, case .httpError(let statusCode, _, let metadata) = httpError, statusCode == 400, metadata.contains("REFRESH_TOKEN_INVALID") {
+                if error.isHTTPBadRequest {
                     debugPrint("Failed refreshing the token because the refresh token is invalid.")
                     onRefreshTokenInvalid()
                 }
@@ -68,12 +70,34 @@ public final class AuthenticatedSession: Equatable, URLSessionType {
     }
     
     private func refreshToken() async throws -> UserTokens {
-        let url = configuration.environment().baseURL
-            .appendingPathComponent("auth")
-            .appendingPathComponent("refresh-session")
-        let refreshToken = await tokenController.userTokens.refreshToken
-        debugPrint("Attempting to refresh the accessToken...")
-        return try await webService.post(model: RefreshRequestBody(refreshToken: refreshToken), request: URLRequest(url: url))
+        @Sendable func fetchTokens() async throws -> UserTokens {
+            let url = configuration.environment().baseURL
+                .appendingPathComponent("auth")
+                .appendingPathComponent("refresh-session")
+            let refreshToken = await tokenController.userTokens.refreshToken
+            debugPrint("Attempting to refresh the accessToken...")
+            return try await webService.post(model: RefreshRequestBody(refreshToken: refreshToken), request: URLRequest(url: url))
+        }
+        
+        let task: Task<UserTokens, Error>
+        if let runningRefreshTokenTask = runningRefreshTokenTask {
+            task = runningRefreshTokenTask
+        } else {
+            let newTask = Task {
+                try await retryAsync(
+                    shouldRetry: { !$0.isHTTPBadRequest },
+                    delayPolicy: .constant(time: 2),
+                    attemptsLeft: 2,
+                    attempt: { try await fetchTokens() }
+                )
+            }
+            runningRefreshTokenTask = newTask
+            task = newTask
+        }
+
+        let tokens = try await task.value
+        runningRefreshTokenTask = nil
+        return tokens
     }
     
     private func authenticatedRequest(_ request: URLRequest, tokens: UserTokens?) -> URLRequest {
@@ -95,4 +119,11 @@ private extension URLRequest {
 
 private struct RefreshRequestBody: Encodable {
     let refreshToken: String
+}
+
+private extension Error {
+    var isHTTPBadRequest: Bool {
+        guard let httpError = self as? WebService.Error, case .httpError(let statusCode, _, _) = httpError else { return false }
+        return statusCode == 400
+    }
 }
